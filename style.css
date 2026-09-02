@@ -1,0 +1,34 @@
+
+/* Box Container*/
+.box {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: left;
+  gap: 8px; 
+  background-color: #FAF8F5;
+  border: 3px solid #d9cbbd5b;
+  border-radius: 8px;
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  color: #1a1a1a;
+}
+/* Base */
+p {
+  margin: 0;
+}
+
+h1 {
+  margin: 4;
+}
+body{
+  background-color: #FAF8F5;
+}
+/* Typography Utilities */
+.title_size {
+  font-size: 1.5em;
+  font-weight: 900;
+}
+
