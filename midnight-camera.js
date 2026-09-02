@@ -3,7 +3,7 @@
 // star (up to 5) is progressively rarer.
 (function () {
   const MAX_STARS = 5;
-  const TICK_MS = 5000;
+  const TICK_MS = 500;
   const cameras = [];
 
   function createCamera() {
@@ -48,14 +48,15 @@
   function tick() {
     if (!active) return;
 
-    // Rare base chance a star appears at all this tick.
-    if (Math.random() < 0.35) {
+    // Base chance a star appears at all this tick.
+    if (Math.random() < 0.75) { 
       let spawned = 0;
       let chance = 0.6;
       while (spawned < MAX_STARS && Math.random() < chance) {
         const camera = availableCamera();
         if (!camera) break;
-        const startDelay = spawned === 0 ? 0 : Math.random() * 800;
+        // Stagger extra stars ~0.5s apart instead of launching them together.
+        const startDelay = spawned === 0 ? 0 : spawned * 500 + (Math.random() * 200 - 100);
         setTimeout(() => launch(camera), startDelay);
         spawned += 1;
         chance *= 0.35; // each additional simultaneous star is much rarer
@@ -78,7 +79,10 @@
   }
 
   function syncWithTheme() {
-    if (document.documentElement.getAttribute('data-theme') === 'midnight') {
+    const isMidnight = document.documentElement.getAttribute('data-theme') === 'midnight';
+    const galleryOpen = document.body.classList.contains('gallery-open');
+    const onGalleryPage = document.body.classList.contains('photo-collection-page');
+    if (isMidnight && !galleryOpen && !onGalleryPage) {
       start();
     } else {
       stop();
@@ -88,6 +92,11 @@
   new MutationObserver(syncWithTheme).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['data-theme'],
+  });
+
+  new MutationObserver(syncWithTheme).observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class'],
   });
 
   syncWithTheme();

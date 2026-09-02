@@ -57,7 +57,9 @@
   }
 
   function syncWithTheme() {
-    if (document.documentElement.getAttribute('data-theme') === 'matrix') {
+    const isMatrix = document.documentElement.getAttribute('data-theme') === 'matrix';
+    const onGalleryPage = document.body.classList.contains('photo-collection-page');
+    if (isMatrix && !onGalleryPage) {
       start();
     } else {
       stop();

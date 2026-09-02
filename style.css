@@ -289,12 +289,18 @@ margin-top: 10px;
   padding: 8px 8px 12px;
   border: 3px outset var(--theme-box-border);
   background-color: var(--theme-box-bg);
-  box-shadow: 3px 3px 0 var(--theme-box-shadow);
-  transform: rotate(-1deg);
+  box-shadow: 3px 3px 0 var(--theme-box-shadow), 0 4px 6px rgba(0, 0, 0, 0.25);
+  --frame-rotate: -1deg;
+  transform: rotate(var(--frame-rotate)) translateY(0);
 }
 
 .photo-frame:nth-child(even) {
-  transform: rotate(1.2deg);
+  --frame-rotate: 1.2deg;
+}
+
+.photo-frame:hover {
+  box-shadow: 3px 3px 0 var(--theme-box-shadow), 0 16px 16px rgba(0, 0, 0, 0.32);
+  transition: box-shadow 300ms ease;
 }
 
 .gallery-link {
@@ -935,9 +941,50 @@ body{
   background-image: none;
 }
 
+/* Matrix theme: rain is paused on gallery pages, so bring the stripes back */
+[data-theme="matrix"] .photo-collection-page {
+  background-color: #000000;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 65, 0.15) 0,
+    rgba(0, 255, 65, 0.15) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
 /* Midnight theme: solid black instead of the striped page background */
 [data-theme="midnight"] body {
   background-image: none;
+}
+
+/* Black & white theme: lighter greyish-white instead of the dark gray stripe base */
+[data-theme="blackwhite"] .photo-collection-page {
+  background-color: #d9d9d9;
+}
+
+/* Midnight theme: swap the warm gallery stripe color for a black-ish one */
+[data-theme="midnight"] .gallery-image {
+  background-color: #0d0d0d;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.08) 0,
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* Midnight theme: same black-ish stripes on the collection page background */
+[data-theme="midnight"] .photo-collection-page {
+  background-color: #0d0d0d;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.08) 0,
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px,
+    transparent 4px
+  );
 }
 
 /* Midnight theme: a small camera occasionally streaks across the screen */
