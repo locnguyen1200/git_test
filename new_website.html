@@ -11,7 +11,7 @@
     <div class="box-text">
       <h1 class="title_size">Loc's Portfolio</h1>
       <p> this will be my photography page</p>
-      <p> webpage still being built</p>
+      <p> webpage is still being built</p>
     </div>
 
     <div class="camera-alignment">
@@ -22,7 +22,28 @@
         <div class="face front">
           <div class="viewfinder"></div>
           <div class="rangefinder"></div>
-          <div class="lens-barrel"></div>
+          <div class="lens-barrel">
+             <div class="lens-cylinder">
+    <!-- Facets forming the rounded barrel body -->
+    <span style="--i:0;"></span>
+    <span style="--i:1;"></span>
+    <span style="--i:2;"></span>
+    <span style="--i:3;"></span>
+    <span style="--i:4;"></span>
+    <span style="--i:5;"></span>
+    <span style="--i:6;"></span>
+    <span style="--i:7;"></span>
+    <span style="--i:8;"></span>
+    <span style="--i:9;"></span>
+    <span style="--i:10;"></span>
+    <span style="--i:11;"></span>
+  </div>
+  <!-- Front optic / rim cap -->
+  <div class="lens-front">
+    <div class="lens-element"></div>
+  </div>
+  <div class="lens-cap"></div>
+          </div>
         </div>
 
         <!-- Back Plate -->
@@ -46,4 +67,24 @@
     </div>
   </div>
  </div>
+
+   <script>
+    const camera = document.querySelector('.camera');
+
+    document.addEventListener('pointermove', (event) => {
+      const cameraBounds = camera.getBoundingClientRect();
+      const cameraCenterX = cameraBounds.left + cameraBounds.width / 2;
+      const cameraCenterY = cameraBounds.top + cameraBounds.height / 2;
+      const horizontal = (event.clientX - cameraCenterX) / (window.innerWidth / 2);
+      const vertical = (event.clientY - cameraCenterY) / (window.innerHeight / 2);
+      const yaw = horizontal * 39.6;
+      const pitch = vertical * -36;
+
+      camera.style.transform = `rotateX(${pitch}deg) rotateY(${yaw}deg)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      camera.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    });
+  </script>
 </body>
