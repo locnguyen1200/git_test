@@ -203,7 +203,7 @@
       // Easing interpolation for smooth, organic movement
       currentYaw += (targetYaw - currentYaw) * easeSpeed;
       currentPitch += (targetPitch - currentPitch) * easeSpeed;
-      
+
       camera.style.transform = `rotateX(${currentPitch}deg) rotateY(${currentYaw}deg)`;
       requestAnimationFrame(animateCamera);
     }
