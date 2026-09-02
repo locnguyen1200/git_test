@@ -3,17 +3,22 @@
 .box {
   max-width: 800px;
   margin: 50px auto;
-  padding: 25px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: left;
-  gap: 8px; 
+  gap: 10px; 
   background-color: #FAF8F5;
   border: 3px solid #d9cbbd5b;
   border-radius: 8px;
   font-family: "EB Garamond", Garamond, Georgia, serif;
   color: #1a1a1a;
+}
+.box-text {
+ text-align: center;
+ margin-right: 400px;
+margin-left: 20px;
+margin-top: 70px;
 }
 /* Base */
 p {
@@ -26,9 +31,147 @@ h1 {
 body{
   background-color: #FAF8F5;
 }
+
+.camera-alignment {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+}
+
 /* Typography Utilities */
 .title_size {
   font-size: 1.5em;
   font-weight: 900;
 }
 
+/* Floating Camera */
+
+    /* 1. The 3D Stage */
+    .viewport {
+      perspective: 900px;
+      position: relative;
+    bottom: 100px; /* Moves it UP */
+    right: 150px;  /* Moves it LEFT (away from the right edge) */
+
+    }
+
+    /* 2. Turntable Rig: Tilted 15deg down so you can see the top plate */
+    .rig {
+      transform-style: preserve-3d;
+      transform: rotateX(-15deg);
+    }
+
+    /* 3. The Spinning Camera Body */
+    .camera {
+      width: 150px;
+      height: 90px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
+
+    /* Base styling for every face */
+    .face {
+      position: absolute;
+      border: 1.5px solid #1a1a1a;
+      background: #FAF8F5(13, 17, 23, 0.9);
+      box-sizing: border-box;
+    }
+
+    /* Front & Back (150px x 90px) */
+    .front, .back {
+      width: 150px;
+      height: 90px;
+      top: 0;
+      left: 0;
+    }
+    .front {
+      transform: translateZ(25px);
+      transform-style: preserve-3d;
+    }
+    .back {
+      transform: rotateY(180deg) translateZ(25px);
+    }
+
+    /* Left & Right Sides (50px x 90px) */
+    .left, .right {
+      width: 50px;
+      height: 90px;
+      top: 0;
+      left: 50px; /* Centered: (150 - 50) / 2 */
+    }
+    .right { transform: rotateY(90deg) translateZ(75px); }
+    .left  { transform: rotateY(-90deg) translateZ(75px); }
+
+    /* Top & Bottom Plates (150px x 50px) */
+    .top, .bottom {
+      width: 150px;
+      height: 50px;
+      left: 0;
+      top: 20px; /* Centered: (90 - 50) / 2 */
+    }
+    .top    { transform: rotateX(90deg) translateZ(45px); transform-style: preserve-3d; }
+    .bottom { transform: rotateX(-90deg) translateZ(45px); }
+
+    /* --- Mechanical Camera Details --- */
+
+    /* Viewfinder Window */
+    .viewfinder {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      width: 18px;
+      height: 12px;
+      border: 1px solid #1a1a1a;
+    }
+.rangefinder {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      width: 14px;
+      height: 6px;
+      border: 1px solid #1a1a1a;
+    }
+
+
+    /* Protruding Lens Barrel: Pushed forward in Z-space */
+    .lens-barrel {
+      position: absolute;
+      top: 20px;
+      left: 35px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #1a1a1a;
+      background: #FAF8F5(0, 255, 102, 0.15);
+      /* Moves the lens forward by 25px so it physically projects off the body */
+      transform: translateZ(0px);
+      box-shadow: 0 0 10px #FAF8F5(0, 255, 102, 0.4);
+    }
+
+    /* Shutter Button on Top Plate */
+    .shutter-btn {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #1a1a1a;
+      transform: translateZ(5px);
+    }
+
+    /* Film Door Rectangle on the Back */
+    .film-door {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 120px;
+      height: 60px;
+      border: 1px dashed #1a1a1a;
+    }
