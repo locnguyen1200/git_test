@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260902-2">
 </head>
 
 <body>
@@ -125,8 +125,7 @@
     </section>
   </main>
 
-  <!-- Scrollable retro collection alerts, generated from collection-data.js -->
-  <section class="collection-notice-dropzone" id="collection-dropzone" aria-label="Drag system alert here to reset">
+  <section class="collection-notice-dropzone" id="collection-dropzone" aria-hidden="true">
     <div class="dropzone-hint">Drop here to reset</div>
   </section>
 
@@ -145,7 +144,18 @@
         <div class="notice-scrollbar-thumb" id="notice-scrollbar-thumb"></div>
       </div>
     </div>
+    <button class="notice-log" id="notice-log" type="button">LOG // VIEW ARCHIVE</button>
   </section>
+
+  <div class="alert-log-modal" id="alert-log-modal" role="dialog" aria-modal="true" aria-labelledby="alert-log-title" hidden>
+    <section class="alert-log-window">
+      <div class="alert-log-header">
+        <span id="alert-log-title">SYSTEM LOG // ALERT HISTORY</span>
+        <button class="alert-log-close" id="alert-log-close" type="button" aria-label="Close alert history" title="Close">&times;</button>
+      </div>
+      <div class="alert-log-list" id="alert-log-list"></div>
+    </section>
+  </div>
 
   <!-- Clicked family photo carousel -->
   <div class="gallery-modal" id="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="gallery-title" hidden>
@@ -218,14 +228,15 @@
     // Collection notices are generated from update-collections.js data.
     const notices = document.querySelector('#collection-notice-list');
     const collections = window.collectionData.collections || [];
+    const alertHistory = window.collectionData.alertHistory || [];
     const noticeReadStateKey = 'collection-notice-read-state';
     const savedReadNotices = new Set(JSON.parse(localStorage.getItem(noticeReadStateKey) || '[]'));
 
     collections.forEach((collection) => {
       const notice = document.createElement('article');
       notice.className = 'collection-notice';
-      notice.classList.toggle('is-read', savedReadNotices.has(collection.link));
-      notice.dataset.collectionLink = collection.link;
+      notice.classList.toggle('is-read', savedReadNotices.has(collection.id));
+      notice.dataset.alertId = collection.id;
       notice.setAttribute('role', 'alert');
       notice.innerHTML = `
         <div class="notice-bar">
@@ -253,16 +264,16 @@
     const noticeAlert = document.querySelector('.notice-alert');
 
     function updateNoticeState() {
-      const allRead = collections.length > 0 && [...notices.children].every((notice) => notice.classList.contains('is-read'));
+      const allRead = [...notices.children].every((notice) => notice.classList.contains('is-read'));
       notices.closest('.collection-notices').classList.toggle('all-read', allRead);
       noticeUnread.textContent = allRead ? 'MARK ALL UNREAD' : 'MARK ALL READ';
     }
 
     function saveNoticeState() {
-      const readCollectionLinks = [...notices.children]
+      const readAlertIds = [...notices.children]
         .filter((notice) => notice.classList.contains('is-read'))
-        .map((notice) => notice.dataset.collectionLink);
-      localStorage.setItem(noticeReadStateKey, JSON.stringify(readCollectionLinks));
+        .map((notice) => notice.dataset.alertId);
+      localStorage.setItem(noticeReadStateKey, JSON.stringify(readAlertIds));
     }
 
     noticeUnread.addEventListener('click', () => {
@@ -275,6 +286,49 @@
     });
 
     updateNoticeState();
+
+    const alertLogButton = document.getElementById('notice-log');
+    const alertLogModal = document.getElementById('alert-log-modal');
+    const alertLogClose = document.getElementById('alert-log-close');
+    const alertLogList = document.getElementById('alert-log-list');
+
+    alertHistory.forEach((alert) => {
+      const entry = document.createElement('article');
+      entry.className = 'alert-log-entry';
+      entry.innerHTML = `
+        <dl>
+          <div><dt>Collection</dt><dd>${alert.name}</dd></div>
+          <div><dt>New photos</dt><dd>${alert.photosAdded}</dd></div>
+          <div><dt>Added</dt><dd>${alert.dateAdded}</dd></div>
+          <div><dt>Expired</dt><dd>${alert.expiresOn}</dd></div>
+        </dl>`;
+      alertLogList.append(entry);
+    });
+
+    if (alertHistory.length === 0) {
+      alertLogList.innerHTML = '<p class="alert-log-empty">No new-photo alerts recorded.</p>';
+    }
+
+    function closeAlertLog() {
+      alertLogModal.hidden = true;
+      document.body.classList.remove('alert-log-open');
+      alertLogButton.focus();
+    }
+
+    alertLogButton.addEventListener('click', () => {
+      alertLogModal.hidden = false;
+      document.body.classList.add('alert-log-open');
+      alertLogClose.focus();
+    });
+
+    alertLogClose.addEventListener('click', closeAlertLog);
+    alertLogModal.addEventListener('click', (event) => {
+      if (event.target === alertLogModal) closeAlertLog();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !alertLogModal.hidden) closeAlertLog();
+    });
 
     // Custom retro scrollbar for the notice list (replaces the native scrollbar)
     const noticeScrollbar = document.getElementById('notice-scrollbar');
@@ -350,6 +404,7 @@
 
     // Easter egg: Populate family photos behind the system alert
     const familyPhotosContainer = document.getElementById('family-photos-container');
+    familyPhotosContainer.hidden = collections.length === 0;
 
     // Always generate family photos (up to 12), they'll be hidden if they don't exist
     const familyPhotoCount = 12;
@@ -387,6 +442,7 @@
     // Reset position on page load
     function resetNotices() {
       collectionNotices.classList.remove('is-dragging');
+      familyPhotosContainer.classList.remove('is-revealed');
       collectionNotices.style.position = 'relative';
       collectionNotices.style.left = 'auto';
       collectionNotices.style.top = 'auto';
@@ -396,7 +452,6 @@
       collectionDropzone.style.display = 'none';
     }
 
-    // Hide dropzone initially
     resetNotices();
 
     // Pointer capture keeps drag tracking reliable even at high speed or outside the window
@@ -416,6 +471,7 @@
         collectionNotices.style.width = originalWidth + 'px';
         collectionNotices.dataset.isDraggable = 'true';
         collectionDropzone.style.display = 'block';
+        familyPhotosContainer.classList.add('is-revealed');
       }
 
       // Set left/top immediately so the box doesn't jump before the first pointermove
@@ -439,19 +495,14 @@
       isDragging = false;
       noticesHeader.releasePointerCapture(event.pointerId);
 
-      // Check if header overlaps with dropzone
       const headerRect = noticesHeader.getBoundingClientRect();
       const dropzoneRect = collectionDropzone.getBoundingClientRect();
-
       const isOverlapping = !(headerRect.right < dropzoneRect.left ||
                              headerRect.left > dropzoneRect.right ||
                              headerRect.bottom < dropzoneRect.top ||
                              headerRect.top > dropzoneRect.bottom);
 
-      if (isOverlapping) {
-        // Snap back to original position
-        resetNotices();
-      }
+      if (isOverlapping) resetNotices();
     }
 
     noticesHeader.addEventListener('pointerup', endDrag);
