@@ -1,5 +1,9 @@
 
-/* Box Container*/
+/* ========================================
+  Page and portfolio layout
+  ======================================== */
+
+/* Main portfolio panel */
 .box {
   max-width: 650px;
   margin: 50px auto;
@@ -8,19 +12,621 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 10px; 
-  background-color: #FAF8F5;
-  border: 3px solid #d9cbbd5b;
-  border-radius: 8px;
-  font-family: "EB Garamond", Garamond, Georgia, serif;
-  color: #1a1a1a;
+  background-color: #e7e9ec;
+  border: 3px ridge #f8f9fa;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 #59616b;
+  font-family: "VT323", monospace;
+  color: #172c45;
 }
+
+/* Text column inside the portfolio panel */
 .box-text {
  text-align: center;
  margin-right: 0px;
 margin-left: 20px;
 margin-top: 10px;
 }
-/* Base */
+
+/* Shared layout for the standalone photography and camera pages */
+.page-content {
+  display: block;
+  margin-top: 50px;
+}
+
+.page-heading {
+  max-width: 520px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.page-heading p {
+  margin: 12px 0;
+}
+
+.faq-list {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.faq-list article {
+  padding: 18px 0;
+  border-top: 1px solid #d9cbbd;
+}
+
+.faq-list article:last-child {
+  border-bottom: 1px solid #d9cbbd;
+}
+
+.faq-list h2 {
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 500;
+}
+
+.faq-list p {
+  margin: 10px 0 0;
+}
+
+.eyebrow {
+  color: #245782;
+  font-size: 0.9em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ========================================
+   Vintage photography frames
+   ======================================== */
+
+/* Two-column gallery gives the collection a small personal-web feel */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px 20px;
+  padding: 8px;
+  background-color: #b7bec7;
+  border: 3px ridge #f8f9fa;
+  box-shadow: inset 0 0 0 1px #364a61;
+}
+
+/* Raised paper frame with a dark, old-web border */
+.photo-frame {
+  position: relative;
+  margin: 0;
+  padding: 8px 8px 12px;
+  border: 3px outset #f8f9fa;
+  background-color: #e7e9ec;
+  box-shadow: 3px 3px 0 #59616b;
+  transform: rotate(-1deg);
+}
+
+.photo-frame:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+
+.gallery-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px 20px;
+  padding: 8px;
+  background-color: #b7bec7;
+  border: 3px ridge #f8f9fa;
+  box-shadow: inset 0 0 0 1px #364a61;
+}
+
+.gallery-thumb {
+  margin: 0;
+  padding: 8px;
+  border: 3px outset #f8f9fa;
+  background-color: #e7e9ec;
+  box-shadow: 3px 3px 0 #59616b;
+  cursor: pointer;
+}
+
+.gallery-thumb:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+
+.gallery-thumb:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 5px;
+}
+
+.gallery-back {
+  color: #174f7a;
+  font-family: "VT323", monospace;
+  text-decoration: none;
+}
+
+.gallery-back:hover,
+.gallery-back:focus-visible {
+  text-decoration: underline;
+}
+
+.gallery-trigger {
+  cursor: pointer;
+}
+
+.gallery-trigger:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 5px;
+}
+
+/* Replace this block with an img element when photographs are ready */
+.photo-placeholder {
+  position: relative;
+  display: grid;
+  min-height: 160px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px inset #f8f9fa;
+  background-color: #7d9ab3;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.3) 0,
+    rgba(255, 255, 255, 0.3) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  color: #f8f9fa;
+  font-family: "VT323", monospace;
+  font-size: 2em;
+  text-shadow: 2px 2px 0 #364a61;
+}
+
+.photo-thumbnail {
+  width: 100%;
+  object-fit: cover;
+}
+
+.bw-gallery .gallery-trigger,
+.custom-gallery .gallery-trigger {
+  cursor: pointer;
+}
+
+.custom-gallery {
+  column-count: 2;
+  column-gap: 24px;
+  max-width: 1100px;
+  margin: 100px auto;
+  padding: 20px;
+}
+
+/* Keep every collection large, natural, and uncropped */
+.bw-gallery img,
+.custom-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background-color: #e7e9ec;
+  border: 3px outset #f8f9fa;
+  box-shadow: 4px 4px 0 #59616b;
+  margin-bottom: 24px;
+  break-inside: avoid;
+}
+
+.bw-gallery img:nth-child(even),
+.custom-gallery img:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+.photo-frame figcaption,
+.photo-caption {
+  padding-top: 9px;
+  text-align: center;
+  color: #172c45;
+  font-family: "VT323", monospace;
+  font-size: 1.2em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ========================================
+   Gallery modal and carousel
+   ======================================== */
+
+body.gallery-open {
+  overflow: hidden;
+}
+
+.gallery-modal[hidden] {
+  display: none;
+}
+
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: rgba(26, 26, 26, 0.78);
+}
+
+/* Scrollable stack of retro collection notifications */
+.collection-notices {
+  position: relative;
+  box-sizing: border-box;
+  width: min(650px, calc(100% - 48px));
+  margin: 24px auto 40px;
+  padding: 0 18px 14px 12px;
+  border: 3px ridge #f8f9fa;
+  border-radius: 3px 12px 5px 9px;
+  background-color: #b7bec7;
+  box-shadow: 6px 6px 0 #59616b;
+}
+
+#collection-notice-list {
+  max-height: 300px;
+  padding: 4px 4px 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #7d9ab3 #b7bec7;
+  scrollbar-width: auto;
+}
+
+#collection-notice-list::-webkit-scrollbar {
+  width: 18px;
+}
+
+#collection-notice-list::-webkit-scrollbar-track {
+  border-left: 2px inset #f8f9fa;
+  background-color: #b7bec7;
+}
+
+#collection-notice-list::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  border: 2px outset #f8f9fa;
+  background-color: #7d9ab3;
+}
+
+.notices-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -18px 12px -12px;
+  padding: 6px 10px;
+  border-bottom: 2px ridge #f8f9fa;
+  border-radius: 0 9px 0 3px;
+  color: #f8f9fa;
+  background-color: #245782;
+  font-family: "VT323", monospace;
+  font-size: 1.1em;
+}
+
+.notice-unread {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  padding: 2px 5px;
+  border: 1px outset #f8f9fa;
+  color: #172c45;
+  background-color: #b7bec7;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.78em;
+}
+
+.notice-unread:active,
+.notice-unread:focus-visible {
+  border-style: inset;
+  outline: none;
+}
+
+.collection-notices.all-read {
+  opacity: 0.68;
+}
+
+.collection-notices.all-read .notice-alert {
+  visibility: hidden;
+}
+
+.collection-notice.is-read {
+  opacity: 0.52;
+}
+
+.collection-notice.is-read .notice-bar {
+  background-color: #59616b;
+}
+
+.collection-notice {
+  margin-bottom: 16px;
+  border: 3px ridge #f8f9fa;
+  border-radius: 2px 8px 3px 10px;
+  background-color: #e7e9ec;
+  box-shadow: 6px 6px 0 #59616b;
+  color: #172c45;
+  font-family: "VT323", monospace;
+}
+
+/* Slightly staggered alert windows create an organic virus-popup cluster */
+#collection-notice-list .collection-notice:nth-child(even) {
+  transform: translateX(7px) rotate(0.6deg);
+}
+
+#collection-notice-list .collection-notice:nth-child(3n) {
+  transform: translateX(-4px) rotate(-0.7deg);
+}
+
+#collection-notice-list .collection-notice:last-child {
+  margin-bottom: 0;
+}
+
+.collection-notice[hidden] {
+  display: none;
+}
+
+.collection-notice:last-child {
+  margin-bottom: 0;
+}
+
+.notice-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 7px 5px 10px;
+  border-radius: 0 5px 0 0;
+  color: #f8f9fa;
+  background-color: #245782;
+  font-size: 1.1em;
+}
+
+.notice-alert {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  place-items: center;
+  border: 2px outset #f8f9fa;
+  color: #f8f9fa;
+  background-color: #b00020;
+  font-family: Arial, sans-serif;
+  font-size: 0.85em;
+  font-weight: bold;
+  line-height: 1;
+  animation: notice-alert-pulse 900ms steps(2, end) infinite;
+}
+
+/* Float the archive warning from the outer box corner */
+.notices-header .notice-alert {
+  position: absolute;
+  top: -15px;
+  right: -13px;
+  margin: 0;
+  transform: rotate(8deg);
+}
+
+@keyframes notice-alert-pulse {
+  50% {
+    color: #b00020;
+    background-color: #f8f9fa;
+  }
+}
+
+.notice-close {
+  width: 23px;
+  height: 23px;
+  padding: 0;
+  border: 2px outset #f8f9fa;
+  color: #172c45;
+  background-color: #b7bec7;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+}
+
+.notice-close:active,
+.notice-close:focus-visible {
+  border-style: inset;
+  outline: none;
+}
+
+.notice-content {
+  padding: 14px;
+}
+
+.notice-content p {
+  margin: 0 0 12px;
+}
+
+.notice-details {
+  margin: 0 0 14px;
+}
+
+.notice-details div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 0;
+  border-bottom: 1px dotted #7d9ab3;
+}
+
+.notice-details dt,
+.notice-details dd {
+  margin: 0;
+}
+
+.notice-details dt {
+  color: #59616b;
+}
+
+.notice-details dd {
+  text-align: right;
+}
+
+.notice-link {
+  color: #245782;
+  text-decoration: none;
+}
+
+.notice-link:hover,
+.notice-link:focus-visible {
+  color: #172c45;
+  text-decoration: underline;
+}
+
+.gallery-window {
+  position: relative;
+  box-sizing: border-box;
+  width: min(900px, 92vw);
+  padding: 28px 34px 22px;
+  border: 3px ridge #f8f9fa;
+  background-color: #e7e9ec;
+  box-shadow: 6px 6px 0 rgba(23, 44, 69, 0.55);
+  text-align: center;
+}
+
+.gallery-window .eyebrow {
+  margin: 0 0 18px;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 2px outset #f8f9fa;
+  color: #172c45;
+  background: #b7bec7;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.4em;
+  line-height: 1;
+}
+
+.gallery-close:hover,
+.gallery-close:focus-visible {
+  color: #FAF8F5;
+  background-color: #1a1a1a;
+  outline: none;
+}
+
+/* Temporary gallery image surface until real photos are added */
+.gallery-image {
+  display: grid;
+  width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  min-height: min(65vh, 560px);
+  place-items: center;
+  border: 2px inset #f8f9fa;
+  background-color: #7d9ab3;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.3) 0,
+    rgba(255, 255, 255, 0.3) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  color: #f8f9fa;
+  font-family: "VT323", monospace;
+  font-size: 4em;
+  text-shadow: 2px 2px 0 #364a61;
+}
+
+.gallery-count {
+  margin: 14px 0 8px;
+  color: #245782;
+  font-family: "VT323", monospace;
+  font-size: 1.2em;
+  letter-spacing: 0.08em;
+}
+
+.gallery-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gallery-arrow {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 2px outset #f8f9fa;
+  color: #172c45;
+  background: #b7bec7;
+  cursor: pointer;
+}
+
+.gallery-arrow:hover,
+.gallery-arrow:focus-visible {
+  color: #f8f9fa;
+  background-color: #245782;
+  outline: none;
+}
+
+.gallery-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+/* Footer icons for FAQ and contact */
+.site-footer {
+  position: fixed;
+  bottom: 16px;
+  right: 24px;
+  z-index: 10;
+  box-sizing: border-box;
+  width: calc(100vw - 48px);
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin: 0;
+  padding: 6px 0 0;
+  border-top: 2px solid #59616b;
+}
+
+.footer-link {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: #172c45;
+  border: 2px outset #f8f9fa;
+  background-color: #b7bec7;
+  border-radius: 0;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: #f8f9fa;
+  background-color: #245782;
+  border-style: inset;
+  outline: none;
+}
+
+.footer-link svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+/* Give the standalone camera page room for its interactive model */
+.camera-page .camera-alignment {
+  justify-content: center;
+  min-height: 220px;
+  margin-right: 0;
+}
+/* Basic text spacing */
 p {
   margin: 20px;
 }
@@ -28,34 +634,259 @@ p {
 h1 {
   margin: 4;
 }
+
+/* Page background */
 body{
-  background-color: #FAF8F5;
+  background-color: #c7cbd1;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.22) 0,
+    rgba(255, 255, 255, 0.22) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  padding-bottom: 76px;
+  color: #172c45;
+  font-family: "VT323", monospace;
 }
 
+/* Retro scrollbar used by the full page */
+html {
+  scrollbar-color: #7d9ab3 #b7bec7;
+  scrollbar-width: auto;
+}
+
+html::-webkit-scrollbar {
+  width: 18px;
+}
+
+html::-webkit-scrollbar-track {
+  border-left: 2px inset #f8f9fa;
+  background-color: #b7bec7;
+}
+
+html::-webkit-scrollbar-thumb {
+  min-height: 48px;
+  border: 2px outset #f8f9fa;
+  background-color: #7d9ab3;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: #245782;
+}
+
+/* Stripe background is limited to the individual photo collection pages */
+.photo-collection-page {
+  background-color: #7d9ab3;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.3) 0,
+    rgba(255, 255, 255, 0.3) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* Custom Black and White photo layout */
+.bw-gallery {
+  column-count: 2;
+  column-gap: 24px;
+  max-width: 1100px;
+  margin: 100px auto;
+  padding: 20px;
+}
+
+.bw-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background-color: #e7e9ec;
+  border: 3px outset #f8f9fa;
+  box-shadow: 4px 4px 0 #59616b;
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+.bw-gallery img:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+.bw-gallery img:nth-child(3) {
+  transform: rotate(-1.4deg);
+}
+
+/* Back control for individual gallery pages */
+.back-button {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 11;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border: 2px outset #f8f9fa;
+  color: #172c45;
+  background-color: #b7bec7;
+  font-family: "VT323", monospace;
+  text-decoration: none;
+}
+
+.back-button:hover,
+.back-button:focus-visible {
+  color: #f8f9fa;
+  background-color: #245782;
+  outline: none;
+}
+
+.back-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+/* ========================================
+  Sidebar navigation
+  ======================================== */
+
+/* Change top to move the desktop sidebar vertically. */
+.sidebar {
+  position: fixed;
+  top: 50%;
+  left: 24px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px;
+  border: 3px ridge #f8f9fa;
+  border-radius: 0;
+  background-color: #b7bec7;
+  box-shadow: 4px 4px 0 #59616b;
+  transform: translateY(-50%);
+}
+
+.sidebar-link {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: #172c45;
+  border: 2px outset #f8f9fa;
+  background-color: #d9dde1;
+  border-radius: 0;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus-visible,
+.sidebar-link.is-active {
+  color: #f8f9fa;
+  background-color: #245782;
+  border-style: inset;
+  outline: none;
+}
+
+.sidebar-link svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+/* Camera alignment wrapper inside the portfolio panel */
 .camera-alignment {
   display: flex;
-  justify-content: right;
-  align-items: right;
+  justify-content: flex-end;
+  align-items: center;
   margin-right: 15px;
 }
 
-/* Typography Utilities */
+/* Mobile navigation: move the sidebar to the top and make it horizontal */
+@media (max-width: 760px) {
+  .collection-notices {
+    margin-top: 20px;
+    width: calc(100% - 32px);
+  }
+
+  #collection-notice-list {
+    max-height: 240px;
+  }
+
+  #collection-notice-list .collection-notice:nth-child(even),
+  #collection-notice-list .collection-notice:nth-child(3n) {
+    transform: none;
+  }
+
+  .sidebar {
+    top: 16px;
+    left: 50%;
+    flex-direction: row;
+    padding: 8px 12px;
+    transform: translateX(-50%);
+  }
+
+  .box {
+    margin-top: 88px;
+  }
+
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bw-gallery {
+    column-count: 1;
+    margin-top: 88px;
+    padding: 16px;
+  }
+
+  .bw-gallery img:nth-child(even),
+  .bw-gallery img:nth-child(3) {
+    transform: none;
+  }
+
+  .custom-gallery {
+    column-count: 1;
+    margin-top: 88px;
+    padding: 16px;
+  }
+}
+
+/* ========================================
+  Typography
+  ======================================== */
+
+/* Main page heading */
 .title_size {
   font-size: 1.5em;
   font-weight: 500;
 }
 
-/* Floating Camera */
+/* ========================================
+  3D camera model
+  ======================================== */
 
-    /* 1. The 3D Stage */
+/* Perspective stage: controls how deep the camera appears */
     .viewport {
       perspective: 900px;
       position: relative;
-    top : 25px; 
+    top : 10px; 
     right: 50px;  /* Moves it LEFT (away from the right edge) */
 
     }
-    /* 3. The Spinning Camera Body */
+    /* Main camera body: JavaScript changes this transform */
     .camera {
       width: 150px;
       height: 90px;
@@ -64,14 +895,15 @@ body{
       transform: rotateX(0deg) rotateY(0deg);
       transition: transform 120ms ease-out;
     }
-    /* Base styling for every face */
+    /* Shared style for every camera face */
     .face {
       position: absolute;
-      border: 1.5px solid #1a1a1a;
+      border: 1.5px solid #172c45;
       box-sizing: border-box;
+      background-color: transparent;
     }
 
-    /* Front & Back (150px x 90px) */
+    /* Front and back plates */
     .front, .back {
       width: 150px;
       height: 90px;
@@ -86,7 +918,7 @@ body{
       transform: rotateY(180deg) translateZ(25px);
     }
 
-    /* Left & Right Sides (50px x 90px) */
+    /* Left and right side plates */
     .left, .right {
       width: 50px;
       height: 90px;
@@ -96,7 +928,7 @@ body{
     .right { transform: rotateY(90deg) translateZ(75px); }
     .left  { transform: rotateY(-90deg) translateZ(75px); }
 
-    /* Top & Bottom Plates (150px x 50px) */
+    /* Top and bottom plates */
     .top, .bottom {
       width: 150px;
       height: 50px;
@@ -106,7 +938,9 @@ body{
     .top    { transform: rotateX(90deg) translateZ(45px); transform-style: preserve-3d; }
     .bottom { transform: rotateX(-90deg) translateZ(45px); }
 
-    /* --- Mechanical Camera Details --- */
+     /* ========================================
+       Camera details
+       ======================================== */
 
     /* Viewfinder Window */
     .viewfinder {
@@ -115,7 +949,8 @@ body{
       right: 15px;
       width: 18px;
       height: 12px;
-      border: 1px solid #1a1a1a;
+      border: 1px solid #172c45;
+      background-color: #7d9ab3;
     }
 .rangefinder {
       position: absolute;
@@ -123,7 +958,8 @@ body{
       left: 15px;
       width: 14px;
       height: 6px;
-      border: 1px solid #1a1a1a;
+      border: 1px solid #172c45;
+      background-color: #7d9ab3;
     }
     /* Shutter Button on Top Plate */
     .shutter-btn {
@@ -133,7 +969,8 @@ body{
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      border: 1.5px solid #1a1a1a;
+      border: 1.5px solid #172c45;
+      background-color: #245782;
       transform: translateZ(5px);
     }
 
@@ -144,7 +981,7 @@ body{
       left: 15px;
       width: 120px;
       height: 60px;
-      border: 1px dashed #1a1a1a;
+      border: 1px dashed #172c45;
     }
 
 
@@ -173,7 +1010,8 @@ body{
   height: 40px;              /* Barrel length protruding out */
   top: 50%;
   left: 50%;
-  border: 1px solid #1a1a1a;
+  border: 1px solid #172c45;
+  background-color: #59616b;
   /* Rotate around center and project outward to form tube */
   transform: translate(-50%, -50%) 
              rotateZ(calc(var(--i) * 30deg)) 
@@ -187,7 +1025,8 @@ body{
   position: absolute;
   inset: 0px;
   border-radius: 70%;
-  border: 1.5px solid #1a1a1a;
+  border: 1.5px solid #172c45;
+  background-color: #7d9ab3;
   /* Push outward to the end of the barrel */
   transform: translateZ(15px); 
   display: flex;
@@ -200,7 +1039,8 @@ body{
   width: 75%;
   height: 75%;
   border-radius: 50%;
-  border: 1px solid #1a1a1a;
+  border: 1px solid #172c45;
+  background-color: #d9dde1;
 }
 
 /* Removable cap covering the front optic */
@@ -208,8 +1048,8 @@ body{
   position: absolute;
   inset: 0px;
   border-radius: 50%;
-  border: 2px solid #111;
-  background: #333;
-  box-shadow: inset 0 0 0 6px #777, inset 0 0 0 8px #111;
+  border: 2px solid #172c45;
+  background: #245782;
+  box-shadow: inset 0 0 0 6px #7d9ab3, inset 0 0 0 8px #172c45;
   transform: translateZ(20px);
 }

@@ -1,74 +1,139 @@
-<head> 
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page metadata and external styles -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loc's Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
-<body> 
-  <div class = "box">
-    <div class="box-text">
-      <h1 class="title_size">Loc's Portfolio</h1>
-      <p> this will be my photography page</p>
-      <p> webpage is still being built</p>
-    </div>
+<body>
+  <!-- Sidebar: three navigation links with icon-only controls -->
+  <nav class="sidebar" aria-label="Main navigation">
+    <!-- Home link: the is-active class gives this icon its selected style -->
+    <a class="sidebar-link is-active" href="new_website.html" aria-label="Home" title="Home">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5M5.5 9v11h13V9M9 20v-6h6v6" />
+      </svg>
+    </a>
 
-    <div class="camera-alignment">
+    <!-- Photography link: jumps to the portfolio content section -->
+    <a class="sidebar-link" href="photography.html" aria-label="Photography" title="Photography">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="3" width="16" height="18" rx="1" />
+        <circle cx="16" cy="8" r="1.5" />
+        <path d="m5.5 18 4.5-5 3 3 2-2 3.5 4" />
+      </svg>
+    </a>
+
+    <!-- Camera link: jumps to the 3D camera section -->
+    <a class="sidebar-link" href="camera.html" aria-label="Camera" title="Camera">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 8h3l1.5-2h7L17 8h3v11H4Z" />
+        <circle cx="12" cy="13" r="3.5" />
+        <path d="M6.5 11h.01" />
+      </svg>
+    </a>
+  </nav>
+
+  <!-- Portfolio section: contains the introduction and camera display -->
+  <main class="box" id="photography">
+    <!-- Introduction text -->
+    <section class="box-text" aria-labelledby="portfolio-title">
+      <h1 class="title_size" id="portfolio-title">Loc's Portfolio</h1>
+      <p>this will be my photography page.</p>
+      <p>webpage is still being built.</p>
+    </section>
+
+    <!-- Camera section: alignment wrapper, perspective stage, and 3D model -->
+    <section class="camera-alignment" id="camera" aria-label="3D camera">
       <div class="viewport">
-    <div class="rig">
-      <div class="camera">
-        <!-- Front Plate & Lens -->
-        <div class="face front">
-          <div class="viewfinder"></div>
-          <div class="rangefinder"></div>
-          <div class="lens-barrel">
-             <div class="lens-cylinder">
-    <!-- Facets forming the rounded barrel body -->
-    <span style="--i:0;"></span>
-    <span style="--i:1;"></span>
-    <span style="--i:2;"></span>
-    <span style="--i:3;"></span>
-    <span style="--i:4;"></span>
-    <span style="--i:5;"></span>
-    <span style="--i:6;"></span>
-    <span style="--i:7;"></span>
-    <span style="--i:8;"></span>
-    <span style="--i:9;"></span>
-    <span style="--i:10;"></span>
-    <span style="--i:11;"></span>
-  </div>
-  <!-- Front optic / rim cap -->
-  <div class="lens-front">
-    <div class="lens-element"></div>
-  </div>
-  <div class="lens-cap"></div>
+        <div class="rig">
+          <div class="camera">
+            <!-- Camera front plate: viewfinder, rangefinder, and lens -->
+            <div class="face front">
+              <div class="viewfinder"></div>
+              <div class="rangefinder"></div>
+
+              <!-- Lens assembly: barrel, front glass, and removable cap -->
+              <div class="lens-barrel">
+                <div class="lens-cylinder">
+                  <!-- Twelve facets form the rounded barrel body -->
+                  <span style="--i:0;"></span>
+                  <span style="--i:1;"></span>
+                  <span style="--i:2;"></span>
+                  <span style="--i:3;"></span>
+                  <span style="--i:4;"></span>
+                  <span style="--i:5;"></span>
+                  <span style="--i:6;"></span>
+                  <span style="--i:7;"></span>
+                  <span style="--i:8;"></span>
+                  <span style="--i:9;"></span>
+                  <span style="--i:10;"></span>
+                  <span style="--i:11;"></span>
+                </div>
+                <div class="lens-front">
+                  <div class="lens-element"></div>
+                </div>
+                <div class="lens-cap"></div>
+              </div>
+            </div>
+
+            <!-- Camera back plate and film door -->
+            <div class="face back">
+              <div class="film-door"></div>
+            </div>
+
+            <!-- Camera left and right side plates -->
+            <div class="face left"></div>
+            <div class="face right"></div>
+
+            <!-- Camera top plate and shutter button -->
+            <div class="face top">
+              <div class="shutter-btn"></div>
+            </div>
+
+            <!-- Camera bottom plate -->
+            <div class="face bottom"></div>
           </div>
         </div>
-
-        <!-- Back Plate -->
-        <div class="face back">
-          <div class="film-door"></div>
-        </div>
-
-        <!-- Sides -->
-        <div class="face left"></div>
-        <div class="face right"></div>
-
-        <!-- Top Plate with Controls -->
-        <div class="face top">
-          <div class="shutter-btn"></div>
-        </div>
-
-        <!-- Bottom Plate -->
-        <div class="face bottom"></div>
-        </div>
       </div>
-    </div>
-  </div>
- </div>
+    </section>
+  </main>
 
-   <script>
+  <!-- Scrollable retro collection alerts, generated from collection-data.js -->
+  <section class="collection-notices" aria-label="New collection notifications">
+    <div class="notices-header">
+      <span>SYSTEM ALERT // COLLECTION ARCHIVE <span class="notice-alert" aria-hidden="true">!</span></span>
+      <button class="notice-unread" id="notice-unread" type="button">MARK ALL UNREAD</button>
+    </div>
+    <div id="collection-notice-list"></div>
+  </section>
+
+  <!-- Footer: FAQ and contact links -->
+  <footer class="site-footer" aria-label="Additional links">
+    <a class="footer-link" href="faq.html" aria-label="Frequently asked questions" title="FAQ">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M9.6 9a2.5 2.5 0 1 1 3.8 2.2c-.9.5-1.4 1-1.4 2" />
+        <path d="M12 16.5h.01" />
+      </svg>
+    </a>
+    <a class="footer-link" href="mailto:minhlocnguyen1200@example.com" aria-label="Contact me by email" title="Contact me">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="1" />
+        <path d="m4 7 8 6 8-6" />
+      </svg>
+    </a>
+  </footer>
+
+  <!-- Generated collection data and interaction scripts -->
+  <script src="collection-data.js"></script>
+  <script>
     const camera = document.querySelector('.camera');
 
     document.addEventListener('pointermove', (event) => {
@@ -83,8 +148,54 @@
       camera.style.transform = `rotateX(${pitch}deg) rotateY(${yaw}deg)`;
     });
 
+    // Return the camera to its default angle when the pointer leaves the page.
     document.addEventListener('mouseleave', () => {
       camera.style.transform = 'rotateX(0deg) rotateY(0deg)';
     });
+
+    // Collection notices are generated from update-collections.js data.
+    const notices = document.querySelector('#collection-notice-list');
+    const collections = window.collectionData.collections || [];
+
+    collections.forEach((collection) => {
+      const notice = document.createElement('article');
+      notice.className = 'collection-notice';
+      notice.setAttribute('role', 'alert');
+      notice.innerHTML = `
+        <div class="notice-bar">
+          <span>SYSTEM NOTICE // NEW COLLECTION</span>
+          <button class="notice-close" type="button" aria-label="Close ${collection.name} notice" title="Close">×</button>
+        </div>
+        <div class="notice-content">
+          <p>New photographs have been uploaded.</p>
+          <dl class="notice-details">
+            <div><dt>Collection</dt><dd>${collection.name}</dd></div>
+            <div><dt>Photos added</dt><dd>${collection.photosAdded}</dd></div>
+            <div><dt>Date added</dt><dd>${collection.dateAdded}</dd></div>
+          </dl>
+          <a class="notice-link" href="${collection.link}">Open collection &gt;&gt;</a>
+        </div>`;
+      notice.querySelector('.notice-close').addEventListener('click', () => {
+        notice.classList.add('is-read');
+        updateNoticeState();
+      });
+      notices.append(notice);
+    });
+
+    const noticeUnread = document.querySelector('#notice-unread');
+    const noticeAlert = document.querySelector('.notice-alert');
+
+    function updateNoticeState() {
+      const allRead = collections.length > 0 && [...notices.children].every((notice) => notice.classList.contains('is-read'));
+      notices.closest('.collection-notices').classList.toggle('all-read', allRead);
+    }
+
+    noticeUnread.addEventListener('click', () => {
+      document.querySelectorAll('.collection-notice.is-read').forEach((notice) => {
+        notice.classList.remove('is-read');
+      });
+      updateNoticeState();
+    });
   </script>
 </body>
+</html>
