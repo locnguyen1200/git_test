@@ -8,9 +8,11 @@
   const ctx = canvas.getContext('2d');
   const glyphs = 'アイウエオカキクケコサシスセソタチツテトPHOTOGRAPHY11234567890';
   const fontSize = 16;
+  const frameInterval = 1000 / 30;
   let columns = 0;
   let drops = [];
   let animationId = null;
+  let lastDrawTime = 0;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -35,8 +37,11 @@
     });
   }
 
-  function loop() {
-    draw();
+  function loop(timestamp) {
+    if (timestamp - lastDrawTime >= frameInterval) {
+      draw();
+      lastDrawTime = timestamp;
+    }
     animationId = requestAnimationFrame(loop);
   }
 
@@ -44,6 +49,7 @@
     canvas.style.display = 'block';
     if (!animationId) {
       resize();
+      lastDrawTime = 0;
       loop();
     }
   }
@@ -59,7 +65,8 @@
   function syncWithTheme() {
     const isMatrix = document.documentElement.getAttribute('data-theme') === 'matrix';
     const onGalleryPage = document.body.classList.contains('photo-collection-page');
-    if (isMatrix && !onGalleryPage) {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isMatrix && !onGalleryPage && !reducedMotion && document.visibilityState === 'visible') {
       start();
     } else {
       stop();
@@ -69,6 +76,8 @@
   window.addEventListener('resize', () => {
     if (animationId) resize();
   });
+
+  document.addEventListener('visibilitychange', syncWithTheme);
 
   new MutationObserver(syncWithTheme).observe(document.documentElement, {
     attributes: true,
