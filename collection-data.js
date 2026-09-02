@@ -1,13 +1,21 @@
 window.collectionData = {
   "latestCollection": {
-    "name": "Places",
-    "photosAdded": 1,
+    "id": "portrait_photos:1788392036962",
+    "name": "Portraits",
+    "photosAdded": 12,
     "dateAdded": "2026-09-02",
     "expiresOn": "2026-10-02",
-    "link": "places.html",
-    "id": "places.html:2026-09-02:1:4"
+    "link": "portraits.html"
   },
   "collections": [
+    {
+      "id": "portrait_photos:1788392036962",
+      "name": "Portraits",
+      "photosAdded": 12,
+      "dateAdded": "2026-09-02",
+      "expiresOn": "2026-10-02",
+      "link": "portraits.html"
+    },
     {
       "name": "Places",
       "photosAdded": 1,
@@ -50,6 +58,14 @@ window.collectionData = {
     }
   ],
   "alertHistory": [
+    {
+      "id": "portrait_photos:1788392036962",
+      "name": "Portraits",
+      "photosAdded": 12,
+      "dateAdded": "2026-09-02",
+      "expiresOn": "2026-10-02",
+      "link": "portraits.html"
+    },
     {
       "name": "Places",
       "photosAdded": 1,
