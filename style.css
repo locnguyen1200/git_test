@@ -1,7 +1,7 @@
 
 /* Box Container*/
 .box {
-  max-width: 750px;
+  max-width: 650px;
   margin: 50px auto;
   padding: 30px;
   display: flex;
@@ -42,7 +42,7 @@ body{
 /* Typography Utilities */
 .title_size {
   font-size: 1.5em;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 /* Floating Camera */
@@ -52,35 +52,22 @@ body{
       perspective: 900px;
       position: relative;
     top : 25px; 
-    right: 125px;  /* Moves it LEFT (away from the right edge) */
+    right: 50px;  /* Moves it LEFT (away from the right edge) */
 
     }
-
-    /* 2. Turntable Rig: Tilted 15deg down so you can see the top plate */
-    .rig {
-      transform-style: preserve-3d;
-      transform: rotateX(-15deg);
-    }
-
     /* 3. The Spinning Camera Body */
     .camera {
       width: 150px;
       height: 90px;
       position: relative;
       transform-style: preserve-3d;
-      animation: spin 5s linear infinite;
+      transform: rotateX(0deg) rotateY(0deg);
+      transition: transform 120ms ease-out;
     }
-
-    @keyframes spin {
-      from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
-    }
-
     /* Base styling for every face */
     .face {
       position: absolute;
       border: 1.5px solid #1a1a1a;
-      background: #FAF8F5(13, 17, 23, 0.9);
       box-sizing: border-box;
     }
 
@@ -138,23 +125,6 @@ body{
       height: 6px;
       border: 1px solid #1a1a1a;
     }
-
-
-    /* Protruding Lens Barrel: Pushed forward in Z-space */
-    .lens-barrel {
-      position: absolute;
-      top: 20px;
-      left: 35px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid #1a1a1a;
-      background: #FAF8F5(0, 255, 102, 0.15);
-      /* Moves the lens forward by 25px so it physically projects off the body */
-      transform: translateZ(0px);
-      box-shadow: 0 0 10px #FAF8F5(0, 255, 102, 0.4);
-    }
-
     /* Shutter Button on Top Plate */
     .shutter-btn {
       position: absolute;
@@ -176,3 +146,70 @@ body{
       height: 60px;
       border: 1px dashed #1a1a1a;
     }
+
+
+    /* Protruding Lens Barrel: Pushed forward in Z-space */
+.lens-barrel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%) 
+  translateZ(26px);
+  transform-style: preserve-3d;
+}
+
+/* 12-sided faceted cylinder body */
+.lens-cylinder {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.lens-cylinder span {
+  position: absolute;
+  width: 18px;               /* Width of each facet */
+  height: 40px;              /* Barrel length protruding out */
+  top: 50%;
+  left: 50%;
+  border: 1px solid #1a1a1a;
+  /* Rotate around center and project outward to form tube */
+  transform: translate(-50%, -50%) 
+             rotateZ(calc(var(--i) * 30deg)) 
+             translateY(34px) 
+             rotateX(90deg);
+  transform-origin: center center;
+}
+
+/* Front cap and glass optic */
+.lens-front {
+  position: absolute;
+  inset: 0px;
+  border-radius: 70%;
+  border: 1.5px solid #1a1a1a;
+  /* Push outward to the end of the barrel */
+  transform: translateZ(15px); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner optical ring */
+.lens-element {
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  border: 1px solid #1a1a1a;
+}
+
+/* Removable cap covering the front optic */
+.lens-cap {
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 2px solid #111;
+  background: #333;
+  box-shadow: inset 0 0 0 6px #777, inset 0 0 0 8px #111;
+  transform: translateZ(20px);
+}
