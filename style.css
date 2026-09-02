@@ -1,11 +1,11 @@
 
 /* Box Container*/
 .box {
-  max-width: 800px;
+  max-width: 750px;
   margin: 50px auto;
-  padding: 15px;
+  padding: 30px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   gap: 10px; 
   background-color: #FAF8F5;
@@ -16,13 +16,13 @@
 }
 .box-text {
  text-align: center;
- margin-right: 400px;
+ margin-right: 0px;
 margin-left: 20px;
-margin-top: 70px;
+margin-top: 10px;
 }
 /* Base */
 p {
-  margin: 0;
+  margin: 20px;
 }
 
 h1 {
@@ -36,6 +36,7 @@ body{
   display: flex;
   justify-content: right;
   align-items: right;
+  margin-right: 15px;
 }
 
 /* Typography Utilities */
@@ -50,8 +51,8 @@ body{
     .viewport {
       perspective: 900px;
       position: relative;
-    bottom: 100px; /* Moves it UP */
-    right: 150px;  /* Moves it LEFT (away from the right edge) */
+    top : 25px; 
+    right: 125px;  /* Moves it LEFT (away from the right edge) */
 
     }
 
