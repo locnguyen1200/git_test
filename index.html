@@ -7,11 +7,15 @@
   <title>Loc's Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <script src="page-transition.js"></script>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('site-theme') || 'default');</script>
+  <script src="matrix-rain.js"></script>
+  <script src="midnight-camera.js"></script>
   <!-- Sidebar: three navigation links with icon-only controls -->
   <nav class="sidebar" aria-label="Main navigation">
     <!-- Home link: the is-active class gives this icon its selected style -->
@@ -47,6 +51,22 @@
       <h1 class="title_size" id="portfolio-title">Loc's Portfolio</h1>
       <p>this will be my photography page.</p>
       <p>webpage is still being built.</p>
+
+      <!-- Theme switcher: a custom retro dropdown (native <select> menus can't be restyled) -->
+      <div class="theme-switcher">
+        <div class="retro-dropdown" id="theme-dropdown">
+          <button type="button" class="retro-dropdown-trigger" id="theme-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span id="theme-dropdown-value">Retro Blue</span>
+          </button>
+          <ul class="retro-dropdown-list" id="theme-dropdown-list" role="listbox" tabindex="-1" hidden>
+            <li role="option" data-theme-value="default" data-theme-label="Retro Blue">Retro Blue</li>
+            <li role="option" data-theme-value="blackwhite" data-theme-label="Black &amp; White">Black &amp; White</li>
+            <li role="option" data-theme-value="midnight" data-theme-label="Midnight">Midnight</li>
+            <li role="option" data-theme-value="sepia" data-theme-label="Sepia Terminal">Sepia Terminal</li>
+            <li role="option" data-theme-value="matrix" data-theme-label="Matrix">Matrix</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- Camera section: alignment wrapper, perspective stage, and 3D model -->
@@ -106,13 +126,40 @@
   </main>
 
   <!-- Scrollable retro collection alerts, generated from collection-data.js -->
+  <section class="collection-notice-dropzone" id="collection-dropzone" aria-label="Drag system alert here to reset">
+    <div class="dropzone-hint">Drop here to reset</div>
+  </section>
+
+  <!-- Hidden easter egg: family photos behind the system alert -->
+  <div class="family-photo-easter-egg" id="family-photos-container" aria-label="Family photos easter egg">
+  </div>
+
   <section class="collection-notices" aria-label="New collection notifications">
     <div class="notices-header">
       <span>SYSTEM ALERT // COLLECTION ARCHIVE <span class="notice-alert" aria-hidden="true">!</span></span>
-      <button class="notice-unread" id="notice-unread" type="button">MARK ALL UNREAD</button>
+      <button class="notice-unread" id="notice-unread" type="button">MARK ALL READ</button>
     </div>
-    <div id="collection-notice-list"></div>
+    <div class="notice-scroll-wrapper">
+      <div id="collection-notice-list"></div>
+      <div class="notice-scrollbar" id="notice-scrollbar" aria-hidden="true">
+        <div class="notice-scrollbar-thumb" id="notice-scrollbar-thumb"></div>
+      </div>
+    </div>
   </section>
+
+  <!-- Clicked family photo carousel -->
+  <div class="gallery-modal" id="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="gallery-title" hidden>
+    <div class="gallery-window">
+      <button class="gallery-close" type="button" aria-label="Close gallery" title="Close gallery">&times;</button>
+      <p class="eyebrow" id="gallery-title">Family</p>
+      <img class="gallery-image" id="gallery-image" alt="Expanded family photograph">
+      <p class="gallery-count" id="gallery-count">1/1</p>
+      <div class="gallery-controls">
+        <button class="gallery-arrow" id="gallery-previous" type="button" aria-label="Previous picture" title="Previous picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7" /></svg></button>
+        <button class="gallery-arrow" id="gallery-next" type="button" aria-label="Next picture" title="Next picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg></button>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer: FAQ and contact links -->
   <footer class="site-footer" aria-label="Additional links">
@@ -135,6 +182,11 @@
   <script src="collection-data.js"></script>
   <script>
     const camera = document.querySelector('.camera');
+    let targetYaw = 0;
+    let targetPitch = 0;
+    let currentYaw = 0;
+    let currentPitch = 0;
+    const easeSpeed = 0.08; // Lower = smoother, more organic
 
     document.addEventListener('pointermove', (event) => {
       const cameraBounds = camera.getBoundingClientRect();
@@ -142,15 +194,25 @@
       const cameraCenterY = cameraBounds.top + cameraBounds.height / 2;
       const horizontal = (event.clientX - cameraCenterX) / (window.innerWidth / 2);
       const vertical = (event.clientY - cameraCenterY) / (window.innerHeight / 2);
-      const yaw = horizontal * 39.6;
-      const pitch = vertical * -36;
-
-      camera.style.transform = `rotateX(${pitch}deg) rotateY(${yaw}deg)`;
+      targetYaw = horizontal * 39.6;
+      targetPitch = vertical * -36;
     });
+
+    // Smooth animation loop
+    function animateCamera() {
+      // Easing interpolation for smooth, organic movement
+      currentYaw += (targetYaw - currentYaw) * easeSpeed;
+      currentPitch += (targetPitch - currentPitch) * easeSpeed;
+      
+      camera.style.transform = `rotateX(${currentPitch}deg) rotateY(${currentYaw}deg)`;
+      requestAnimationFrame(animateCamera);
+    }
+    animateCamera();
 
     // Return the camera to its default angle when the pointer leaves the page.
     document.addEventListener('mouseleave', () => {
-      camera.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      targetYaw = 0;
+      targetPitch = 0;
     });
 
     // Collection notices are generated from update-collections.js data.
@@ -188,14 +250,256 @@
     function updateNoticeState() {
       const allRead = collections.length > 0 && [...notices.children].every((notice) => notice.classList.contains('is-read'));
       notices.closest('.collection-notices').classList.toggle('all-read', allRead);
+      noticeUnread.textContent = allRead ? 'MARK ALL UNREAD' : 'MARK ALL READ';
     }
 
     noticeUnread.addEventListener('click', () => {
-      document.querySelectorAll('.collection-notice.is-read').forEach((notice) => {
-        notice.classList.remove('is-read');
+      const allRead = [...notices.children].every((notice) => notice.classList.contains('is-read'));
+      notices.querySelectorAll('.collection-notice').forEach((notice) => {
+        notice.classList.toggle('is-read', !allRead);
       });
       updateNoticeState();
     });
+
+    updateNoticeState();
+
+    // Custom retro scrollbar for the notice list (replaces the native scrollbar)
+    const noticeScrollbar = document.getElementById('notice-scrollbar');
+    const noticeScrollbarThumb = document.getElementById('notice-scrollbar-thumb');
+
+    function updateNoticeScrollbar() {
+      const trackHeight = noticeScrollbar.clientHeight;
+      const contentHeight = notices.scrollHeight;
+      const visibleHeight = notices.clientHeight;
+
+      if (contentHeight <= visibleHeight) {
+        noticeScrollbar.hidden = true;
+        return;
+      }
+      noticeScrollbar.hidden = false;
+
+      const thumbHeight = Math.max((visibleHeight / contentHeight) * trackHeight, 20);
+      const maxThumbTop = trackHeight - thumbHeight;
+      const scrollRatio = notices.scrollTop / (contentHeight - visibleHeight);
+      noticeScrollbarThumb.style.height = `${thumbHeight}px`;
+      noticeScrollbarThumb.style.top = `${scrollRatio * maxThumbTop}px`;
+    }
+
+    notices.addEventListener('scroll', updateNoticeScrollbar);
+    window.addEventListener('resize', updateNoticeScrollbar);
+    new MutationObserver(updateNoticeScrollbar).observe(notices, { childList: true, subtree: true });
+    updateNoticeScrollbar();
+
+    let isDraggingNoticeThumb = false;
+    let noticeDragStartY = 0;
+    let noticeDragStartScrollTop = 0;
+
+    noticeScrollbarThumb.addEventListener('pointerdown', (event) => {
+      isDraggingNoticeThumb = true;
+      noticeDragStartY = event.clientY;
+      noticeDragStartScrollTop = notices.scrollTop;
+      noticeScrollbarThumb.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+
+    noticeScrollbarThumb.addEventListener('pointermove', (event) => {
+      if (!isDraggingNoticeThumb) return;
+      const trackHeight = noticeScrollbar.clientHeight;
+      const contentHeight = notices.scrollHeight;
+      const visibleHeight = notices.clientHeight;
+      const thumbHeight = noticeScrollbarThumb.offsetHeight;
+      const maxThumbTop = trackHeight - thumbHeight;
+      if (maxThumbTop <= 0) return;
+      const deltaY = event.clientY - noticeDragStartY;
+      const scrollableDistance = contentHeight - visibleHeight;
+      notices.scrollTop = noticeDragStartScrollTop + (deltaY / maxThumbTop) * scrollableDistance;
+    });
+
+    function endNoticeThumbDrag() {
+      isDraggingNoticeThumb = false;
+    }
+    noticeScrollbarThumb.addEventListener('pointerup', endNoticeThumbDrag);
+    noticeScrollbarThumb.addEventListener('pointercancel', endNoticeThumbDrag);
+
+    noticeScrollbar.addEventListener('pointerdown', (event) => {
+      if (event.target === noticeScrollbarThumb) return;
+      const trackRect = noticeScrollbar.getBoundingClientRect();
+      const trackHeight = noticeScrollbar.clientHeight;
+      const contentHeight = notices.scrollHeight;
+      const visibleHeight = notices.clientHeight;
+      const thumbHeight = noticeScrollbarThumb.offsetHeight;
+      const maxThumbTop = trackHeight - thumbHeight;
+      if (maxThumbTop <= 0) return;
+      const clickY = event.clientY - trackRect.top - thumbHeight / 2;
+      const clampedTop = Math.max(0, Math.min(clickY, maxThumbTop));
+      notices.scrollTop = (clampedTop / maxThumbTop) * (contentHeight - visibleHeight);
+    });
+
+    // Easter egg: Populate family photos behind the system alert
+    const familyPhotosContainer = document.getElementById('family-photos-container');
+
+    // Always generate family photos (up to 12), they'll be hidden if they don't exist
+    const familyPhotoCount = 12;
+    for (let i = 0; i < familyPhotoCount; i++) {
+      const img = document.createElement('img');
+      img.src = `family_photos/family_photos_image_${String(i + 1).padStart(3, '0')}.jpg`;
+      img.alt = `Family photo ${i + 1}`;
+      img.className = 'gallery-trigger';
+      img.style.visibility = 'hidden'; // Stay hidden until loaded, to avoid a broken-image flash
+      img.onload = function() { this.style.visibility = 'visible'; };
+      img.onerror = function() { this.style.display = 'none'; }; // Hide broken images
+
+      // Lay photos out in a fanned grid so they clearly separate instead of stacking
+      const columns = 4;
+      const column = i % columns;
+      const row = Math.floor(i / columns);
+      const rotation = (i % 2 === 0 ? -1 : 1) * (6 + (i % 4) * 5);
+      const photoOffsetX = (column - (columns - 1) / 2) * 100;
+      const photoOffsetY = row * 60;
+      img.style.transform = `translateX(${photoOffsetX}px) rotate(${rotation}deg)`;
+      img.style.top = `${20 + photoOffsetY}px`;
+      img.style.zIndex = String(familyPhotoCount - i);
+      familyPhotosContainer.appendChild(img);
+    }
+
+    // Make collection notices draggable
+    const collectionNotices = document.querySelector('.collection-notices');
+    const noticesHeader = document.querySelector('.notices-header');
+    const collectionDropzone = document.getElementById('collection-dropzone');
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+    let originalWidth = null;
+
+    // Reset position on page load
+    function resetNotices() {
+      collectionNotices.classList.remove('is-dragging');
+      collectionNotices.style.position = 'relative';
+      collectionNotices.style.left = 'auto';
+      collectionNotices.style.top = 'auto';
+      collectionNotices.style.margin = '24px auto 40px';
+      collectionNotices.style.width = '';
+      collectionNotices.dataset.isDraggable = 'false';
+      collectionDropzone.style.display = 'none';
+    }
+
+    // Hide dropzone initially
+    resetNotices();
+
+    // Pointer capture keeps drag tracking reliable even at high speed or outside the window
+    noticesHeader.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('button, a, input, select, textarea')) return;
+
+      isDragging = true;
+      noticesHeader.setPointerCapture(event.pointerId);
+      const rect = collectionNotices.getBoundingClientRect();
+
+      // Switch to fixed positioning permanently once picked up
+      if (collectionNotices.dataset.isDraggable !== 'true') {
+        originalWidth = rect.width;
+        collectionNotices.classList.add('is-dragging');
+        collectionNotices.style.position = 'fixed';
+        collectionNotices.style.margin = '0';
+        collectionNotices.style.width = originalWidth + 'px';
+        collectionNotices.dataset.isDraggable = 'true';
+        collectionDropzone.style.display = 'block';
+      }
+
+      // Set left/top immediately so the box doesn't jump before the first pointermove
+      collectionNotices.style.left = rect.left + 'px';
+      collectionNotices.style.top = rect.top + 'px';
+
+      // Calculate offset from pointer to element's top-left
+      offsetX = event.clientX - rect.left;
+      offsetY = event.clientY - rect.top;
+      event.preventDefault();
+    });
+
+    noticesHeader.addEventListener('pointermove', (event) => {
+      if (!isDragging) return;
+      collectionNotices.style.left = (event.clientX - offsetX) + 'px';
+      collectionNotices.style.top = (event.clientY - offsetY) + 'px';
+    });
+
+    function endDrag(event) {
+      if (!isDragging) return;
+      isDragging = false;
+      noticesHeader.releasePointerCapture(event.pointerId);
+
+      // Check if header overlaps with dropzone
+      const headerRect = noticesHeader.getBoundingClientRect();
+      const dropzoneRect = collectionDropzone.getBoundingClientRect();
+
+      const isOverlapping = !(headerRect.right < dropzoneRect.left ||
+                             headerRect.left > dropzoneRect.right ||
+                             headerRect.bottom < dropzoneRect.top ||
+                             headerRect.top > dropzoneRect.bottom);
+
+      if (isOverlapping) {
+        // Snap back to original position
+        resetNotices();
+      }
+    }
+
+    noticesHeader.addEventListener('pointerup', endDrag);
+    noticesHeader.addEventListener('pointercancel', endDrag);
+
+    // Theme switcher: custom retro dropdown that applies a data-theme attribute
+    const themeDropdown = document.getElementById('theme-dropdown');
+    const themeTrigger = document.getElementById('theme-dropdown-trigger');
+    const themeList = document.getElementById('theme-dropdown-list');
+    const themeValueLabel = document.getElementById('theme-dropdown-value');
+    const themeOptions = Array.from(themeList.querySelectorAll('li'));
+
+    function applyTheme(themeValue) {
+      const option = themeOptions.find((item) => item.dataset.themeValue === themeValue) || themeOptions[0];
+      document.documentElement.setAttribute('data-theme', option.dataset.themeValue);
+      themeValueLabel.textContent = option.dataset.themeLabel;
+      themeOptions.forEach((item) => item.setAttribute('aria-selected', String(item === option)));
+      localStorage.setItem('site-theme', option.dataset.themeValue);
+    }
+
+    function openThemeDropdown() {
+      themeList.hidden = false;
+      themeTrigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeThemeDropdown() {
+      themeList.hidden = true;
+      themeTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    applyTheme(localStorage.getItem('site-theme') || 'default');
+
+    themeTrigger.addEventListener('click', () => {
+      if (themeList.hidden) {
+        openThemeDropdown();
+      } else {
+        closeThemeDropdown();
+      }
+    });
+
+    themeOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        applyTheme(option.dataset.themeValue);
+        closeThemeDropdown();
+        themeTrigger.focus();
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!themeDropdown.contains(event.target)) closeThemeDropdown();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !themeList.hidden) {
+        closeThemeDropdown();
+        themeTrigger.focus();
+      }
+    });
   </script>
+
+  <!-- Loaded after the family photos exist so it can find the .gallery-trigger elements -->
+  <script src="gallery.js"></script>
 </body>
 </html>

@@ -5,7 +5,8 @@ const collections = [
   { name: 'Black & White', folder: 'bw_photos', link: 'black-and-white.html' },
   { name: 'Colour', folder: 'colour_photos', link: 'colour.html' },
   { name: 'Places', folder: 'places_photos', link: 'places.html' },
-  { name: 'Portraits', folder: 'portrait_photos', link: 'portraits.html' }
+  { name: 'Portraits', folder: 'portrait_photos', link: 'portraits.html' },
+  { name: 'Family', folder: 'family_photos', link: null }
 ];
 const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 const outputPath = path.join(__dirname, 'collection-data.js');
