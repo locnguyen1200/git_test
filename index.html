@@ -218,10 +218,14 @@
     // Collection notices are generated from update-collections.js data.
     const notices = document.querySelector('#collection-notice-list');
     const collections = window.collectionData.collections || [];
+    const noticeReadStateKey = 'collection-notice-read-state';
+    const savedReadNotices = new Set(JSON.parse(localStorage.getItem(noticeReadStateKey) || '[]'));
 
     collections.forEach((collection) => {
       const notice = document.createElement('article');
       notice.className = 'collection-notice';
+      notice.classList.toggle('is-read', savedReadNotices.has(collection.link));
+      notice.dataset.collectionLink = collection.link;
       notice.setAttribute('role', 'alert');
       notice.innerHTML = `
         <div class="notice-bar">
@@ -240,6 +244,7 @@
       notice.querySelector('.notice-close').addEventListener('click', () => {
         notice.classList.add('is-read');
         updateNoticeState();
+        saveNoticeState();
       });
       notices.append(notice);
     });
@@ -253,12 +258,20 @@
       noticeUnread.textContent = allRead ? 'MARK ALL UNREAD' : 'MARK ALL READ';
     }
 
+    function saveNoticeState() {
+      const readCollectionLinks = [...notices.children]
+        .filter((notice) => notice.classList.contains('is-read'))
+        .map((notice) => notice.dataset.collectionLink);
+      localStorage.setItem(noticeReadStateKey, JSON.stringify(readCollectionLinks));
+    }
+
     noticeUnread.addEventListener('click', () => {
       const allRead = [...notices.children].every((notice) => notice.classList.contains('is-read'));
       notices.querySelectorAll('.collection-notice').forEach((notice) => {
         notice.classList.toggle('is-read', !allRead);
       });
       updateNoticeState();
+      saveNoticeState();
     });
 
     updateNoticeState();
