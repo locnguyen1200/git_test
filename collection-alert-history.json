@@ -30,7 +30,8 @@
     "places_photos": [
       "places_photos_image_001.jpg",
       "places_photos_image_002.jpg",
-      "places_photos_image_003.jpg"
+      "places_photos_image_003.jpg",
+      "places_photos_image_004.jpg"
     ],
     "portrait_photos": [
       "portrait_photos_image_001.jpg",
@@ -96,6 +97,14 @@
       "dateAdded": "2026-09-02",
       "expiresOn": "2026-10-02",
       "link": "portraits.html"
+    },
+    {
+      "id": "places_photos:1788471250106",
+      "name": "Places",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-03",
+      "expiresOn": "2026-10-02",
+      "link": "places.html"
     }
   ]
 }
