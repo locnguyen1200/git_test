@@ -1066,7 +1066,7 @@ html.is-page-fading-out {
 /* Footer icons for FAQ and contact */
 .site-footer {
   position: fixed;
-  bottom: 16px;
+  bottom: 0px;
   right: 24px;
   z-index: 10;
   box-sizing: border-box;
@@ -1075,8 +1075,9 @@ html.is-page-fading-out {
   justify-content: flex-end;
   gap: 18px;
   margin: 0;
-  padding: 6px 0 0;
+  padding: 12px 24px 16px;
   border-top: 2px solid var(--theme-box-shadow);
+  background-color: var(--theme-page-bg); /* Adds the solid background */
 }
 
 .footer-link {
@@ -1695,8 +1696,14 @@ a, a:visited {
    ======================================== */
 
 .review-container {
-  max-width: 450px;
-  margin: 40px auto 60px 100px; /* 100px left margin clears the fixed sidebar */
+  max-width: 390px;
+  margin: 40px auto 40px 150px; /* 100px left margin clears the fixed sidebar */
+  position: relative;
+  left: 45px;
+  padding: 70px 50px;
+  background-color: var(--theme-box-bg);
+  border: 3px ridge var(--theme-box-border);
+  box-shadow: 6px 6px 0 var(--theme-box-shadow);
   padding: 0 100px;
   color: var(--theme-text);
   font-family: var(--theme-font);
@@ -1704,7 +1711,8 @@ a, a:visited {
 
 .review-container h1 {
   font-size: 2em;
-  margin: 0 0 16px 0;
+  margin: 24px 0 25px 0;
+  margin-top: 35px;
   border-bottom: 2px ridge var(--theme-box-border);
   padding-bottom: 8px;
 }
@@ -1719,6 +1727,7 @@ a, a:visited {
 .review-container p {
   margin: 0 0 16px 0;
   line-height: 1.6;
+  margin-bottom: 35px;
 }
 
 /* Specifications Table */
@@ -1753,11 +1762,165 @@ a, a:visited {
 /* Responsive adjustment for mobile screens */
 @media (max-width: 760px) {
   .review-container {
-    margin: 90px auto 40px; /* Clears the horizontal mobile top-bar */
-    padding: 0 16px;
+    margin: 90px 16px 40px 16px; /* Adds a little margin on the sides so the box doesn't touch the phone edge */
+    padding: 24px 20px; /* Tighter padding for mobile */
   }
 }
 
 /* ========================================
    Camer Photos & Example Photos.
    ======================================== */
+
+
+
+/* ========================================
+   Upgraded Camera & Lens Grid Layout
+   ======================================== */
+
+.camera-index {
+  max-width: 850px; /* Widened to fit multiple columns */
+  margin: 40px auto 80px;
+  padding: 0 24px;
+  font-family: var(--theme-font);
+  color: var(--theme-text);
+}
+
+/* Reset all list styling */
+.camera-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Primary headers: "CAMERAS" & "LENS" */
+.camera-index > ul > li {
+  font-size: 1.1em;
+  font-weight: normal; /* Changed from 600 */
+  letter-spacing: 0.25em; /* Increased for an airy, minimal look */
+  text-transform: uppercase;
+  color: var(--theme-accent-text);
+  text-align: center;
+  border-bottom: 2px ridge var(--theme-box-border);
+  padding-bottom: 12px;
+  margin-top: 50px;
+}
+
+.camera-index > ul > li:first-child {
+  margin-top: 0;
+}
+
+/* Grid container for brand categories (Leica, Nikon, etc.) */
+.camera-index > ul > li > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+/* Individual Brand Cards */
+.camera-index > ul > li > ul > li {
+  font-size: 0.9em;
+  background-color: var(--theme-box-bg);
+  border: 3px ridge var(--theme-box-border);
+  box-shadow: 5px 5px 0 var(--theme-box-shadow);
+  padding: 16px 20px 20px;
+  font-weight: normal; /* Removed bold */
+  text-transform: uppercase;
+  letter-spacing: 0.15em; /* Wider spacing */
+  text-align: center;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+/* Card hover effect */
+.camera-index > ul > li > ul > li:hover {
+  transform: translateY(-2px);
+  box-shadow: 7px 7px 0 var(--theme-box-shadow);
+}
+
+/* The list of specific camera models inside the cards */
+.camera-index ul ul ul {
+  margin-top: 16px;
+  text-align: left; /* Left-aligns the models for easy reading */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.camera-index ul ul ul li {
+  font-size: 0.9em;
+  font-weight: normal;
+  text-transform: lowercase;
+  color: var(--theme-accent-light); /* Tints your hardcoded '▪' bullet */
+}
+
+/* Upgraded hover effects for the links */
+.camera-index a {
+  color: var(--theme-text);
+  text-decoration: none;
+  font-weight: normal; /* This overrides your global bold links! */
+  letter-spacing: 0.05em; /* Subtle spacing for readability */
+  padding: 4px 8px;
+  margin-left: -4px;
+  transition: all 150ms ease;
+}
+
+.camera-index a:hover,
+.camera-index a:focus-visible {
+  background-color: var(--theme-accent);
+  color: var(--theme-box-border);
+  outline: none;
+}
+
+/* ========================================
+   Review Split Layout (Text + Right Gallery)
+   ======================================== */
+
+.review-layout {
+  max-width: 1100px;
+  margin: 50px auto 80px auto;
+  padding-left: 45px; /* Keeps your layout balanced with the sidebar */
+  display: grid;
+  grid-template-columns: 1fr 340px; /* Text gets remaining space, gallery gets 340px */
+  gap: 40px;
+  align-items: start; /* Keeps items anchored to the top */
+}
+
+/* Reset the text box's margins since the grid now handles the placement */
+.review-layout .review-container {
+  margin: 0;
+  left: 0;
+  max-width: 100%;
+}
+
+/* Right-side gallery column */
+.review-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Space between each photo frame */
+  margin-top: 16px; 
+}
+
+/* Make sure the images fit nicely inside your retro frames */
+.review-gallery .photo-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 2px inset var(--theme-box-border);
+  background-color: var(--theme-box-shadow);
+}
+
+/* Mobile Responsiveness: Stacks the gallery under the text on smaller screens */
+@media (max-width: 950px) {
+  .review-layout {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+    margin: 90px 16px 40px 16px;
+    gap: 48px;
+  }
+  
+  /* Turns the vertical gallery into a responsive horizontal grid on phones */
+  .review-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
