@@ -1691,6 +1691,10 @@ a, a:visited {
   font-weight: bold;
 }
 
+.carousel-only {
+  display: none;
+}
+
 /* ========================================
    Camera Review Layout & Content Styling
    ======================================== */
@@ -1780,6 +1784,8 @@ a, a:visited {
 .camera-index {
   max-width: 850px; /* Widened to fit multiple columns */
   margin: 40px auto 80px;
+  position: relative;
+  right: 10px;
   padding: 0 24px;
   font-family: var(--theme-font);
   color: var(--theme-text);
@@ -1789,6 +1795,11 @@ a, a:visited {
 .camera-index ul {
   list-style: none;
   margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.camera-index > ul {
   padding: 0;
 }
 
@@ -1812,23 +1823,32 @@ a, a:visited {
 /* Grid container for brand categories (Leica, Nikon, etc.) */
 .camera-index > ul > li > ul {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 24px;
   margin-top: 32px;
+  padding: 0;
+}
+
+.brand-title {
+  background-color: var(--theme-text); /* Solid uniform color (e.g., dark gray/black) */
+  color: var(--theme-page-bg); /* Inverted text color for contrast */
+  padding: 12px 16px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-align: center;
+  border-bottom: 2px solid var(--theme-box-border);
 }
 
 /* Individual Brand Cards */
 .camera-index > ul > li > ul > li {
-  font-size: 0.9em;
   background-color: var(--theme-box-bg);
   border: 3px ridge var(--theme-box-border);
   box-shadow: 5px 5px 0 var(--theme-box-shadow);
-  padding: 16px 20px 20px;
-  font-weight: normal; /* Removed bold */
-  text-transform: uppercase;
-  letter-spacing: 0.15em; /* Wider spacing */
-  text-align: center;
+  padding: 0; /* Removed padding so the header stretches edge-to-edge */
   transition: transform 150ms ease, box-shadow 150ms ease;
+  overflow: hidden; /* Keeps the corners neat */
 }
 
 /* Card hover effect */
@@ -1836,14 +1856,38 @@ a, a:visited {
   transform: translateY(-2px);
   box-shadow: 7px 7px 0 var(--theme-box-shadow);
 }
-
+/* 1. Reset the list item so it has no padding */
+.camera-index > ul > li > ul > li > ul > li {
+  padding: 0;
+  margin: 0;
+}
 /* The list of specific camera models inside the cards */
 .camera-index ul ul ul {
-  margin-top: 16px;
-  text-align: left; /* Left-aligns the models for easy reading */
+  padding: 16px 20px 20px; /* Moved the padding down to the list area */
+  margin-top: 0; /* Reset margin since padding handles the space now */
+  text-align: left; 
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+/* 2. Turn the link into a full-width block element */
+.camera-link {
+  display: block;
+  width: 100%;
+  padding: 12px 24px; /* Expands the clickable hit-area to fill the box */
+  box-sizing: border-box;
+  color: var(--theme-text);
+  text-decoration: none;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+/* 3. Style the full-width hover effect */
+.camera-link:hover {
+  background-color: var(--theme-text); /* Fills the row with a solid block color */
+  color: var(--theme-page-bg);         /* Inverts the text color for contrast */
 }
 
 .camera-index ul ul ul li {
@@ -1851,24 +1895,6 @@ a, a:visited {
   font-weight: normal;
   text-transform: lowercase;
   color: var(--theme-accent-light); /* Tints your hardcoded '▪' bullet */
-}
-
-/* Upgraded hover effects for the links */
-.camera-index a {
-  color: var(--theme-text);
-  text-decoration: none;
-  font-weight: normal; /* This overrides your global bold links! */
-  letter-spacing: 0.05em; /* Subtle spacing for readability */
-  padding: 4px 8px;
-  margin-left: -4px;
-  transition: all 150ms ease;
-}
-
-.camera-index a:hover,
-.camera-index a:focus-visible {
-  background-color: var(--theme-accent);
-  color: var(--theme-box-border);
-  outline: none;
 }
 
 /* ========================================
@@ -1910,7 +1936,7 @@ a, a:visited {
 }
 
 /* Mobile Responsiveness: Stacks the gallery under the text on smaller screens */
-@media (max-width: 950px) {
+@media (max-width: 760px) {
   .review-layout {
     grid-template-columns: 1fr;
     padding-left: 0;
