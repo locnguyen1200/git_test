@@ -1564,10 +1564,10 @@ html::-webkit-scrollbar-thumb:hover {
     .top    { transform: rotateX(90deg) translateZ(45px); transform-style: preserve-3d; }
     .bottom { transform: rotateX(-90deg) translateZ(45px); }
 
+
      /* ========================================
        Camera details
        ======================================== */
-
     /* Viewfinder Window */
     .viewfinder {
       position: absolute;
@@ -1679,3 +1679,85 @@ html::-webkit-scrollbar-thumb:hover {
   box-shadow: inset 0 0 0 6px var(--theme-accent-light), inset 0 0 0 8px var(--theme-text);
   transform: translateZ(20px);
 }
+
+     /* ========================================
+       MISC - EDIT LATER
+       ======================================== */
+
+a, a:visited {
+  color: var(--theme-text);
+  text-decoration: none; 
+  font-weight: bold;
+}
+
+/* ========================================
+   Camera Review Layout & Content Styling
+   ======================================== */
+
+.review-container {
+  max-width: 450px;
+  margin: 40px auto 60px 100px; /* 100px left margin clears the fixed sidebar */
+  padding: 0 100px;
+  color: var(--theme-text);
+  font-family: var(--theme-font);
+}
+
+.review-container h1 {
+  font-size: 2em;
+  margin: 0 0 16px 0;
+  border-bottom: 2px ridge var(--theme-box-border);
+  padding-bottom: 8px;
+}
+
+.review-container h2 {
+  font-size: 1.35em;
+  margin: 28px 0 12px 0;
+  color: var(--theme-accent-text);
+  letter-spacing: 0.04em;
+}
+
+.review-container p {
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+/* Specifications Table */
+.review-specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 28px 0;
+  background-color: var(--theme-box-bg);
+  border: 2px ridge var(--theme-box-border);
+  box-shadow: 4px 4px 0 var(--theme-box-shadow);
+}
+
+.review-specs-table th,
+.review-specs-table td {
+  padding: 8px 12px;
+  border: 1px solid var(--theme-box-shadow);
+  text-align: left;
+}
+
+.review-specs-table th {
+  background-color: var(--theme-accent);
+  color: var(--theme-box-border);
+  font-weight: bold;
+}
+
+.review-specs-table td:first-child {
+  font-weight: bold;
+  width: 35%;
+  color: var(--theme-muted-text);
+}
+
+/* Responsive adjustment for mobile screens */
+@media (max-width: 760px) {
+  .review-container {
+    margin: 90px auto 40px; /* Clears the horizontal mobile top-bar */
+    padding: 0 16px;
+  }
+}
+
+/* ========================================
+   Camer Photos & Example Photos.
+   ======================================== */
