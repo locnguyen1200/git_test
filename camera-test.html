@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leica M3 — 3D Model v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #111110;
+      background-image: radial-gradient(ellipse at 50% 40%, #1c1b18 0%, #0d0d0c 65%);
+      font-family: 'Share Tech Mono', monospace;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    .label {
+      position: fixed;
+      top: 28px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75em;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #303028;
+    }
+    .label b { color: #b8b5ae; font-weight: normal; }
+    .hint {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7em;
+      letter-spacing: 0.18em;
+      color: #282825;
+    }
+
+    /* ================================================================
+       LEICA M3  —  scale 1.9 px / mm
+       Real: 138 × 77 × 33.5 mm
+       CSS:  262 × 146 × 64 px
+       Front/back  translateZ = 32px  (64/2)
+       Side width  = 64px, offset = (262-64)/2 = 99px, tz = 131px (262/2)
+       Top/bottom  height = 64px, offset = (146-64)/2 = 41px, tz = 73px (146/2)
+       ================================================================ */
+
+    .viewport { perspective: 1200px; }
+
+    .camera {
+      width: 262px;
+      height: 146px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    /* ── ALL FACES base ─────────────────────────── */
+    .face { position: absolute; box-sizing: border-box; }
+
+    /* Black vulcanite leatherette — fine diamond crosshatch */
+    .leatherette {
+      background-color: #1c1b18;
+      background-image:
+        repeating-linear-gradient( 45deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 5px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.028) 0, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 5px);
+      border: 1px solid #2a2925;
+    }
+
+    /* Warm silver chrome (brass plates, chrome plated) */
+    .chrome {
+      background: linear-gradient(180deg, #e2dfd9 0%, #cac7c1 30%, #d2cfc9 70%, #dedad4 100%);
+      border: 1.5px solid #aaa7a1;
+    }
+    .chrome-bottom {
+      background: linear-gradient(0deg, #dedad4 0%, #cac7c1 40%, #d2cfc9 100%);
+      border: 1.5px solid #aaa7a1;
+    }
+
+    /* ── FRONT & BACK ─────────────────────────────
+       262 × 146 px, translateZ ± 32px              */
+    .front, .back { width: 262px; height: 146px; top: 0; left: 0; }
+    .front { transform: translateZ(32px); transform-style: preserve-3d; }
+    .back  { transform: rotateY(180deg) translateZ(32px); }
+
+    /* ── LEFT & RIGHT ─────────────────────────────
+       64px wide, center at left:99px, tz 131px     */
+    .left, .right { width: 64px; height: 146px; top: 0; left: 99px; }
+    .right { transform: rotateY( 90deg) translateZ(131px); }
+    .left  { transform: rotateY(-90deg) translateZ(131px); }
+
+    /* ── TOP & BOTTOM ─────────────────────────────
+       64px tall, offset top:41px, tz 73px          */
+    .top, .bottom { width: 262px; height: 64px; left: 0; top: 41px; }
+    .top    { transform: rotateX( 90deg) translateZ(73px); transform-style: preserve-3d; }
+    .bottom { transform: rotateX(-90deg) translateZ(73px); }
+
+
+    /* ================================================================
+       FRONT FACE  (262 × 146 px)
+       Layout (from front):
+         Upper-LEFT third  → three windows (VF, illumination, RF)
+         CENTER            → M-mount ring
+         Lower-RIGHT       → self-timer + frame-preview lever
+         Upper-RIGHT       → small sync port
+       ================================================================ */
+
+    /* Thin chrome strip visible at top and bottom edges (plate overhang) */
+    .front-chrome-top {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 7px;
+      background: linear-gradient(180deg, #d8d5cf 0%, #b8b5af 100%);
+      border-bottom: 1px solid #9a9790;
+    }
+    .front-chrome-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0; height: 7px;
+      background: linear-gradient(0deg, #d8d5cf 0%, #b8b5af 100%);
+      border-top: 1px solid #9a9790;
+    }
+
+    /* ── WINDOW 1: Main Viewfinder (large, upper-left) ──
+       The M3's huge 0.91× bright-line viewfinder.
+       Distinct chrome bezel, dark blue glass.           */
+    .win-vf {
+      position: absolute;
+      top: 14px; left: 12px;
+      width: 52px; height: 32px;
+      border: 2.5px solid #c8c5be;
+      border-radius: 2px;
+      background: radial-gradient(ellipse at 35% 30%,
+        rgba(60,110,200,0.25) 0%, #18304a 45%, #0c1e30 100%);
+      box-shadow:
+        inset 0 0 8px rgba(40,90,180,0.35),
+        0 0 0 1px #8a8780;
+    }
+    /* Tiny specular glint */
+    .win-vf::before {
+      content: '';
+      position: absolute;
+      top: 4px; left: 5px;
+      width: 10px; height: 5px;
+      background: rgba(255,255,255,0.09);
+      border-radius: 2px;
+      transform: rotate(-8deg);
+    }
+
+    /* ── WINDOW 2: Brightline Frame Illumination ──
+       Frosted / lighter glass — middle of the trio.   */
+    .win-illum {
+      position: absolute;
+      top: 14px; left: 70px;
+      width: 28px; height: 22px;
+      border: 2px solid #c0bdb7;
+      border-radius: 1px;
+      background: linear-gradient(135deg,
+        rgba(200,210,230,0.15) 0%, #243850 50%, #162438 100%);
+      box-shadow: 0 0 0 1px #8a8780;
+    }
+
+    /* ── WINDOW 3: Rangefinder Coupling (smallest) ──
+       Provides the RF patch; slightly to the right.   */
+    .win-rf {
+      position: absolute;
+      top: 18px; left: 104px;
+      width: 22px; height: 16px;
+      border: 1.5px solid #b8b5ae;
+      border-radius: 1px;
+      background: radial-gradient(ellipse at 40% 35%,
+        rgba(50,90,170,0.2) 0%, #162030 70%);
+      box-shadow: 0 0 0 1px #8a8780;
+    }
+
+    /* ── M-MOUNT BAYONET RING (centered on front face) ──
+       The iconic circular chrome bayonet ring.
+       Outer rim: 90px  |  Inner opening: 70px         */
+    .mount-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      /* Stepped chrome ring */
+      background: transparent;
+      border: 5px solid #b8b5ae;
+      box-shadow:
+        0 0 0 1px #888480,
+        inset 0 0 0 1px #606058,
+        inset 0 0 0 2px #484640;
+    }
+
+    /* ── SELF-TIMER LEVER (right side of lens, lower area) ──
+       A substantial chrome lever — very visible on the M3. */
+    .self-timer {
+      position: absolute;
+      bottom: 22px; right: 20px;
+      width: 32px; height: 13px;
+      border: 2px solid #b0ada7;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #d0cdc7 0%, #b0ada7 100%);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    /* ── FRAME PREVIEW LEVER (smaller, near lens bottom-right) */
+    .frame-prev {
+      position: absolute;
+      bottom: 22px; right: 58px;
+      width: 11px; height: 16px;
+      border: 1.5px solid #b0ada7;
+      border-radius: 1px;
+      background: linear-gradient(180deg, #c8c5be 0%, #a8a5a0 100%);
+    }
+
+    /* ── PC FLASH SYNC (upper-right of front face) */
+    .pc-sync {
+      position: absolute;
+      top: 18px; right: 16px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      border: 1.5px solid #b0ada7;
+      background: #18170f;
+      box-shadow: 0 0 0 1px #888480;
+    }
+
+
+    /* ================================================================
+       LENS — Leica 50mm f/2 Summicron (rigid, compact)
+       Barrel Ø ≈ 68px  |  protrusion: 14px (compact rigid)
+       Glass  Ø ≈ 55px  |  coating: blue-violet multi-coat
+       ================================================================ */
+
+    .lens-barrel {
+      position: absolute;
+      top: 50%; left: 50%;
+      /* +2px pushes the anchor just proud of the front face */
+      transform: translate(-50%, -50%) translateZ(34px);
+      transform-style: preserve-3d;
+      width: 68px; height: 68px;
+    }
+
+    /* Focus-ring band (slight step inward from mount ring) */
+    .lens-focusring {
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      border: 2px solid #989590;
+      background: transparent;
+      /* Knurled appearance via alternating micro-steps */
+      box-shadow:
+        inset 0 0 0 4px #585550,
+        inset 0 0 0 5px #888580,
+        inset 0 0 0 7px #585550,
+        inset 0 0 0 8px #888580;
+    }
+
+    /* 12-sided faceted barrel cylinder */
+    .lens-cylinder { position: absolute; inset: 0; transform-style: preserve-3d; }
+
+    .lens-cylinder span {
+      position: absolute;
+      width: 18px;
+      height: 14px;        /* compact rigid — short protrusion */
+      top: 50%; left: 50%;
+      border: 0.5px solid #8a8880;
+      background: linear-gradient(90deg, #525048 0%, #6e6c66 45%, #606058 100%);
+      transform:
+        translate(-50%, -50%)
+        rotateZ(calc(var(--i) * 30deg))
+        translateY(34px)
+        rotateX(90deg);
+      transform-origin: center center;
+    }
+    .lens-cylinder span:nth-child(odd) {
+      background: linear-gradient(90deg, #484640 0%, #615f58 45%, #525048 100%);
+    }
+
+    /* Aperture ring (slightly inset, extra band) */
+    .lens-aperture { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .lens-aperture span {
+      position: absolute;
+      width: 18px; height: 6px;
+      top: 50%; left: 50%;
+      border: 0.5px solid #a8a5a0;
+      background: linear-gradient(90deg, #787570 0%, #908d88 50%, #787570 100%);
+      transform:
+        translate(-50%, -50%)
+        rotateZ(calc(var(--i) * 30deg))
+        translateY(34px)
+        rotateX(90deg)
+        translateZ(14px);   /* sits at the FRONT of the focus ring */
+      transform-origin: center center;
+    }
+
+    /* Front glass element */
+    .lens-front {
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 2.5px solid #989590;
+      background: radial-gradient(
+        circle at 30% 28%,
+        rgba(80,130,230,0.32)  0%,
+        rgba(40,80,180,0.14)   25%,
+        #0e1c30                55%,
+        #070e1c                100%
+      );
+      box-shadow:
+        inset 0 0 12px rgba(50,100,220,0.28),
+        inset 0 0 3px  rgba(255,255,255,0.06);
+      transform: translateZ(14px);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .lens-element {
+      width: 62%; height: 62%;
+      border-radius: 50%;
+      border: 1px solid rgba(70,100,180,0.45);
+      background: radial-gradient(circle at 36% 26%,
+        rgba(100,150,240,0.14) 0%, #07101e 70%);
+    }
+
+
+    /* ================================================================
+       TOP PLATE  (262 × 64 px)
+       L→R: rewind knob | gap | accessory shoe | shutter dial |
+             shutter release | film advance lever
+       ================================================================ */
+
+    /* ── REWIND KNOB ── large ribbed knob, far left */
+    .rewind-knob {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 2px solid #a8a5a0;
+      background: radial-gradient(circle at 36% 30%, #e8e5df 0%, #c0bdb8 100%);
+      box-shadow:
+        0 0 0 1.5px #888580,
+        0 0 0 3px  #c8c5bf,
+        0 0 0 4.5px #888580,
+        0 0 0 5px  #b8b5b0;
+    }
+
+    /* ── ACCESSORY / COLD SHOE ── center of top plate */
+    .accessory-shoe {
+      position: absolute;
+      left: 50%; top: 28%;
+      transform: translateX(-50%);
+      width: 40px; height: 7px;
+      background: #a8a5a0;
+      border: 1px solid #888580;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    /* ── SHUTTER SPEED DIAL ── right-of-center, large */
+    .shutter-dial {
+      position: absolute;
+      right: 68px; top: 50%;
+      transform: translateY(-50%);
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid #a8a5a0;
+      background: radial-gradient(circle at 36% 30%, #e8e5df 0%, #b8b5b0 65%, #a8a5a0 100%);
+      box-shadow: 0 0 0 1px #888580;
+    }
+    /* Speed markings suggestion */
+    .shutter-dial::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: transparent;
+    }
+
+    /* ── SHUTTER RELEASE ── small button right of dial */
+    .shutter-btn {
+      position: absolute;
+      right: 44px; top: 50%;
+      transform: translateY(-50%);
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 1.5px solid #989590;
+      background: radial-gradient(circle at 36% 28%, #e8e5df 0%, #c0bdb8 100%);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.55);
+    }
+
+    /* ── FILM ADVANCE LEVER ── thin swept arm, far right */
+    .advance-lever {
+      position: absolute;
+      right: 7px; top: 14%;
+      width: 28px; height: 20px;
+      border-top:   4px solid #c8c5bf;
+      border-right: 4px solid #c8c5bf;
+      border-radius: 0 10px 0 0;
+      transform: rotate(-6deg);
+      box-shadow: 1px -1px 0 #989590;
+    }
+
+    /* ── STRAP LUG on top plate (small chrome loop each side) */
+    .strap-top-lug {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px; height: 22px;
+      border: 2.5px solid #c0bdb8;
+      background: transparent;
+      border-radius: 1px;
+    }
+    .strap-top-lug.left  { left:  42px; }
+    .strap-top-lug.right { right: 42px; }
+
+
+    /* ================================================================
+       SIDES — strap lugs
+       ================================================================ */
+    .strap-side-lug {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 24px;
+      border: 2.5px solid #c0bdb8;
+      background: transparent;
+      border-radius: 1px;
+    }
+
+
+    /* ================================================================
+       BACK PLATE
+       ================================================================ */
+    .film-door {
+      position: absolute;
+      top: 12px; left: 12px;
+      width: 237px; height: 120px;
+      border: 1px solid #2a2825;
+      background: #141310;
+    }
+    .film-door::after {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid #202018;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.022) 0, rgba(255,255,255,0.022) 1px,
+        transparent 1px, transparent 8px
+      );
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="label">Leica <b>M3</b> &nbsp;·&nbsp; 1954 &nbsp;·&nbsp; 138 × 77 × 33.5 mm</div>
+
+  <div class="viewport">
+    <div class="rig">
+      <div class="camera">
+
+        <!-- FRONT FACE -->
+        <div class="face front leatherette">
+          <div class="front-chrome-top"></div>
+          <div class="front-chrome-bottom"></div>
+
+          <!-- Three windows: VF · illumination · RF coupling -->
+          <div class="win-vf"></div>
+          <div class="win-illum"></div>
+          <div class="win-rf"></div>
+
+          <!-- M-mount ring (visible chrome ring on front face) -->
+          <div class="mount-ring"></div>
+
+          <!-- Controls right of lens -->
+          <div class="self-timer"></div>
+          <div class="frame-prev"></div>
+
+          <!-- PC sync port -->
+          <div class="pc-sync"></div>
+
+          <!-- Lens assembly -->
+          <div class="lens-barrel">
+            <div class="lens-cylinder">
+              <span style="--i:0;"></span><span style="--i:1;"></span>
+              <span style="--i:2;"></span><span style="--i:3;"></span>
+              <span style="--i:4;"></span><span style="--i:5;"></span>
+              <span style="--i:6;"></span><span style="--i:7;"></span>
+              <span style="--i:8;"></span><span style="--i:9;"></span>
+              <span style="--i:10;"></span><span style="--i:11;"></span>
+            </div>
+            <div class="lens-aperture">
+              <span style="--i:0;"></span><span style="--i:1;"></span>
+              <span style="--i:2;"></span><span style="--i:3;"></span>
+              <span style="--i:4;"></span><span style="--i:5;"></span>
+              <span style="--i:6;"></span><span style="--i:7;"></span>
+              <span style="--i:8;"></span><span style="--i:9;"></span>
+              <span style="--i:10;"></span><span style="--i:11;"></span>
+            </div>
+            <div class="lens-focusring"></div>
+            <div class="lens-front">
+              <div class="lens-element"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BACK FACE -->
+        <div class="face back leatherette">
+          <div class="film-door"></div>
+        </div>
+
+        <!-- SIDES -->
+        <div class="face left leatherette">
+          <div class="strap-side-lug"></div>
+        </div>
+        <div class="face right leatherette">
+          <div class="strap-side-lug"></div>
+        </div>
+
+        <!-- TOP PLATE (chrome) -->
+        <div class="face top chrome">
+          <div class="rewind-knob"></div>
+          <div class="strap-top-lug left"></div>
+          <div class="accessory-shoe"></div>
+          <div class="shutter-dial"></div>
+          <div class="shutter-btn"></div>
+          <div class="strap-top-lug right"></div>
+          <div class="advance-lever"></div>
+        </div>
+
+        <!-- BOTTOM PLATE (chrome) -->
+        <div class="face bottom chrome-bottom"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">move mouse to rotate &nbsp;·&nbsp; edit &lt;style&gt; to tweak</div>
+
+  <script>
+    const camera = document.querySelector('.camera');
+    // Default: show front face + top plate + slight left-side hint
+    let tY = -18, tP = 16;
+    let cY = -18, cP = 16;
+    let pf = null, cf = null;
+    const ease = 0.07;
+
+    function tick() {
+      cY += (tY - cY) * ease;
+      cP += (tP - cP) * ease;
+      camera.style.transform = `rotateX(${cP}deg) rotateY(${cY}deg)`;
+      if (Math.abs(tY-cY) > 0.04 || Math.abs(tP-cP) > 0.04) {
+        cf = requestAnimationFrame(tick);
+      } else {
+        cY = tY; cP = tP;
+        camera.style.transform = `rotateX(${cP}deg) rotateY(${cY}deg)`;
+        cf = null;
+      }
+    }
+    function kick() { if (!cf) cf = requestAnimationFrame(tick); }
+
+    document.addEventListener('pointermove', e => {
+      if (pf) cancelAnimationFrame(pf);
+      pf = requestAnimationFrame(() => {
+        const b = camera.getBoundingClientRect();
+        tY = ((e.clientX-(b.left+b.width /2)) / (window.innerWidth /2)) * 48;
+        tP = ((e.clientY-(b.top +b.height/2)) / (window.innerHeight/2)) * -42;
+        pf = null; kick();
+      });
+    });
+    document.addEventListener('mouseleave', () => { tY=-18; tP=16; kick(); });
+    kick();
+  </script>
+</body>
+</html>
