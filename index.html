@@ -70,58 +70,98 @@
     </section>
 
     <!-- Camera section: alignment wrapper, perspective stage, and 3D model -->
-    <section class="camera-alignment" id="camera" aria-label="3D camera">
+    <section class="camera-alignment" id="camera" aria-label="3D generic rangefinder camera">
       <div class="viewport">
-        <div class="rig">
-          <div class="camera">
-            <!-- Camera front plate: viewfinder, rangefinder, and lens -->
+        <div class="camera">
+          <!-- 1. Front Plate: Windows, Levers, and Lens Assembly -->
             <div class="face front">
-              <div class="viewfinder"></div>
-              <div class="rangefinder"></div>
+              <!-- Top Chrome Housing -->
+              <div class="c-top-housing">
+                <!-- Three Windows ON THE RIGHT SIDE: Rangefinder (inner), Frame Illuminator (middle), Viewfinder (outer-right) -->
+                <div class="c-win-rf" title="Rangefinder Window"></div>
+                <div class="c-win-illum" title="Frame Illuminator"></div>
+                <div class="c-win-vf" title="Main Viewfinder"></div>
+              </div>
 
-              <!-- Lens assembly: barrel, front glass, and removable cap -->
-              <div class="lens-barrel">
-                <div class="lens-cylinder">
-                  <!-- Twelve facets form the rounded barrel body -->
-                  <span style="--i:0;"></span>
-                  <span style="--i:1;"></span>
-                  <span style="--i:2;"></span>
-                  <span style="--i:3;"></span>
-                  <span style="--i:4;"></span>
-                  <span style="--i:5;"></span>
-                  <span style="--i:6;"></span>
-                  <span style="--i:7;"></span>
-                  <span style="--i:8;"></span>
-                  <span style="--i:9;"></span>
-                  <span style="--i:10;"></span>
-                  <span style="--i:11;"></span>
+              <!-- Middle Vulcanite Texture Band -->
+              <div class="c-vulcanite-band">
+                <!-- Self-timer lever (left of lens, pointing UP) -->
+                <div class="c-selftimer" title="Self-Timer Lever">
+                  <div class="c-selftimer-head"></div>
+                  <div class="c-selftimer-neck"></div>
+                  <div class="c-selftimer-pivot"></div>
                 </div>
-                <div class="lens-front">
-                  <div class="lens-element"></div>
+
+                <!-- Frame preview lever (right of lens, pointing UP) -->
+                <div class="c-preview-lever" title="Frame Preview Selector">
+                  <div class="c-preview-head"></div>
+                  <div class="c-preview-neck"></div>
+                  <div class="c-preview-pivot"></div>
                 </div>
-                <div class="lens-cap"></div>
+
+                <!-- Red lens mounting index dot -->
+                <div class="c-red-dot" title="Mounting Alignment Dot"></div>
+              </div>
+
+              <!-- Lower Baseplate -->
+              <div class="c-baseplate"></div>
+
+              <!-- 50mm Standard Lens Assembly (sitting flush on front body) -->
+              <div class="c-lens" title="50mm Standard Lens">
+                <div class="c-lens-flange"></div>
+                <div class="c-lens-cyl">
+                  <span style="--i:0;"></span><span style="--i:1;"></span><span style="--i:2;"></span><span style="--i:3;"></span>
+                  <span style="--i:4;"></span><span style="--i:5;"></span><span style="--i:6;"></span><span style="--i:7;"></span>
+                  <span style="--i:8;"></span><span style="--i:9;"></span><span style="--i:10;"></span><span style="--i:11;"></span>
+                  <span style="--i:12;"></span><span style="--i:13;"></span><span style="--i:14;"></span><span style="--i:15;"></span>
+                </div>
+                <div class="c-lens-front">
+                  <div class="c-lens-optic">
+                    <div class="c-lens-aperture"></div>
+                  </div>
+                </div>
+                <!-- Focus Lock Tab -->
+                <div class="c-infinity-tab" title="Focus Lock Release Tab"></div>
               </div>
             </div>
 
-            <!-- Camera back plate and film door -->
+            <!-- 2. Back Plate: Eyepiece, ASA Dial, Film Door -->
             <div class="face back">
-              <div class="film-door"></div>
+              <div class="c-top-housing" style="height:26px;">
+                <div class="c-eyepiece" title="Viewfinder Eyepiece"></div>
+              </div>
+              <div class="c-film-door" title="Hinged Film Back Door">
+                <div class="c-asa-dial" title="Film Sensitivity ASA/DIN Reminder Dial"></div>
+              </div>
+              <div class="c-baseplate"></div>
             </div>
 
-            <!-- Camera left and right side plates -->
-            <div class="face left"></div>
-            <div class="face right"></div>
+            <!-- 3. Side Plates: Strap Lugs -->
+            <div class="face side left">
+              <div class="c-strap-lug"></div>
+            </div>
+            <div class="face side right">
+              <div class="c-strap-lug"></div>
+            </div>
 
-            <!-- Camera top plate and shutter button -->
+            <!-- 4. Top Plate: Shutter on left, Square Cold Shoe Center, Rewind Knob on right -->
             <div class="face top">
-              <div class="shutter-btn"></div>
+              <div class="c-shutter-wrap" title="Shutter Release Button">
+                <div class="c-shutter-inner"></div>
+              </div>
+              <div class="c-cold-shoe" title="Accessory / Cold Shoe"></div>
+              <div class="c-rewind-knob" title="Film Rewind Knob">
+                <span class="c-rewind-dot"></span>
+                <span class="c-rewind-dot"></span>
+              </div>
             </div>
 
-            <!-- Camera bottom plate -->
-            <div class="face bottom"></div>
+            <!-- 5. Bottom Plate: Circular Tripod Socket on left -->
+            <div class="face bottom">
+              <div class="c-tripod-socket" title="Tripod Socket"></div>
+            </div>
           </div>
         </div>
-      </div>
     </section>
   </main>
 
@@ -192,53 +232,86 @@
   <script src="collection-data.js"></script>
   <script>
     const camera = document.querySelector('.camera');
-    let targetYaw = 0;
-    let targetPitch = 0;
-    let currentYaw = 0;
-    let currentPitch = 0;
-    let pointerFrame = null;
-    let cameraFrame = null;
-    const easeSpeed = 0.08; // Lower = smoother, more organic
+    const viewport = document.querySelector('.viewport');
+    let targetYaw = -22;
+    let targetPitch = 12;
+    let currentYaw = -22;
+    let currentPitch = 12;
+    let baseYaw = -22;
+    let basePitch = 12;
+    let isCameraDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let dragStartBaseYaw = -22, dragStartBasePitch = 12;
+    const easeSpeed = 0.08;
 
+    // Continuous 60/120fps animation loop for butter-smooth organic motion
     function animateCamera() {
-      currentYaw += (targetYaw - currentYaw) * easeSpeed;
-      currentPitch += (targetPitch - currentPitch) * easeSpeed;
-      camera.style.transform = `rotateX(${currentPitch}deg) rotateY(${currentYaw}deg)`;
-
-      if (Math.abs(targetYaw - currentYaw) > 0.05 || Math.abs(targetPitch - currentPitch) > 0.05) {
-        cameraFrame = requestAnimationFrame(animateCamera);
-      } else {
-        currentYaw = targetYaw;
-        currentPitch = targetPitch;
+      requestAnimationFrame(animateCamera);
+      if (!isCameraDragging) {
+        currentYaw += (targetYaw - currentYaw) * easeSpeed;
+        currentPitch += (targetPitch - currentPitch) * easeSpeed;
         camera.style.transform = `rotateX(${currentPitch}deg) rotateY(${currentYaw}deg)`;
-        cameraFrame = null;
       }
     }
+    animateCamera();
 
-    function requestCameraAnimation() {
-      if (!cameraFrame) cameraFrame = requestAnimationFrame(animateCamera);
-    }
-
-    document.addEventListener('pointermove', (event) => {
-      if (pointerFrame) cancelAnimationFrame(pointerFrame);
-      pointerFrame = requestAnimationFrame(() => {
-        const cameraBounds = camera.getBoundingClientRect();
-        const cameraCenterX = cameraBounds.left + cameraBounds.width / 2;
-        const cameraCenterY = cameraBounds.top + cameraBounds.height / 2;
-        const horizontal = (event.clientX - cameraCenterX) / (window.innerWidth / 2);
-        const vertical = (event.clientY - cameraCenterY) / (window.innerHeight / 2);
-        targetYaw = horizontal * 39.6;
-        targetPitch = vertical * -36;
-        pointerFrame = null;
-        requestCameraAnimation();
-      });
+    // 1:1 direct-manipulation drag rotation on the camera viewport
+    viewport.addEventListener('pointerdown', (event) => {
+      isCameraDragging = true;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      dragStartBaseYaw = baseYaw;
+      dragStartBasePitch = basePitch;
+      viewport.setPointerCapture(event.pointerId);
+      camera.style.cursor = 'grabbing';
+      event.preventDefault();
     });
 
-    // Return the camera to its default angle when the pointer leaves the page.
+    viewport.addEventListener('pointermove', (event) => {
+      if (!isCameraDragging) return;
+      const dx = event.clientX - dragStartX;
+      const dy = event.clientY - dragStartY;
+
+      baseYaw = dragStartBaseYaw + dx * 0.5;
+      basePitch = Math.max(-80, Math.min(80, dragStartBasePitch - dy * 0.5));
+      targetYaw = baseYaw;
+      targetPitch = basePitch;
+      currentYaw = baseYaw;
+      currentPitch = basePitch;
+
+      camera.style.transform = `rotateX(${currentPitch}deg) rotateY(${currentYaw}deg)`;
+    });
+
+    function endCameraDrag() {
+      if (!isCameraDragging) return;
+      isCameraDragging = false;
+      camera.style.cursor = 'grab';
+    }
+
+    viewport.addEventListener('pointerup', endCameraDrag);
+    viewport.addEventListener('pointercancel', endCameraDrag);
+
+    // Natural 3D gaze tracking when pointer moves across the window
+    document.addEventListener('pointermove', (event) => {
+      if (isCameraDragging) return;
+      // Measure from the static viewport center, not the rotating 3D camera
+      const vpRect = viewport.getBoundingClientRect();
+      const centerX = vpRect.left + vpRect.width / 2;
+      const centerY = vpRect.top + vpRect.height / 2;
+      const nx = (event.clientX - centerX) / (window.innerWidth / 2);
+      const ny = (event.clientY - centerY) / (window.innerHeight / 2);
+
+      // Positive nx (cursor to right) -> positive yaw (face turns right)
+      targetYaw = baseYaw + nx * 18;
+      // Negative ny (cursor above) -> positive pitch (lens tilts up toward cursor)
+      targetPitch = Math.max(-60, Math.min(60, basePitch - ny * 14));
+    });
+
+    // Smoothly return to the resting angle when pointer leaves the page
     document.addEventListener('mouseleave', () => {
-      targetYaw = 0;
-      targetPitch = 0;
-      requestCameraAnimation();
+      if (isCameraDragging) return;
+      targetYaw = baseYaw;
+      targetPitch = basePitch;
     });
 
     // Collection notices are generated from update-collections.js data.

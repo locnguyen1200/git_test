@@ -1,13 +1,29 @@
 window.collectionData = {
   "latestCollection": {
-    "id": "places_photos:1788471250106",
-    "name": "Places",
+    "id": "bw_photos:1788552664540",
+    "name": "Black & White",
     "photosAdded": 1,
-    "dateAdded": "2026-09-03",
+    "dateAdded": "2026-09-04",
     "expiresOn": "2026-10-02",
-    "link": "places.html"
+    "link": "black-and-white.html"
   },
   "collections": [
+    {
+      "id": "bw_photos:1788552664540",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
+    {
+      "id": "bw_photos:1788551636946",
+      "name": "Black & White",
+      "photosAdded": 4,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
     {
       "id": "places_photos:1788471250106",
       "name": "Places",
@@ -66,6 +82,22 @@ window.collectionData = {
     }
   ],
   "alertHistory": [
+    {
+      "id": "bw_photos:1788552664540",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
+    {
+      "id": "bw_photos:1788551636946",
+      "name": "Black & White",
+      "photosAdded": 4,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
     {
       "id": "places_photos:1788471250106",
       "name": "Places",

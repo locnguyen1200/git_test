@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Retro Globe Telemetry // Test Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <script src="photo-locations.js"></script>
+  <style>
+    /* Specific styles for the 3D Globe Test Page */
+    .globe-test-page {
+      max-width: 960px;
+      margin: 40px auto 60px;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .globe-top-nav {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .globe-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-family: var(--theme-font);
+      font-size: 1.1em;
+      color: var(--theme-text);
+      background: var(--theme-box-bg);
+      border: 2px outset var(--theme-box-border);
+      box-shadow: 2px 2px 0 var(--theme-box-shadow);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .globe-back-btn:hover {
+      background: var(--theme-accent);
+      color: #ffffff;
+      border-style: inset;
+    }
+
+    .globe-back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* Terminal Window Shell */
+    .globe-terminal {
+      width: 100%;
+      max-width: 900px;
+      background: var(--theme-box-bg);
+      border: 3px ridge var(--theme-box-border);
+      box-shadow: 6px 6px 0 var(--theme-box-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .globe-header {
+      background: var(--theme-accent);
+      color: #ffffff;
+      padding: 10px 16px;
+      font-family: var(--theme-font);
+      font-size: 1.2em;
+      letter-spacing: 0.1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--theme-box-border);
+      text-transform: uppercase;
+    }
+
+    [data-theme="midnight"] .globe-header {
+      color: var(--theme-text);
+    }
+
+    .globe-header-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8em;
+    }
+
+    .status-pill {
+      padding: 2px 8px;
+      border-radius: 2px;
+      border: 1px solid #10b981;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      font-weight: bold;
+    }
+
+    /* Globe Canvas Container */
+    .globe-stage {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      background: var(--theme-panel-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .globe-stage:active {
+      cursor: grabbing;
+    }
+
+    /* CRT Scanline Overlay */
+    .globe-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.04) 0px,
+        rgba(0, 0, 0, 0.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      z-index: 2;
+    }
+
+    /* CRT Vignette */
+    .globe-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.25);
+      z-index: 3;
+    }
+
+    canvas#globe-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Telemetry HUD overlays */
+    .globe-hud-top {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 4;
+      font-family: var(--theme-font);
+      font-size: 1.05em;
+      letter-spacing: 0.06em;
+      color: var(--theme-text);
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+    }
+
+    .globe-hud-box {
+      background: rgba(0, 0, 0, 0.45);
+      color: #ffffff;
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 2px;
+      backdrop-filter: blur(2px);
+    }
+
+    [data-theme="matrix"] .globe-hud-box {
+      color: #00ff41;
+      border-color: #00ff41;
+      background: rgba(0, 20, 0, 0.7);
+    }
+
+    /* Telemetry Bottom Bar */
+    .globe-hud-bottom {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 4;
+      font-family: var(--theme-font);
+      color: #ffffff;
+    }
+
+    .globe-hud-bottom > * {
+      pointer-events: auto;
+    }
+
+    .globe-hint {
+      background: rgba(0, 0, 0, 0.45);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 0.95em;
+      letter-spacing: 0.05em;
+    }
+
+    /* Interactive Controls Panel */
+    .globe-controls-bar {
+      background: var(--theme-box-bg);
+      border-top: 2px solid var(--theme-box-border);
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--theme-font);
+    }
+
+    .globe-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .globe-btn {
+      padding: 5px 12px;
+      font-family: var(--theme-font);
+      font-size: 1.05em;
+      letter-spacing: 0.05em;
+      color: var(--theme-text);
+      background: var(--theme-panel-alt);
+      border: 2px outset var(--theme-box-border);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.1s ease, color 0.1s ease;
+    }
+
+    .globe-btn:hover {
+      background: var(--theme-accent);
+      color: #ffffff;
+    }
+
+    .globe-btn:active {
+      border-style: inset;
+    }
+
+    .globe-btn.is-active {
+      background: var(--theme-accent);
+      color: #ffffff;
+      border-style: inset;
+    }
+
+    /* Target Locations Menu */
+    .globe-targets-row {
+      width: 100%;
+      background: var(--theme-panel-bg);
+      border-top: 1px dashed var(--theme-box-border);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      font-family: var(--theme-font);
+    }
+
+    .globe-targets-label {
+      font-size: 0.9em;
+      color: var(--theme-muted-text);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .target-pill {
+      background: var(--theme-box-bg);
+      border: 1px solid var(--theme-box-border);
+      color: var(--theme-text);
+      padding: 2px 8px;
+      font-family: var(--theme-font);
+      font-size: 0.95em;
+      cursor: pointer;
+      white-space: nowrap;
+      text-transform: uppercase;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .target-pill:hover {
+      background: var(--theme-text);
+      color: var(--theme-page-bg);
+    }
+
+    .target-pill.is-active {
+      background: var(--theme-accent);
+      color: #ffffff;
+      border-color: var(--theme-accent);
+    }
+
+    [data-theme="midnight"] .target-pill {
+      background: #0d0d0d;
+      color: #ece6d8;
+      border-color: rgba(236, 230, 216, 0.35);
+    }
+
+    [data-theme="midnight"] .target-pill:hover {
+      background: #ece6d8;
+      color: #0d0d0d;
+      border-color: #ece6d8;
+    }
+
+    [data-theme="midnight"] .target-pill.is-active {
+      background: #ece6d8;
+      color: #000000;
+      border-color: #ece6d8;
+      font-weight: bold;
+    }
+
+    /* Photographic Reconnaissance Intel Dossier */
+    .globe-dossier {
+      width: 100%;
+      background: var(--theme-box-bg);
+      border-top: 2px solid var(--theme-box-border);
+      padding: 14px 16px 18px;
+      font-family: var(--theme-font);
+      box-sizing: border-box;
+    }
+
+    .dossier-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px dashed var(--theme-box-border);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .dossier-title-area {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .dossier-title {
+      font-size: 1.25em;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      color: var(--theme-text);
+      text-transform: uppercase;
+    }
+
+    .dossier-badge {
+      background: var(--theme-accent);
+      color: #ffffff;
+      padding: 2px 8px;
+      font-size: 0.9em;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+    }
+
+    [data-theme="midnight"] .dossier-badge {
+      background: #ece6d8;
+      color: #000000;
+      font-weight: bold;
+    }
+
+    [data-theme="midnight"] .dossier-view-link {
+      color: #ece6d8;
+    }
+
+    [data-theme="midnight"] .dossier-close-btn:hover {
+      background: #ece6d8;
+      color: #000000;
+    }
+
+    .dossier-close-btn {
+      background: var(--theme-panel-alt);
+      border: 2px outset var(--theme-box-border);
+      color: var(--theme-text);
+      font-family: var(--theme-font);
+      font-size: 0.95em;
+      padding: 3px 10px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .dossier-close-btn:hover {
+      background: var(--theme-accent);
+      color: #ffffff;
+    }
+
+    .dossier-close-btn:active {
+      border-style: inset;
+    }
+
+    .dossier-empty-state {
+      text-align: center;
+      padding: 20px 10px;
+      color: var(--theme-muted-text);
+      font-size: 1em;
+      letter-spacing: 0.06em;
+      border: 1px dashed var(--theme-box-border);
+      background: var(--theme-panel-bg);
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .dossier-card {
+      background: var(--theme-panel-bg);
+      border: 2px solid var(--theme-box-border);
+      box-shadow: 2px 2px 0 var(--theme-box-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .dossier-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--theme-accent);
+    }
+
+    .dossier-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .dossier-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .dossier-card:hover .dossier-thumb {
+      transform: scale(1.05);
+    }
+
+    .dossier-card-meta {
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--theme-box-bg);
+      border-top: 1px solid var(--theme-box-border);
+    }
+
+    .dossier-gallery-tag {
+      font-size: 0.85em;
+      color: var(--theme-muted-text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .dossier-view-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.95em;
+      color: var(--theme-accent);
+      text-decoration: none;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .dossier-view-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Dossier Pagination ─────────────────────────────── */
+    .dossier-subbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--theme-box-bg);
+      border: 1px solid var(--theme-box-border);
+      margin-bottom: 10px;
+      font-size: 0.82em;
+      letter-spacing: 0.06em;
+      color: var(--theme-muted-text);
+      gap: 8px;
+    }
+
+    .dossier-range-indicator {
+      flex: 1;
+      text-align: left;
+    }
+
+    .dossier-pagination {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dossier-page-btn {
+      font-family: var(--theme-font);
+      font-size: 0.9em;
+      background: var(--theme-box-bg);
+      color: var(--theme-text);
+      border: 1px solid var(--theme-box-border);
+      padding: 2px 8px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .dossier-page-btn:hover,
+    .dossier-page-btn.is-current {
+      background: var(--theme-accent);
+      color: #fff;
+      border-color: var(--theme-accent);
+    }
+
+    .dossier-record-tag {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      font-family: var(--theme-font);
+      font-size: 0.78em;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      letter-spacing: 0.06em;
+      padding: 2px 6px;
+      border: 1px solid rgba(255,255,255,0.4);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Theme overrides for midnight */
+    [data-theme="midnight"] .dossier-page-btn {
+      background: #0d0d0d;
+      color: #ece6d8;
+      border-color: rgba(236, 230, 216, 0.3);
+    }
+    [data-theme="midnight"] .dossier-page-btn:hover,
+    [data-theme="midnight"] .dossier-page-btn.is-current {
+      background: #ece6d8;
+      color: #000000;
+      border-color: #ece6d8;
+    }
+
+    /* Theme overrides for matrix */
+    [data-theme="matrix"] .dossier-page-btn {
+      background: #001200;
+      color: #00cc00;
+      border-color: #003300;
+    }
+    [data-theme="matrix"] .dossier-page-btn:hover,
+    [data-theme="matrix"] .dossier-page-btn.is-current {
+      background: #004400;
+      color: #00ff00;
+      border-color: #00ff00;
+    }
+
+
+    /* ── Keyboard Legend Bar ─────────────────────────────── */
+    .globe-legend {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 18px;
+      border-top: 1px solid var(--theme-box-border);
+      font-family: var(--theme-font);
+      font-size: 1em;
+      color: var(--theme-muted-text, var(--theme-text));
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .legend-item kbd {
+      font-family: var(--theme-font);
+      font-size: 0.88em;
+      padding: 2px 7px;
+      border: 1px solid var(--theme-box-border);
+      background: var(--theme-box-bg);
+      color: var(--theme-text);
+      letter-spacing: 0.06em;
+      box-shadow: 1px 1px 0 var(--theme-box-shadow);
+    }
+
+    .legend-sep {
+      flex: 1;
+    }
+
+    .legend-theme {
+      margin-left: auto;
+    }
+
+    /* ── Floating Pin Popup ──────────────────────────────── */
+    .pin-popup {
+      position: absolute;
+      z-index: 20;
+      min-width: 280px;
+      max-width: 380px;
+      background: var(--theme-box-bg);
+      border: 2px solid var(--theme-box-border);
+      box-shadow: 4px 4px 0 var(--theme-box-shadow);
+      font-family: var(--theme-font);
+      pointer-events: auto;
+      animation: popup-in 0.18s ease;
+    }
+
+    @keyframes popup-in {
+      from { opacity: 0; transform: scale(0.9) translateY(4px); }
+      to   { opacity: 1; transform: scale(1)   translateY(0); }
+    }
+
+    .pin-popup-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 10px 12px 8px;
+      border-bottom: 1px solid var(--theme-box-border);
+      gap: 8px;
+    }
+
+    .pin-popup-title-area {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pin-popup-city {
+      font-size: 1.15em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--theme-text);
+    }
+
+    .pin-popup-count {
+      font-size: 0.82em;
+      letter-spacing: 0.06em;
+      color: var(--theme-muted-text, var(--theme-text));
+      opacity: 0.75;
+    }
+
+    .pin-popup-close {
+      background: none;
+      border: 1px solid var(--theme-box-border);
+      color: var(--theme-text);
+      font-family: var(--theme-font);
+      font-size: 0.9em;
+      cursor: pointer;
+      padding: 2px 7px;
+      flex-shrink: 0;
+      line-height: 1;
+      transition: background 0.15s;
+    }
+
+    .pin-popup-close:hover {
+      background: var(--theme-accent);
+      color: #fff;
+    }
+
+    .pin-popup-body {
+      padding: 10px 12px;
+    }
+
+    .popup-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+
+    .popup-thumb-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border: 1px solid var(--theme-box-border);
+    }
+
+    .popup-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .popup-thumb:hover {
+      transform: scale(1.07);
+    }
+
+    .popup-thumb-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .popup-empty {
+      font-size: 0.85em;
+      color: var(--theme-muted-text, var(--theme-text));
+      opacity: 0.6;
+      letter-spacing: 0.06em;
+      padding: 6px 0;
+    }
+
+    .pin-popup-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-top: 1px solid var(--theme-box-border);
+      gap: 8px;
+      font-size: 0.85em;
+    }
+
+    .popup-page-info {
+      color: var(--theme-muted-text, var(--theme-text));
+      opacity: 0.7;
+      letter-spacing: 0.04em;
+    }
+
+    .popup-page-btns {
+      display: flex;
+      gap: 5px;
+    }
+
+    .popup-page-btn {
+      font-family: var(--theme-font);
+      font-size: 0.85em;
+      padding: 3px 10px;
+      background: var(--theme-box-bg);
+      color: var(--theme-text);
+      border: 1px solid var(--theme-box-border);
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.15s;
+    }
+
+    .popup-page-btn:hover:not(:disabled) {
+      background: var(--theme-accent);
+      color: #fff;
+    }
+
+    .popup-page-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    @media (max-width: 640px) {
+      .globe-stage { height: 380px; }
+      .globe-header { font-size: 1em; }
+      .globe-legend { gap: 12px; font-size: 0.9em; }
+      .pin-popup { min-width: 240px; max-width: 92vw; }
+      .popup-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="globe-test-page">
+    
+    <!-- Navigation & Theme Dropdown Row -->
+    <div class="globe-top-nav">
+      <a href="index.html" class="globe-back-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7M8 12h12" /></svg>
+        <span>Back to Portfolio</span>
+      </a>
+
+      <!-- Embedded Theme Switcher -->
+      <div class="theme-switcher">
+        <div class="retro-dropdown" id="theme-dropdown">
+          <button type="button" class="retro-dropdown-trigger" id="theme-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span id="theme-dropdown-value">Retro Blue</span>
+          </button>
+          <ul class="retro-dropdown-list" id="theme-dropdown-list" role="listbox" tabindex="-1" hidden>
+            <li role="option" data-theme-value="default" data-theme-label="Retro Blue">Retro Blue</li>
+            <li role="option" data-theme-value="blackwhite" data-theme-label="Black &amp; White">Black &amp; White</li>
+            <li role="option" data-theme-value="midnight" data-theme-label="Midnight">Midnight</li>
+            <li role="option" data-theme-value="sepia" data-theme-label="Sepia Terminal">Sepia Terminal</li>
+            <li role="option" data-theme-value="matrix" data-theme-label="Matrix">Matrix</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Terminal Container -->
+    <div class="globe-terminal">
+      <div class="globe-header">
+        <span>GEO-SPATIAL SPHERE</span>
+      </div>
+
+      <!-- Viewport Stage — pin popup lives inside here -->
+      <div class="globe-stage" id="globe-stage">
+        <canvas id="globe-canvas"></canvas>
+
+        <!-- Floating pin popup (hidden by default) -->
+        <div class="pin-popup" id="pin-popup" hidden>
+          <div class="pin-popup-header">
+            <div class="pin-popup-title-area">
+              <span class="pin-popup-city" id="popup-city">—</span>
+              <span class="pin-popup-count" id="popup-count"></span>
+            </div>
+            <button type="button" class="pin-popup-close" id="popup-close" aria-label="Close">✕</button>
+          </div>
+          <div class="pin-popup-body" id="popup-body"></div>
+          <div class="pin-popup-footer" id="popup-footer"></div>
+        </div>
+
+        <div class="globe-hud-bottom">
+          <div class="globe-hud-box" id="hud-target">SECTOR: ATLANTIC</div>
+        </div>
+      </div>
+
+      <!-- Controls Legend -->
+      <div class="globe-legend">
+        <span class="legend-item"><kbd>DRAG</kbd> Rotate</span>
+        <span class="legend-item"><kbd>SCROLL</kbd> Zoom</span>
+        <button type="button" class="legend-item legend-btn" id="legend-spin" title="Press S or click to toggle auto-spin">
+          <kbd>S</kbd> <span id="legend-spin-text">Spin: ON</span>
+        </button>
+        <button type="button" class="legend-item legend-btn" id="legend-reverse" title="Press R or click to reverse spin">
+          <kbd>R</kbd> <span>Reverse Spin</span>
+        </button>
+      </div>
+
+    </div><!-- /.globe-terminal -->
+
+  </div><!-- /.globe-test-page -->
+
+
+  <script>
+    // =========================================================================
+    // 1. THEME SWITCHER LOGIC
+    // =========================================================================
+    const themeDropdown = document.getElementById('theme-dropdown');
+    const themeTrigger = document.getElementById('theme-dropdown-trigger');
+    const themeList = document.getElementById('theme-dropdown-list');
+    const themeValueLabel = document.getElementById('theme-dropdown-value');
+    const themeOptions = Array.from(themeList.querySelectorAll('li'));
+
+    function applyTheme(themeValue) {
+      const option = themeOptions.find((item) => item.dataset.themeValue === themeValue) || themeOptions[0];
+      document.documentElement.setAttribute('data-theme', option.dataset.themeValue);
+      themeValueLabel.textContent = option.dataset.themeLabel;
+      themeOptions.forEach((item) => item.setAttribute('aria-selected', String(item === option)));
+      localStorage.setItem('site-theme', option.dataset.themeValue);
+    }
+
+    function openThemeDropdown() {
+      themeList.hidden = false;
+      themeTrigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeThemeDropdown() {
+      themeList.hidden = true;
+      themeTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    applyTheme(localStorage.getItem('site-theme') || 'default');
+
+    themeTrigger.addEventListener('click', () => {
+      if (themeList.hidden) openThemeDropdown();
+      else closeThemeDropdown();
+    });
+
+    themeOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        applyTheme(option.dataset.themeValue);
+        closeThemeDropdown();
+        themeTrigger.focus();
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!themeDropdown.contains(event.target)) closeThemeDropdown();
+    });
+
+    // =========================================================================
+    // 2. 3D RETRO VECTOR GLOBE ENGINE
+    // =========================================================================
+    const canvas = document.getElementById('globe-canvas');
+    const ctx = canvas.getContext('2d');
+    const stage = document.getElementById('globe-stage');
+
+
+    const hudTarget = document.getElementById('hud-target');
+
+    const btnAutoSpin = document.getElementById('btn-autospin');
+    const btnReverse = document.getElementById('btn-reverse');
+    const btnReset = document.getElementById('btn-reset');
+    const btnZoomIn = document.getElementById('btn-zoom-in');
+    const btnZoomOut = document.getElementById('btn-zoom-out');
+
+
+    // Globe States & Viewport Dimensions
+    let viewWidth = 860;
+    let viewHeight = 520;
+    let baseRadius = 180;
+    let zoom = 1.0;
+    let targetZoom = 1.0;
+
+    let yaw = -0.6; // longitude angle (radians)
+    let pitch = 0.35; // latitude angle (radians)
+    let targetYaw = -0.6;
+    let targetPitch = 0.35;
+
+    let yawVelocity = 0;
+    let pitchVelocity = 0;
+
+    let isDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let dragStartYaw = 0, dragStartPitch = 0;
+    let lastDragTime = 0;
+    let lastDragX = 0, lastDragY = 0;
+
+    let autoSpin = true;
+    let spinSpeed = 0.0018;
+    let showGrid = true;
+    let showPins = true;
+    let showBackface = true;
+
+    // Major Cities Data & Tagged Photo Locations
+    const fallbackLocations = [
+      { name: 'Tokyo', lat: 35.6762, lon: 139.6503, country: 'Japan', count: 0, photos: [] },
+      { name: 'Kyoto', lat: 35.0116, lon: 135.7681, country: 'Japan', count: 0, photos: [] },
+      { name: 'Paris', lat: 48.8566, lon: 2.3522, country: 'France', count: 0, photos: [] },
+      { name: 'London', lat: 51.5074, lon: -0.1278, country: 'UK', count: 0, photos: [] },
+      { name: 'New York', lat: 40.7128, lon: -74.0060, country: 'USA', count: 0, photos: [] },
+      { name: 'Ho Chi Minh City', lat: 10.8231, lon: 106.6297, country: 'Vietnam', count: 0, photos: [] },
+      { name: 'Sydney', lat: -33.8688, lon: 151.2093, country: 'Australia', count: 0, photos: [] },
+      { name: 'Cairo', lat: 30.0444, lon: 31.2357, country: 'Egypt', count: 0, photos: [] },
+      { name: 'Rio de Janeiro', lat: -22.9068, lon: -43.1729, country: 'Brazil', count: 0, photos: [] },
+      { name: 'Reykjavik', lat: 64.1466, lon: -21.9426, country: 'Iceland', count: 0, photos: [] }
+    ];
+
+    const cities = (window.globeLocationData && Array.isArray(window.globeLocationData.locations) && window.globeLocationData.locations.length > 0)
+      ? window.globeLocationData.locations
+      : fallbackLocations;
+
+    let selectedCity = null;
+    let hoveredCity = null;
+    let dragDist = 0;
+
+    // High-fidelity World Coastlines Polygons [lon, lat]
+    const landmasses = [
+      // North America
+      [
+        [-168, 65], [-160, 71], [-140, 70], [-130, 69], [-120, 69], [-100, 69], [-85, 70], [-70, 62],
+        [-65, 58], [-55, 52], [-60, 46], [-66, 44], [-70, 42], [-75, 35], [-80, 25], [-81, 25],
+        [-83, 30], [-90, 30], [-97, 26], [-97, 20], [-90, 16], [-83, 10], [-77, 8], [-80, 9],
+        [-85, 13], [-92, 16], [-105, 20], [-110, 24], [-115, 30], [-120, 34], [-124, 40], [-124, 48],
+        [-130, 54], [-136, 58], [-150, 60], [-160, 56], [-165, 60], [-168, 65]
+      ],
+      // South America
+      [
+        [-77, 8], [-72, 12], [-60, 10], [-50, 0], [-35, -5], [-35, -10], [-39, -15], [-42, -23],
+        [-50, -30], [-58, -35], [-65, -42], [-68, -54], [-74, -53], [-74, -45], [-72, -35], [-70, -20],
+        [-78, -5], [-80, 2], [-77, 8]
+      ],
+      // Europe & Western Asia
+      [
+        [-9, 36], [-9, 43], [0, 44], [-4, 48], [2, 51], [8, 54], [10, 58], [5, 62], [15, 68], [28, 71],
+        [32, 65], [25, 60], [20, 55], [14, 54], [14, 45], [18, 40], [15, 38], [22, 38], [26, 41],
+        [28, 45], [36, 46], [40, 42], [50, 40], [53, 25], [60, 25], [68, 24], [72, 19], [77, 8], [80, 13],
+        [88, 22], [92, 21], [100, 10], [104, 1], [108, 14], [108, 22], [118, 25], [122, 30],
+        [120, 38], [128, 38], [130, 42], [136, 48], [142, 53], [155, 55], [162, 60], [170, 64],
+        [180, 66], [170, 70], [140, 73], [115, 75], [95, 76], [75, 72], [60, 68], [50, 60],
+        [40, 52], [36, 46], [30, 46], [28, 41], [23, 38], [15, 38], [12, 43], [3, 43], [-2, 37], [-9, 36]
+      ],
+      // British Isles
+      [
+        [-5, 50], [1, 51], [0, 53], [-2, 58], [-5, 58], [-4, 55], [-5, 50]
+      ],
+      // Africa
+      [
+        [-6, 36], [10, 37], [25, 32], [32, 31], [35, 28], [43, 12], [51, 12], [45, 2], [40, -4],
+        [35, -15], [32, -26], [28, -33], [19, -34], [15, -23], [12, -15], [9, 4], [0, 6], [-15, 11],
+        [-17, 15], [-13, 28], [-6, 36]
+      ],
+      // Madagascar
+      [
+        [49, -12], [50, -16], [47, -25], [44, -25], [44, -18], [49, -12]
+      ],
+      // Japan
+      [
+        [130, 32], [133, 34], [136, 35], [140, 36], [141, 41], [141, 45], [145, 44], [140, 40],
+        [136, 36], [130, 32]
+      ],
+      // Australia
+      [
+        [114, -22], [115, -34], [122, -35], [135, -35], [138, -35], [147, -38], [151, -34],
+        [153, -28], [148, -20], [142, -11], [136, -12], [130, -13], [125, -15], [114, -22]
+      ],
+      // New Zealand
+      [
+        [166, -46], [170, -43], [174, -41], [178, -38], [174, -36], [172, -41], [168, -44], [166, -46]
+      ],
+      // Greenland
+      [
+        [-45, 60], [-35, 66], [-20, 75], [-20, 82], [-50, 83], [-60, 76], [-52, 68], [-45, 60]
+      ],
+      // Antarctica
+      [
+        [-180, -78], [-140, -75], [-100, -72], [-65, -64], [-55, -64], [-20, -70],
+        [20, -68], [60, -66], [100, -66], [140, -67], [180, -78]
+      ]
+    ];
+
+    // Project [lat, lon] to 3D Cartesian, then rotate, then 2D screen
+    function project(lat, lon, currentRadius) {
+      const phi = (lat * Math.PI) / 180;
+      const theta = (lon * Math.PI) / 180;
+
+      // 3D Cartesian on unit sphere
+      const x = Math.cos(phi) * Math.sin(theta);
+      const y = Math.sin(phi);
+      const z = Math.cos(phi) * Math.cos(theta);
+
+      // Rotate around Y axis (yaw)
+      const cosY = Math.cos(yaw);
+      const sinY = Math.sin(yaw);
+      const x1 = x * cosY - z * sinY;
+      const z1 = x * sinY + z * cosY;
+
+      // Rotate around X axis (pitch)
+      const cosP = Math.cos(pitch);
+      const sinP = Math.sin(pitch);
+      const y2 = y * cosP - z1 * sinP;
+      const z2 = y * sinP + z1 * cosP;
+
+      const cx = viewWidth / 2;
+      const cy = viewHeight / 2;
+
+      return {
+        x: cx + x1 * currentRadius,
+        y: cy - y2 * currentRadius,
+        z: z2,
+        visible: z2 > 0
+      };
+    }
+
+    // Colors read from active CSS Theme variables
+    function getThemeColors() {
+      const styles = getComputedStyle(document.documentElement);
+      const textColor = styles.getPropertyValue('--theme-text').trim() || '#172c45';
+      const accentColor = styles.getPropertyValue('--theme-accent').trim() || '#245782';
+      const accentLight = styles.getPropertyValue('--theme-accent-light').trim() || '#7d9ab3';
+      const boxBg = styles.getPropertyValue('--theme-box-bg').trim() || '#e7e9ec';
+      const isMatrix = document.documentElement.getAttribute('data-theme') === 'matrix';
+      const isMidnight = document.documentElement.getAttribute('data-theme') === 'midnight';
+      
+      return {
+        text: textColor,
+        accent: accentColor,
+        accentLight: accentLight,
+        boxBg: boxBg,
+        isMatrix: isMatrix,
+        isMidnight: isMidnight
+      };
+    }
+
+    // Main Draw Function
+    let pulseAngle = 0;
+    function drawGlobe() {
+      ctx.clearRect(0, 0, viewWidth, viewHeight);
+
+      const R = baseRadius * zoom;
+      const cx = viewWidth / 2;
+      const cy = viewHeight / 2;
+      const colors = getThemeColors();
+
+      pulseAngle += 0.05;
+
+      // 1. Outer Horizon Glow & Sphere Backing
+      const glowGrad = ctx.createRadialGradient(cx, cy, R * 0.7, cx, cy, R * 1.15);
+      if (colors.isMatrix) {
+        glowGrad.addColorStop(0, 'rgba(0, 255, 65, 0.08)');
+        glowGrad.addColorStop(0.8, 'rgba(0, 255, 65, 0.03)');
+        glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      } else {
+        glowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
+        glowGrad.addColorStop(0.8, 'rgba(0, 0, 0, 0.02)');
+        glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      }
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.15, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sphere Disc
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = colors.isMatrix ? 'rgba(2, 10, 2, 0.85)' : (colors.isMidnight ? 'rgba(5, 5, 5, 0.9)' : 'rgba(230, 235, 240, 0.25)');
+      ctx.fill();
+
+      // 2. Latitudinal & Longitudinal Grid (Meridians & Parallels)
+      if (showGrid) {
+        // Backface grid (subtle, dashed / low-alpha)
+        if (showBackface) {
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = colors.isMatrix ? 'rgba(0, 255, 65, 0.15)' : 'rgba(0, 0, 0, 0.09)';
+          ctx.setLineDash([2, 4]);
+
+          // Meridians (Longitudes)
+          for (let lon = -180; lon < 180; lon += 30) {
+            ctx.beginPath();
+            let started = false;
+            for (let lat = -80; lat <= 80; lat += 5) {
+              const pt = project(lat, lon, R);
+              if (!pt.visible) {
+                if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+                else { ctx.lineTo(pt.x, pt.y); }
+              } else {
+                started = false;
+              }
+            }
+            ctx.stroke();
+          }
+
+          // Parallels (Latitudes)
+          for (let lat = -60; lat <= 60; lat += 30) {
+            ctx.beginPath();
+            let started = false;
+            for (let lon = -180; lon <= 180; lon += 5) {
+              const pt = project(lat, lon, R);
+              if (!pt.visible) {
+                if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+                else { ctx.lineTo(pt.x, pt.y); }
+              } else {
+                started = false;
+              }
+            }
+            ctx.stroke();
+          }
+          ctx.setLineDash([]);
+        }
+
+        // Frontface Grid (solid, crisp)
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = colors.isMatrix 
+          ? 'rgba(0, 255, 65, 0.45)' 
+          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)');
+
+        // Meridians
+        for (let lon = -180; lon < 180; lon += 30) {
+          ctx.beginPath();
+          let started = false;
+          for (let lat = -85; lat <= 85; lat += 4) {
+            const pt = project(lat, lon, R);
+            if (pt.visible) {
+              if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+              else { ctx.lineTo(pt.x, pt.y); }
+            } else {
+              started = false;
+            }
+          }
+          ctx.stroke();
+        }
+
+        // Parallels
+        for (let lat = -60; lat <= 60; lat += 30) {
+          ctx.beginPath();
+          let started = false;
+          const isEquator = lat === 0;
+          ctx.lineWidth = isEquator ? 1.8 : 1;
+          ctx.strokeStyle = isEquator 
+            ? (colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent)) 
+            : (colors.isMatrix ? 'rgba(0, 255, 65, 0.45)' : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)'));
+
+          for (let lon = -180; lon <= 180; lon += 4) {
+            const pt = project(lat, lon, R);
+            if (pt.visible) {
+              if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+              else { ctx.lineTo(pt.x, pt.y); }
+            } else {
+              started = false;
+            }
+          }
+          ctx.stroke();
+        }
+      }
+
+      // 3. Backface Continents (faint outline in x-ray mode)
+      if (showBackface) {
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = colors.isMatrix 
+          ? 'rgba(0, 255, 65, 0.18)' 
+          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.12)' : 'rgba(0, 0, 0, 0.12)');
+        ctx.setLineDash([2, 3]);
+        landmasses.forEach((poly) => {
+          ctx.beginPath();
+          let started = false;
+          poly.forEach(([lon, lat]) => {
+            const pt = project(lat, lon, R);
+            if (!pt.visible) {
+              if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+              else { ctx.lineTo(pt.x, pt.y); }
+            } else {
+              started = false;
+            }
+          });
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+      }
+
+      // 4. Frontface Continents
+      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.text);
+      ctx.fillStyle = colors.isMatrix 
+        ? 'rgba(0, 255, 65, 0.15)' 
+        : (colors.isMidnight ? 'rgba(236, 230, 216, 0.08)' : 'rgba(36, 87, 130, 0.14)');
+
+      landmasses.forEach((poly) => {
+        ctx.beginPath();
+        let started = false;
+        poly.forEach(([lon, lat]) => {
+          const pt = project(lat, lon, R);
+          if (pt.visible) {
+            if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+            else { ctx.lineTo(pt.x, pt.y); }
+          } else {
+            started = false;
+          }
+        });
+        ctx.stroke();
+      });
+
+      // 5. Outer Horizon Rim Border
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent);
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Cardinal Coordinate Ticks around the Horizon Rim
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.text);
+      for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
+        const x1 = cx + Math.cos(angle) * (R - 3);
+        const y1 = cy + Math.sin(angle) * (R - 3);
+        const x2 = cx + Math.cos(angle) * (R + 4);
+        const y2 = cy + Math.sin(angle) * (R + 4);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
+      // 6. City Location Pinpoints & Tactical HUD Labels
+      if (showPins) {
+        const placedBoxes = [];
+        const pad = 6;
+        function checkOverlap(b1, b2) {
+          return !(b1.x + b1.w + pad < b2.x || b2.x + b2.w + pad < b1.x ||
+                   b1.y + b1.h + pad < b2.y || b2.y + b2.h + pad < b1.y);
+        }
+
+        // 1. Gather all visible cities & calculate label sizes
+        const visibleList = [];
+        cities.forEach((city) => {
+          const pt = project(city.lat, city.lon, R);
+          city._screenX = pt.x;
+          city._screenY = pt.y;
+          city._visible = pt.visible;
+
+          if (pt.visible) {
+            const isSelected = !!(selectedCity && selectedCity.name === city.name);
+            const photoCount = city.count || (city.photos ? city.photos.length : 0);
+            const countText = `[${photoCount} ${photoCount === 1 ? 'PHOTO' : 'PHOTOS'}]`;
+            const labelText = `${city.name.toUpperCase()} ${countText}`;
+            ctx.font = isSelected 
+              ? 'bold 12px "Share Tech Mono", "VT323", monospace' 
+              : '12px "Share Tech Mono", "VT323", monospace';
+            const textWidth = ctx.measureText(labelText).width;
+            const chipW = textWidth + 8;
+            const chipH = 16;
+            visibleList.push({
+              city,
+              pt,
+              isSelected,
+              photoCount,
+              labelText,
+              chipW,
+              chipH
+            });
+          }
+        });
+
+        // 2. Compute non-colliding label placements (selected city gets priority placement first)
+        const sortedForPlacement = [...visibleList].sort((a, b) => (a.isSelected ? -1 : (b.isSelected ? 1 : 0)));
+        sortedForPlacement.forEach((item) => {
+          const candidates = [
+            { lx: item.pt.x + 16, ly: item.pt.y - 14, align: 'right' },
+            { lx: item.pt.x - 16 - item.chipW, ly: item.pt.y - 14, align: 'left' },
+            { lx: item.pt.x + 16, ly: item.pt.y + 18, align: 'right' },
+            { lx: item.pt.x - 16 - item.chipW, ly: item.pt.y + 18, align: 'left' }
+          ];
+
+          let chosen = candidates[0];
+          for (const c of candidates) {
+            const box = { x: c.lx, y: c.ly - 13, w: item.chipW, h: item.chipH };
+            if (!placedBoxes.some(existing => checkOverlap(existing, box))) {
+              chosen = c;
+              break;
+            }
+          }
+          const chosenBox = { x: chosen.lx, y: chosen.ly - 13, w: item.chipW, h: item.chipH };
+          placedBoxes.push(chosenBox);
+          item.placement = chosen;
+          item.box = chosenBox;
+          item.city._labelBox = chosenBox;
+        });
+
+        // 3. Render pins (non-selected first, selected city rendered last so its reticle & label are on top)
+        const sortedForDraw = [...visibleList].sort((a, b) => (a.isSelected ? 1 : (b.isSelected ? -1 : 0)));
+        sortedForDraw.forEach((item) => {
+          const { city, pt, isSelected, photoCount, labelText, chipW, chipH, placement } = item;
+          const isHovered = !!(hoveredCity && hoveredCity.name === city.name);
+          const pulse = Math.sin(pulseAngle * 2.5 + city.lat) * (isSelected ? 5 : (photoCount > 0 ? 3.5 : 2)) + (isSelected ? 9 : (photoCount > 0 ? 6 : 4));
+
+          // Target Blip Dot
+          ctx.fillStyle = colors.isMatrix 
+            ? (isSelected ? '#ffffff' : '#00ff41') 
+            : (colors.isMidnight
+                ? (isSelected ? '#ffffff' : '#ece6d8')
+                : (isSelected ? '#f59e0b' : '#dc2626'));
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, isSelected ? 5 : 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Pulse Radar Ring
+          ctx.lineWidth = isSelected ? 2 : 1;
+          ctx.strokeStyle = colors.isMatrix 
+            ? (isSelected ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 255, 65, 0.6)') 
+            : (colors.isMidnight
+                ? (isSelected ? 'rgba(255, 255, 255, 0.9)' : 'rgba(236, 230, 216, 0.6)')
+                : (isSelected ? 'rgba(245, 158, 11, 0.9)' : 'rgba(220, 38, 38, 0.6)'));
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pulse, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Tactical Corner Reticle if selected
+          if (isSelected) {
+            const reticle = 14;
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent);
+            ctx.beginPath();
+            // Top-left
+            ctx.moveTo(pt.x - reticle, pt.y - reticle + 5);
+            ctx.lineTo(pt.x - reticle, pt.y - reticle);
+            ctx.lineTo(pt.x - reticle + 5, pt.y - reticle);
+            // Top-right
+            ctx.moveTo(pt.x + reticle - 5, pt.y - reticle);
+            ctx.lineTo(pt.x + reticle, pt.y - reticle);
+            ctx.lineTo(pt.x + reticle, pt.y - reticle + 5);
+            // Bottom-left
+            ctx.moveTo(pt.x - reticle, pt.y + reticle - 5);
+            ctx.lineTo(pt.x - reticle, pt.y + reticle);
+            ctx.lineTo(pt.x - reticle + 5, pt.y + reticle);
+            // Bottom-right
+            ctx.moveTo(pt.x + reticle - 5, pt.y + reticle);
+            ctx.lineTo(pt.x + reticle, pt.y + reticle);
+            ctx.lineTo(pt.x + reticle, pt.y + reticle - 5);
+            ctx.stroke();
+          }
+
+          // Leader Line
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = colors.isMatrix 
+            ? '#00ff41' 
+            : (colors.isMidnight 
+                ? (isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.7)') 
+                : (isSelected ? colors.accent : colors.text));
+          ctx.beginPath();
+          ctx.moveTo(pt.x, pt.y);
+          if (placement.align === 'right') {
+            ctx.lineTo(pt.x + 16, placement.ly);
+            ctx.lineTo(placement.lx + chipW, placement.ly);
+          } else {
+            ctx.lineTo(pt.x - 16, placement.ly);
+            ctx.lineTo(placement.lx, placement.ly);
+          }
+          ctx.stroke();
+
+          // Tactical chip background, border & text
+          let chipBg;
+          let chipFg;
+          let chipBorder;
+
+          if (colors.isMatrix) {
+            chipBg = isSelected 
+              ? '#00ff41' 
+              : (isHovered ? 'rgba(0, 50, 0, 0.95)' : 'rgba(0, 20, 0, 0.85)');
+            chipFg = isSelected ? '#000000' : '#00ff41';
+            chipBorder = '#00ff41';
+          } else if (colors.isMidnight) {
+            chipBg = isSelected 
+              ? '#ece6d8' 
+              : (isHovered ? 'rgba(45, 45, 45, 0.95)' : 'rgba(16, 16, 16, 0.92)');
+            chipFg = isSelected ? '#000000' : (isHovered ? '#ffffff' : '#ece6d8');
+            chipBorder = isSelected ? '#ece6d8' : (isHovered ? '#ffffff' : 'rgba(236, 230, 216, 0.45)');
+          } else {
+            chipBg = isSelected
+              ? colors.accent
+              : (isHovered ? 'rgba(23, 44, 69, 0.95)' : 'rgba(255, 255, 255, 0.92)');
+            chipFg = isSelected
+              ? '#ffffff'
+              : (isHovered ? '#ffffff' : colors.text);
+            chipBorder = isSelected ? colors.accent : colors.boxBg;
+          }
+
+          ctx.fillStyle = chipBg;
+          ctx.fillRect(placement.lx, placement.ly - 13, chipW, chipH);
+          ctx.strokeStyle = chipBorder;
+          ctx.strokeRect(placement.lx, placement.ly - 13, chipW, chipH);
+
+          ctx.font = isSelected 
+            ? 'bold 12px "Share Tech Mono", "VT323", monospace' 
+            : '12px "Share Tech Mono", "VT323", monospace';
+          ctx.fillStyle = chipFg;
+          ctx.fillText(labelText, placement.lx + 4, placement.ly - 1);
+        });
+      }
+
+
+
+      // Active Sector Detection
+      let sector = 'GLOBAL';
+      const cLonNum = parseFloat(currentLon);
+      const cLatNum = parseFloat(currentLat);
+      if (cLonNum >= -30 && cLonNum <= 60 && cLatNum >= 35) sector = 'EUROPE / MEDITERRANEAN';
+      else if (cLonNum >= 60 && cLonNum <= 150 && cLatNum >= 0) sector = 'ASIA PACIFIC';
+      else if (cLonNum >= -130 && cLonNum <= -60 && cLatNum >= 15) sector = 'NORTH AMERICA';
+      else if (cLonNum >= -85 && cLonNum <= -35 && cLatNum < 15) sector = 'SOUTH AMERICA';
+      else if (cLonNum >= -20 && cLonNum <= 55 && cLatNum < 35 && cLatNum > -40) sector = 'AFRICA';
+      else if (cLonNum >= 110 && cLonNum <= 180 && cLatNum < 0) sector = 'OCEANIA';
+      else if (cLonNum >= -70 && cLonNum <= -10) sector = 'ATLANTIC BASIN';
+      else sector = 'PACIFIC BASIN';
+      hudTarget.textContent = `SECTOR: ${sector}`;
+    }
+
+    // Animation Loop
+    let lastFrame = performance.now();
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+
+      // Smooth zoom interpolation
+      zoom += (targetZoom - zoom) * 0.12;
+
+      // Inertia & Autospin
+      if (!isDragging) {
+        if (autoSpin) {
+          yaw += spinSpeed;
+        }
+        // Momentum damping
+        yaw += yawVelocity;
+        pitch += pitchVelocity;
+        yawVelocity *= 0.94;
+        pitchVelocity *= 0.94;
+
+        // Pitch limits (prevent flipover)
+        pitch = Math.max(-1.45, Math.min(1.45, pitch));
+      }
+
+      drawGlobe();
+    }
+    requestAnimationFrame(animate);
+
+    // =========================================================================
+    // 3. INTERACTIVE MOUSE, TOUCH & PINCH CONTROLS
+    // =========================================================================
+    const activePointers = new Map();
+    let pinchStartDist = 0;
+    let pinchStartZoom = 1.0;
+
+    function getPinchDist() {
+      const pts = Array.from(activePointers.values());
+      if (pts.length < 2) return 0;
+      const dx = pts[0].x - pts[1].x;
+      const dy = pts[0].y - pts[1].y;
+      return Math.hypot(dx, dy);
+    }
+
+    // Photographic Reconnaissance Dossier & Target Selection Logic
+    const dossierEl = document.getElementById('globe-dossier');
+    const DOSSIER_PAGE_SIZE = 8;
+    let dossierCurrentPage = 1;
+    let dossierCurrentCity = null;
+
+    function buildPaginationBar(totalPhotos, currentPage, totalPages) {
+      if (totalPages <= 1) return '';
+      const start = (currentPage - 1) * DOSSIER_PAGE_SIZE + 1;
+      const end = Math.min(currentPage * DOSSIER_PAGE_SIZE, totalPhotos);
+      const pageButtons = Array.from({ length: totalPages }, (_, i) => {
+        const p = i + 1;
+        return `<button type="button" class="dossier-page-btn${p === currentPage ? ' is-current' : ''}" data-page="${p}">[${p}]</button>`;
+      }).join('');
+      return `
+        <div class="dossier-subbar">
+          <span class="dossier-range-indicator">ITEMS ${start}–${end} OF ${totalPhotos}</span>
+          <div class="dossier-pagination">
+            <button type="button" class="dossier-page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled style="opacity:0.35;cursor:default"' : ''}>[PREV]</button>
+            ${pageButtons}
+            <button type="button" class="dossier-page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled style="opacity:0.35;cursor:default"' : ''}>[NEXT]</button>
+          </div>
+        </div>`;
+    }
+
+    function renderDossier(city) {
+      if (!dossierEl) return;
+      dossierCurrentCity = city;
+      if (!city) {
+        dossierCurrentPage = 1;
+        dossierEl.innerHTML = `
+          <div class="dossier-empty-state">
+            [TARGET INTEL OFFLINE // SELECT ANY PIN ON THE SPHERE OR A TARGET ABOVE TO RECON PHOTOS]
+          </div>
+        `;
+        return;
+      }
+
+      const allPhotos = city.photos || [];
+      const totalPhotos = allPhotos.length;
+      const count = city.count || totalPhotos;
+      const countryStr = city.country ? `, ${city.country.toUpperCase()}` : '';
+      const totalPages = totalPhotos > 0 ? Math.ceil(totalPhotos / DOSSIER_PAGE_SIZE) : 1;
+
+      // Clamp page within valid range
+      if (dossierCurrentPage < 1) dossierCurrentPage = 1;
+      if (dossierCurrentPage > totalPages) dossierCurrentPage = totalPages;
+
+      const pageStart = (dossierCurrentPage - 1) * DOSSIER_PAGE_SIZE;
+      const pagePhotos = allPhotos.slice(pageStart, pageStart + DOSSIER_PAGE_SIZE);
+
+      let photosHtml = '';
+      if (pagePhotos.length > 0) {
+        photosHtml = `
+          <div class="dossier-grid">
+            ${pagePhotos.map((p, i) => {
+              const itemNum = String(pageStart + i + 1).padStart(2, '0');
+              return `
+              <div class="dossier-card">
+                <div class="dossier-thumb-wrap">
+                  <img src="${p.src}" alt="${p.alt || city.name}" class="dossier-thumb" loading="lazy">
+                  <span class="dossier-record-tag">ITEM #${itemNum}</span>
+                </div>
+                <div class="dossier-card-meta">
+                  <span class="dossier-gallery-tag">[${p.gallery || 'PORTFOLIO'}]</span>
+                  <a href="${p.galleryLink || '#'}" class="dossier-view-link">VIEW IN GALLERY &rarr;</a>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        `;
+      } else {
+        photosHtml = `
+          <div class="dossier-empty-state">
+            NO PHOTOGRAPHS CURRENTLY CATALOGED FOR THIS SECTOR.
+          </div>
+        `;
+      }
+
+      const paginationBar = buildPaginationBar(totalPhotos, dossierCurrentPage, totalPages);
+
+      dossierEl.innerHTML = `
+        <div class="dossier-header">
+          <div class="dossier-title-area">
+            <span class="dossier-title">SECTOR INTEL: ${city.name.toUpperCase()}${countryStr}</span>
+            <span class="dossier-badge">[${count} ${count === 1 ? 'PHOTO' : 'PHOTOS'} ARCHIVED]</span>
+          </div>
+          <button type="button" class="dossier-close-btn" id="dossier-close-btn">[CLOSE X]</button>
+        </div>
+        ${paginationBar}
+        ${photosHtml}
+        ${totalPages > 1 ? paginationBar : ''}
+      `;
+
+      document.getElementById('dossier-close-btn')?.addEventListener('click', () => {
+        selectedCity = null;
+        dossierCurrentPage = 1;
+        renderDossier(null);
+        updateTargetPills();
+        hudTarget.textContent = 'SECTOR: GLOBAL';
+      });
+
+      // Wire up pagination buttons
+      dossierEl.querySelectorAll('.dossier-page-btn[data-page]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const p = parseInt(btn.dataset.page, 10);
+          if (!isNaN(p) && p >= 1 && p <= totalPages) {
+            dossierCurrentPage = p;
+            renderDossier(dossierCurrentCity);
+            dossierEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    }
+
+    function updateTargetPills() {
+      document.querySelectorAll('.target-pill').forEach((btn) => {
+        btn.classList.toggle('is-active', !!(selectedCity && btn.dataset.name === selectedCity.name));
+      });
+    }
+
+    function flyToLocation(city) {
+      selectedCity = city;
+      dossierCurrentPage = 1;
+      updateTargetPills();
+      renderDossier(city);
+
+      autoSpin = false;
+      btnAutoSpin.textContent = '[AUTO-SPIN: OFF]';
+      btnAutoSpin.classList.remove('is-active');
+
+      const count = city.count || (city.photos ? city.photos.length : 0);
+      hudTarget.textContent = `TARGET: ${city.name.toUpperCase()} [${count} PHOTOS]`;
+
+      const targetYawAngle = city.lon * Math.PI / 180;
+      const targetPitchAngle = city.lat * Math.PI / 180;
+
+      const startYaw = yaw;
+      const startPitch = pitch;
+      const startTime = performance.now();
+      const duration = 750;
+
+      function stepNav(t) {
+        const progress = Math.min(1, (t - startTime) / duration);
+        const ease = 0.5 - Math.cos(progress * Math.PI) / 2;
+
+        let diffYaw = (targetYawAngle - startYaw) % (Math.PI * 2);
+        if (diffYaw > Math.PI) diffYaw -= Math.PI * 2;
+        if (diffYaw < -Math.PI) diffYaw += Math.PI * 2;
+
+        yaw = startYaw + diffYaw * ease;
+        pitch = startPitch + (targetPitchAngle - startPitch) * ease;
+
+        if (progress < 1) {
+          requestAnimationFrame(stepNav);
+        }
+      }
+      requestAnimationFrame(stepNav);
+    }
+
+    function getCityAt(mouseX, mouseY) {
+      if (!showPins) return null;
+      let bestCity = null;
+      let bestDist = 20;
+      for (const city of cities) {
+        if (!city._visible) continue;
+        const dist = Math.hypot(mouseX - city._screenX, mouseY - city._screenY);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestCity = city;
+        }
+        if (city._labelBox) {
+          const b = city._labelBox;
+          if (mouseX >= b.x && mouseX <= b.x + b.w && mouseY >= b.y && mouseY <= b.y + b.h) {
+            return city;
+          }
+        }
+      }
+      return bestCity;
+    }
+
+    // Dynamic Target Jump Buttons
+    const targetsRow = document.querySelector('.globe-targets-row');
+    function initTargetsRow() {
+      if (!targetsRow) return;
+      targetsRow.innerHTML = '';
+      cities.forEach((city) => {
+        const count = city.count || (city.photos ? city.photos.length : 0);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'target-pill';
+        btn.dataset.name = city.name;
+        btn.dataset.lat = city.lat;
+        btn.dataset.lon = city.lon;
+        btn.textContent = `${city.name.toUpperCase()} [${count}]`;
+        btn.title = `${city.name}: ${count} photographs`;
+        btn.addEventListener('click', () => {
+          flyToLocation(city);
+        });
+        targetsRow.appendChild(btn);
+      });
+    }
+    initTargetsRow();
+
+    stage.addEventListener('pointerdown', (e) => {
+      activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      stage.setPointerCapture(e.pointerId);
+      dragDist = 0;
+
+      if (activePointers.size === 2) {
+        isDragging = false;
+        pinchStartDist = getPinchDist();
+        pinchStartZoom = targetZoom;
+      } else if (activePointers.size === 1) {
+        isDragging = true;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        dragStartYaw = yaw;
+        dragStartPitch = pitch;
+        lastDragX = e.clientX;
+        lastDragY = e.clientY;
+        lastDragTime = performance.now();
+        yawVelocity = 0;
+        pitchVelocity = 0;
+      }
+      e.preventDefault();
+    });
+
+    stage.addEventListener('pointermove', (e) => {
+      if (!activePointers.has(e.pointerId)) return;
+      activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (activePointers.size >= 2 && pinchStartDist > 0) {
+        const currentDist = getPinchDist();
+        const factor = currentDist / pinchStartDist;
+        targetZoom = Math.max(0.65, Math.min(2.1, pinchStartZoom * factor));
+        return;
+      }
+
+      if (!isDragging) {
+        const rect = stage.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const hit = getCityAt(mx, my);
+        if (hit) {
+          hoveredCity = hit;
+          stage.style.cursor = 'pointer';
+          stage.title = `${hit.name}: ${hit.count || 0} photos (Click to open intel)`;
+        } else {
+          hoveredCity = null;
+          stage.style.cursor = 'grab';
+          stage.title = '';
+        }
+        return;
+      }
+
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      dragDist += Math.hypot(e.clientX - lastDragX, e.clientY - lastDragY);
+
+      const sensitivity = 0.0055 / zoom;
+      yaw = dragStartYaw - dx * sensitivity;
+      pitch = Math.max(-1.45, Math.min(1.45, dragStartPitch + dy * sensitivity));
+
+      const now = performance.now();
+      yawVelocity = -((e.clientX - lastDragX) * sensitivity) * 0.6;
+      pitchVelocity = ((e.clientY - lastDragY) * sensitivity) * 0.6;
+
+      lastDragX = e.clientX;
+      lastDragY = e.clientY;
+      lastDragTime = now;
+    });
+
+    function endDrag(e) {
+      activePointers.delete(e.pointerId);
+      if (activePointers.size < 2) {
+        pinchStartDist = 0;
+      }
+      if (activePointers.size === 0) {
+        isDragging = false;
+        if (dragDist < 6) {
+          const rect = stage.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          const hit = getCityAt(mx, my);
+          if (hit) {
+            flyToLocation(hit);
+          }
+        }
+      } else if (activePointers.size === 1) {
+        const remaining = activePointers.values().next().value;
+        dragStartX = remaining.x;
+        dragStartY = remaining.y;
+        dragStartYaw = yaw;
+        dragStartPitch = pitch;
+        lastDragX = remaining.x;
+        lastDragY = remaining.y;
+        lastDragTime = performance.now();
+        isDragging = true;
+      }
+    }
+
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+
+    // Scroll Wheel Zoom
+    stage.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      targetZoom = Math.max(0.65, Math.min(2.1, targetZoom + delta));
+    }, { passive: false });
+
+    // =========================================================================
+    // 4. BUTTON ACTIONS
+    // =========================================================================
+    btnAutoSpin.addEventListener('click', () => {
+      autoSpin = !autoSpin;
+      btnAutoSpin.textContent = autoSpin ? '[AUTO-SPIN: ON]' : '[AUTO-SPIN: OFF]';
+      btnAutoSpin.classList.toggle('is-active', autoSpin);
+    });
+
+    btnReverse.addEventListener('click', () => {
+      spinSpeed = -spinSpeed;
+    });
+
+    btnReset.addEventListener('click', () => {
+      yaw = -0.6;
+      pitch = 0.35;
+      targetZoom = 1.0;
+      yawVelocity = 0;
+      pitchVelocity = 0;
+      selectedCity = null;
+      renderDossier(null);
+      updateTargetPills();
+      hudTarget.textContent = 'SECTOR: GLOBAL';
+    });
+
+    if (btnZoomIn) {
+      btnZoomIn.addEventListener('click', () => {
+        targetZoom = Math.min(2.1, targetZoom + 0.2);
+      });
+    }
+
+    if (btnZoomOut) {
+      btnZoomOut.addEventListener('click', () => {
+        targetZoom = Math.max(0.65, targetZoom - 0.2);
+      });
+    }
+
+
+    // Resize handler for high-DPI / Retina displays
+    function resizeCanvas() {
+      const rect = stage.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      viewWidth = rect.width || stage.clientWidth || 860;
+      viewHeight = rect.height || stage.clientHeight || 520;
+
+      canvas.width = Math.round(viewWidth * dpr);
+      canvas.height = Math.round(viewHeight * dpr);
+      canvas.style.width = `${viewWidth}px`;
+      canvas.style.height = `${viewHeight}px`;
+
+      // Transform context so all drawing coordinates remain in CSS logical pixels
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Radius sized to keep the entire globe and surrounding HUD/labels completely visible
+      baseRadius = Math.min(viewWidth, viewHeight) * 0.35;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    if (window.ResizeObserver) {
+      new ResizeObserver(resizeCanvas).observe(stage);
+    }
+    resizeCanvas();
+  </script>
+</body>
+</html>

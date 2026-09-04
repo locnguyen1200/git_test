@@ -38,80 +38,246 @@
     </a>
   </nav>
 
-  <!-- Camera page content -->
+  <!-- =========================================================================
+       CAMERA PAGE CONTENT & EQUIPMENT DIRECTORY
+       ========================================================================= -->
   <main class="box camera-page">
+    <!-- PAGE HEADER: Edit the eyebrow, title, and description text below -->
     <header class="page-heading">
-      <p class="eyebrow">The tool</p>
-      <h1 class="title_size">camera & lenses</h1>
-      <p>a place for camera & lens review, as well as repair notes.</p>
-     <div class="camera-index">
-      <ul>
-        <li> cameras
-      <ul>
-       <li> 
-        <div class = "brand-title">leica cameras </div>
-        <ul>
-        <li><a href="camera-reviews/leica-m3.html" class = "camera-link"> Leica M3</a> </li>
-        <li><a href="camera-reviews/leica-m4.html" class="camera-link"> Leica M4</a> </li>
-        <li><a href="camera-reviews/leica-m6.html" class="camera-link"> Leica M6</a> </li>
-        </ul>
-      </li>
-      <li>  <!-- Copy from here -->
-      <div class = "brand-title">nikon cameras </div>
-        <ul>
-          <li><a href="camera-reviews/nikon-f2.html" class="camera-link"> Nikon F2</a> </li>
-          <li><a href="camera-reviews/nikon-f3.html" class="camera-link"> Nikon F3</a> </li>
-          <li><a href="camera-reviews/nikon-f4.html" class="camera-link"> Nikon F4</a> </li>
-          <li><a href="camera-reviews/nikon-fm2n.html" class="camera-link"> Nikon FM2n</a> </li>
-          <li><a href="camera-reviews/nikon-fm3a.html" class="camera-link"> Nikon FM3a</a> </li>
-        </ul>  
-       </li>  <!-- Tohere -->
-        <li>   <!-- Copy from here -->
-      <div class = "brand-title">canon cameras </div>
-        <ul>
-          <li><a href="camera-reviews/canon-a1.html" class="camera-link"> Canon A1</a> </li>
-           <li><a href="camera-reviews/canon-P.html" class="camera-link"> Canon VI-T</a> </li>
-          <li><a href="camera-reviews/canon-7.html" class="camera-link"> Canon 7</a> </li>
-          <li><a href="camera-reviews/canon-P.html" class="camera-link"> Canon P</a> </li>
-        </ul>  
-       </li>   <!-- To here -->
-         <li> <!-- Copy from here -->
-          <div class = "brand-title">contax cameras </div>
-        <ul>
-          <li><a href="camera-reviews/contax-rtsiii.html" class="camera-link"> Contax RTS III</a> </li>
-          <li><a href="camera-reviews/contax-g2.html" class="camera-link"> Contax G2</a> </li>
-        </ul>  
-        </li> <!--To here -->
-             <li> <!-- Copy from here -->
-          <div class = "brand-title">hasselblad cameras </div>
-        <ul>
-          <li><a href="camera-reviews/hasselblad-500cm.html" class="camera-link"> Hasselblad 500CM</a> </li>
-        </ul>  
-        </li> <!--To here -->
-      </ul>
-      </li>
-      <li>lens
- <ul>
-       <li> 
-        <div class = "brand-title">m mount </div>
-        <ul>
-        <li><a href="lens-review/vmcolorskopar353-5.html" class="camera-link"> VM 35mm f/3.5 </a> </li>
-        <li><a href="lens-review/vmcolorskopar502-2.html" class="camera-link"> VM 50mm f/2.2 </a> </li>
-        <li><a href="lens-review/vmcolorskopar753-5.html" class="camera-link"> ZM 35mm f/2 </a> </li>
-        </ul>
-      </li>
-      <li>   <!-- Copy from here -->
-      <div class = "brand-title"> nikon f mount </div>
-        <ul>
-          <li><a href="lens-review/nikon-50mm-f1-4.html" class="camera-link"> Nikon 50mm f/1.4</a> </li>
-          <li><a href="lens-review/nikon-105mm-f2-5.html" class="camera-link"> Nikon 105mm f/2.5</a> </li>
-        </ul>  
-       </li>   <!-- Copy from here -->
-      </ul>
-    </div>
-      </li>
-     </ul>
+      <p class="eyebrow">The tool // Equipment Directory</p>
+      <h1 class="title_size">camera &amp; lenses</h1>
+      <p>a place for camera &amp; lens review, as well as repair notes.</p>
     </header>
+
+    <!-- =======================================================================
+         1. CAMERAS DIRECTORY SECTION
+         ======================================================================= -->
+    <section class="camera-archive-section" aria-label="Camera directory">
+      <!-- Section Header: You can edit the text or brand count here -->
+      <div class="camera-section-header">
+        <span class="camera-section-title">SYSTEM DIRECTORY // CAMERAS [5 BRANDS]</span>
+        <!-- Search bar: Real-time search across all camera and lens models and brands -->
+        <div class="directory-search-wrapper" role="search">
+          <div class="directory-search-box">
+            <svg class="directory-search-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="7" />
+              <line x1="16" y1="16" x2="21" y2="21" />
+            </svg>
+            <input
+              type="text"
+              id="directory-search-input"
+              class="directory-search-input"
+              placeholder="SEARCH..."
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Search camera and lens directory"
+            />
+            <button
+              type="button"
+              id="directory-search-clear"
+              class="directory-search-clear"
+              aria-label="Clear search"
+              title="Clear search"
+              hidden
+            >&times;</button>
+          </div>
+          <span id="directory-search-status" class="directory-search-status" aria-live="polite"></span>
+        </div>
+      </div>
+
+      <!-- Grid containing all brand boxes. To add a new brand, paste a new <article class="gear-card"> inside here. -->
+      <div class="gear-card-grid">
+
+        <!-- ===================================================================
+             BRAND BOX: LEICA
+             To add a new camera to this box:
+             1. Copy any <li>...</li> row below
+             2. Paste it before </ul>
+             3. Update href="..." and the camera name (e.g., Leica M2)
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>LEICA CAMERAS</span>
+            <span class="gear-card-badge">M-SYS</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/leica-m3.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Leica M3</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/leica-m4.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Leica M4</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/leica-m6.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Leica M6</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/leica-q2.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Leica Q2</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW LEICA CAMERAS HERE] -->
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             BRAND BOX: NIKON
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>NIKON CAMERAS</span>
+            <span class="gear-card-badge">F-SYS</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/nikon-f2.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon F2</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/nikon-f3.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon F3</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/nikon-f4.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon F4</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/nikon-fm2n.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon FM2n</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/nikon-fm3a.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon FM3a</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW NIKON CAMERAS HERE] -->
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             BRAND BOX: CANON
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>CANON CAMERAS</span>
+            <span class="gear-card-badge">FD / RF</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/canon-a1.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Canon A1</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/canon-P.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Canon VI-T</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/canon-7.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Canon 7</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/canon-P.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Canon P</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW CANON CAMERAS HERE] -->
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             BRAND BOX: CONTAX
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>CONTAX CAMERAS</span>
+            <span class="gear-card-badge">C/Y &amp; G</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/contax-rtsiii.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Contax RTS III</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="camera-reviews/contax-g2.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Contax G2</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW CONTAX CAMERAS HERE] -->
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             BRAND BOX: HASSELBLAD
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>HASSELBLAD</span>
+            <span class="gear-card-badge">6x6 MF</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/hasselblad-500cm.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Hasselblad 500CM</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW HASSELBLAD CAMERAS HERE] -->
+          </ul>
+        </article>
+              <!-- ===================================================================
+             BRAND BOX: FUJIFILM
+             =================================================================== -->
+       <article class="gear-card">
+          <div class="gear-card-header">
+            <span>FUJIFILM CAMERAS</span>
+            <span class="gear-card-badge">X-SYS</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/fujifilm-x-s20.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Fujifilm X-S20</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+          </ul>
+        </article>
+        <!-- ===================================================================
+             [HOW TO ADD A NEW BRAND BOX]:
+             Copy the template below, paste it right here before </div>,
+             and edit the brand title, badge, and camera links:
+
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>OLYMPUS CAMERAS</span>
+            <span class="gear-card-badge">OM-SYS</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="camera-reviews/olympus-om1.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Olympus OM-1</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+          </ul>
+        </article>
+             =================================================================== -->
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         2. LENSES DIRECTORY SECTION
+         ======================================================================= -->
+    <section class="camera-archive-section" aria-label="Lens directory">
+      <!-- Section Header: You can edit the title or mount count here -->
+      <div class="camera-section-header">
+        <span>SYSTEM DIRECTORY // LENSES [2 MOUNTS]</span>
+      </div>
+
+      <div class="gear-card-grid">
+
+        <!-- ===================================================================
+             LENS BOX: M MOUNT
+             To add a new lens here:
+             Copy any <li>...</li> row below and paste it before </ul>
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>M MOUNT OPTICS</span>
+            <span class="gear-card-badge">RANGEFINDER</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="lens-review/vmcolorskopar353-5.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> VM 35mm f/3.5</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="lens-review/vmcolorskopar502-2.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> VM 50mm f/2.2</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="lens-review/vmcolorskopar753-5.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> ZM 35mm f/2</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW M MOUNT LENSES HERE] -->
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             LENS BOX: NIKON F MOUNT
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>NIKON F MOUNT</span>
+            <span class="gear-card-badge">SLR</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="lens-review/nikon-50mm-f1-4.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon 50mm f/1.4</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="lens-review/nikon-105mm-f2-5.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Nikon 105mm f/2.5</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <!-- [PASTE NEW NIKON F LENSES HERE] -->
+          </ul>
+        </article>
+        <!-- ===================================================================
+             LENS BOX: FUJIFILM X MOUNT
+             =================================================================== -->
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>FUJIFILM X MOUNT</span>
+            <span class="gear-card-badge">SLR</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="lens-review/fujifilm-33mm-f1-4.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Fujifilm 33mm f/1.4</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+            <li><a href="lens-review/sigma-17-40mm-f1-8.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Sigma 17-40mm f/1.8</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+          </ul>
+        </article>
+
+        <!-- ===================================================================
+             [HOW TO ADD A NEW LENS MOUNT BOX]:
+             Copy the template below, paste it right here before </div>,
+             and edit the mount title, badge, and lens links:
+
+        <article class="gear-card">
+          <div class="gear-card-header">
+            <span>CANON FD MOUNT</span>
+            <span class="gear-card-badge">SLR</span>
+          </div>
+          <ul class="gear-card-list">
+            <li><a href="lens-review/canon-50mm-f1-4.html" class="gear-link"><span class="gear-link-title"><span class="gear-prompt">&gt;</span> Canon FD 50mm f/1.4</span> <span class="gear-arrow">&gt;&gt;</span></a></li>
+          </ul>
+        </article>
+             =================================================================== -->
+
+      </div>
+    </section>
   </main>
 
   <!-- Footer: FAQ and contact links -->
@@ -130,5 +296,164 @@
       </svg>
     </a>
   </footer>
+
+  <script>
+    /**
+     * Equipment Directory Live Search & Highlight
+     * Searches across all camera cards, brand headers, and gear items.
+     * Highlights matching text and indicates availability in real time.
+     */
+    (function () {
+      const searchInput = document.getElementById('directory-search-input');
+      const clearBtn = document.getElementById('directory-search-clear');
+      const statusBadge = document.getElementById('directory-search-status');
+      const gearCards = Array.from(document.querySelectorAll('.gear-card'));
+
+      if (!searchInput || !clearBtn || !statusBadge) return;
+
+      // Cache all searchable items with their original text
+      const directoryData = gearCards.map((card) => {
+        const headerSpan = card.querySelector('.gear-card-header > span:first-child');
+        const originalHeaderText = headerSpan ? headerSpan.textContent.trim() : '';
+
+        const links = Array.from(card.querySelectorAll('.gear-link')).map((link) => {
+          const titleEl = link.querySelector('.gear-link-title');
+          let originalName = '';
+          if (titleEl) {
+            const clone = titleEl.cloneNode(true);
+            const promptEl = clone.querySelector('.gear-prompt');
+            if (promptEl) promptEl.remove();
+            originalName = clone.textContent.trim();
+          }
+          return {
+            linkEl: link,
+            titleEl: titleEl,
+            originalName: originalName
+          };
+        });
+
+        return {
+          cardEl: card,
+          headerSpan: headerSpan,
+          originalHeaderText: originalHeaderText,
+          links: links
+        };
+      });
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function escapeRegExp(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      function highlightHtml(text, query) {
+        if (!query) return escapeHtml(text);
+        const safeText = escapeHtml(text);
+        const safeQuery = escapeRegExp(escapeHtml(query));
+        const regex = new RegExp(`(${safeQuery})`, 'gi');
+        return safeText.replace(regex, '<mark class="search-highlight">$1</mark>');
+      }
+
+      function performSearch() {
+        const query = searchInput.value.trim();
+        const queryLower = query.toLowerCase();
+
+        if (!query) {
+          // Reset everything to pristine state
+          clearBtn.hidden = true;
+          statusBadge.textContent = '';
+          statusBadge.className = 'directory-search-status';
+
+          directoryData.forEach((item) => {
+            item.cardEl.classList.remove('has-match', 'is-dimmed');
+            if (item.headerSpan) {
+              item.headerSpan.textContent = item.originalHeaderText;
+            }
+            item.links.forEach((linkObj) => {
+              linkObj.linkEl.classList.remove('is-matched');
+              if (linkObj.titleEl) {
+                linkObj.titleEl.innerHTML = '<span class="gear-prompt">&gt;</span> ' + escapeHtml(linkObj.originalName);
+              }
+            });
+          });
+          return;
+        }
+
+        clearBtn.hidden = false;
+        let totalAvailable = 0;
+
+        directoryData.forEach((item) => {
+          const headerMatches = item.originalHeaderText.toLowerCase().includes(queryLower);
+          let cardHasMatch = false;
+
+          if (headerMatches) {
+            cardHasMatch = true;
+            if (item.headerSpan) {
+              item.headerSpan.innerHTML = highlightHtml(item.originalHeaderText, query);
+            }
+          } else {
+            if (item.headerSpan) {
+              item.headerSpan.textContent = item.originalHeaderText;
+            }
+          }
+
+          item.links.forEach((linkObj) => {
+            const linkMatches = linkObj.originalName.toLowerCase().includes(queryLower);
+            if (linkMatches || headerMatches) {
+              cardHasMatch = true;
+              totalAvailable++;
+              linkObj.linkEl.classList.add('is-matched');
+              if (linkObj.titleEl) {
+                linkObj.titleEl.innerHTML = '<span class="gear-prompt">&gt;</span> ' + (linkMatches ? highlightHtml(linkObj.originalName, query) : escapeHtml(linkObj.originalName));
+              }
+            } else {
+              linkObj.linkEl.classList.remove('is-matched');
+              if (linkObj.titleEl) {
+                linkObj.titleEl.innerHTML = '<span class="gear-prompt">&gt;</span> ' + escapeHtml(linkObj.originalName);
+              }
+            }
+          });
+
+          if (cardHasMatch) {
+            item.cardEl.classList.add('has-match');
+            item.cardEl.classList.remove('is-dimmed');
+          } else {
+            item.cardEl.classList.remove('has-match');
+            item.cardEl.classList.add('is-dimmed');
+          }
+        });
+
+        // Update status badge
+        if (totalAvailable > 0) {
+          statusBadge.textContent = `[${totalAvailable} AVAILABLE]`;
+          statusBadge.className = 'directory-search-status is-found';
+        } else {
+          statusBadge.textContent = '[NOT FOUND]';
+          statusBadge.className = 'directory-search-status is-empty';
+        }
+      }
+
+      searchInput.addEventListener('input', performSearch);
+
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        performSearch();
+        searchInput.focus();
+      });
+
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          searchInput.value = '';
+          performSearch();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -99,13 +99,15 @@
 
 /* Main portfolio panel */
 .box {
+  box-sizing: border-box;
   max-width: 650px;
   margin: 50px auto;
-  padding: 30px;
+  padding: 38px 44px 38px 32px;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  gap: 10px; 
+  gap: 24px; 
   background-color: var(--theme-box-bg);
   border: 3px ridge var(--theme-box-border);
   border-radius: 0;
@@ -116,10 +118,10 @@
 
 /* Text column inside the portfolio panel */
 .box-text {
- text-align: center;
- margin-right: 0px;
-margin-left: 20px;
-margin-top: 10px;
+  text-align: center;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 /* Theme dropdown inside the portfolio box */
@@ -1410,9 +1412,13 @@ html::-webkit-scrollbar-thumb:hover {
 /* Camera alignment wrapper inside the portfolio panel */
 .camera-alignment {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  margin-right: 15px;
+  flex: 0 0 200px;
+  width: 200px;
+  min-width: 0;
+  min-height: 160px;
+  margin: 0 14px 0 0;
 }
 
 /* Mobile navigation: move the sidebar to the top and make it horizontal */
@@ -1449,11 +1455,15 @@ html::-webkit-scrollbar-thumb:hover {
   }
 
   .box {
-    margin-top: 88px;
+    box-sizing: border-box;
+    width: calc(100% - 24px);
+    max-width: 650px;
+    margin: 80px auto 20px;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
-    padding: 20px 14px;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 22px 24px 18px;
   }
 
   .box-text {
@@ -1464,16 +1474,19 @@ html::-webkit-scrollbar-thumb:hover {
 
   .camera-alignment {
     flex: 0 0 130px;
+    width: 130px;
+    min-width: 0;
     justify-content: center;
-    min-height: 110px;
-    margin: 0;
+    align-items: center;
+    min-height: 115px;
+    margin: 0 8px 0 0;
     overflow: visible;
   }
 
   .viewport {
     top: 0;
     right: 0;
-    transform: scale(0.72);
+    transform: scale(0.64);
     transform-origin: center center;
   }
 
@@ -1503,17 +1516,79 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-/* Very narrow screens: stack the box vertically and hide the 3D camera to prevent clipping */
-@media (max-width: 480px) {
+/* Mobile screens: keep camera to the right of text side-by-side with tuned scale */
+@media (max-width: 520px) {
   .box {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    padding: 20px 18px 20px 12px;
+    gap: 10px;
   }
 
-  /* Hide the 3D camera section — it clips on very narrow screens */
+  .box-text h1.title_size {
+    font-size: 1.35em;
+  }
+
+  .box-text p {
+    font-size: 0.95em;
+    margin: 4px 0;
+  }
+
+  .theme-switcher {
+    margin-top: 10px;
+  }
+
+  .retro-dropdown-trigger {
+    min-width: 120px;
+    font-size: 0.95em;
+    padding: 4px 24px 4px 8px;
+  }
+
   .camera-alignment {
-    display: none;
+    display: flex !important;
+    flex: 0 0 105px;
+    width: 105px;
+    min-width: 0;
+    min-height: 95px;
+    margin: 0 6px 0 0;
+  }
+
+  .viewport {
+    transform: scale(0.50);
+    transform-origin: center center;
+  }
+}
+
+/* Very narrow mobile screens (320px - 380px) */
+@media (max-width: 380px) {
+  .box {
+    padding: 16px 14px 16px 8px;
+    gap: 6px;
+  }
+
+  .box-text h1.title_size {
+    font-size: 1.2em;
+  }
+
+  .box-text p {
+    font-size: 0.88em;
+  }
+
+  .retro-dropdown-trigger {
+    min-width: 105px;
+    font-size: 0.88em;
+    padding: 3px 20px 3px 6px;
+  }
+
+  .camera-alignment {
+    flex: 0 0 92px;
+    width: 92px;
+    min-width: 0;
+    min-height: 85px;
+    margin: 0 4px 0 0;
+  }
+
+  .viewport {
+    transform: scale(0.43);
+    transform-origin: center center;
   }
 }
 
@@ -1525,186 +1600,592 @@ html::-webkit-scrollbar-thumb:hover {
 .title_size {
   font-size: 1.5em;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 /* ========================================
-  3D camera model
+  3D generic rangefinder camera model
   ======================================== */
 
 /* Perspective stage: controls how deep the camera appears */
-    .viewport {
-      perspective: 900px;
-      position: relative;
-    top : 10px; 
-    right: 50px;  /* Moves it LEFT (away from the right edge) */
+.viewport {
+  perspective: 1000px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 104px;
+  margin: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.viewport:active {
+  cursor: grabbing;
+}
 
-    }
-    /* Main camera body: JavaScript changes this transform */
-    .camera {
-      width: 150px;
-      height: 90px;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(0deg) rotateY(0deg);
-      transition: transform 120ms ease-out;
-    }
-    /* Shared style for every camera face */
-    .face {
-      position: absolute;
-      border: 1.5px solid var(--theme-text);
-      box-sizing: border-box;
-      background-color: transparent;
-    }
+/* =========================================================================
+   GENERIC RANGEFINDER CAMERA CSS 3D MODEL (RETRO MINIMALIST & ACCURATELY PROPORTIONED)
+   ========================================================================= */
+.camera {
+  width: 180px;
+  height: 104px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(12deg) rotateY(-22deg);
+  transition: none;
+  cursor: grab;
+  user-select: none;
+}
+.camera:active {
+  cursor: grabbing;
+}
 
-    /* Front and back plates */
-    .front, .back {
-      width: 150px;
-      height: 90px;
-      top: 0;
-      left: 0;
-    }
-    .front {
-      transform: translateZ(25px);
-      transform-style: preserve-3d;
-    }
-    .back {
-      transform: rotateY(180deg) translateZ(25px);
-    }
-
-    /* Left and right side plates */
-    .left, .right {
-      width: 50px;
-      height: 90px;
-      top: 0;
-      left: 50px; /* Centered: (150 - 50) / 2 */
-    }
-    .right { transform: rotateY(90deg) translateZ(75px); }
-    .left  { transform: rotateY(-90deg) translateZ(75px); }
-
-    /* Top and bottom plates */
-    .top, .bottom {
-      width: 150px;
-      height: 50px;
-      left: 0;
-      top: 20px; /* Centered: (90 - 50) / 2 */
-    }
-    .top    { transform: rotateX(90deg) translateZ(45px); transform-style: preserve-3d; }
-    .bottom { transform: rotateX(-90deg) translateZ(45px); }
-
-
-     /* ========================================
-       Camera details
-       ======================================== */
-    /* Viewfinder Window */
-    .viewfinder {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      width: 18px;
-      height: 12px;
-      border: 1px solid var(--theme-text);
-      background-color: var(--theme-accent-light);
-    }
-.rangefinder {
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      width: 14px;
-      height: 6px;
-      border: 1px solid var(--theme-text);
-      background-color: var(--theme-accent-light);
-    }
-    /* Shutter Button on Top Plate */
-    .shutter-btn {
-      position: absolute;
-      left: 20px;
-      top: 15px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--theme-text);
-      background-color: var(--theme-accent);
-      transform: translateZ(5px);
-    }
-
-    /* Film Door Rectangle on the Back */
-    .film-door {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      width: 120px;
-      height: 60px;
-      border: 1px dashed var(--theme-text);
-    }
-
-
-    /* Protruding Lens Barrel: Pushed forward in Z-space */
-.lens-barrel {
+/* Shared style for every camera face */
+.face {
   position: absolute;
-  top: 50%;
+  box-sizing: border-box;
+  border: 1.5px solid var(--theme-text);
+  background-color: transparent;
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Front and Back */
+.front, .back {
+  width: 180px;
+  height: 104px;
+  top: 0; left: 0;
+}
+.front {
+  transform: translateZ(28px);
+  transform-style: preserve-3d;
+}
+.back {
+  transform: rotateY(180deg) translateZ(28px);
+  transform-style: preserve-3d;
+}
+
+/* Sides */
+.side {
+  width: 56px;
+  height: 104px;
+  top: 0;
+  left: 62px; /* (180 - 56) / 2 */
+}
+.right { transform: rotateY( 90deg) translateZ(90px); }
+.left  { transform: rotateY(-90deg) translateZ(90px); }
+
+/* Top and Bottom */
+.top, .bottom {
+  width: 180px;
+  height: 56px;
+  left: 0;
+  top: 24px; /* (104 - 56) / 2 */
+}
+.top    { transform: rotateX( 90deg) translateZ(52px); transform-style: preserve-3d; }
+.bottom { transform: rotateX(-90deg) translateZ(52px); transform-style: preserve-3d; }
+
+/* =========================================================================
+   FRONT FACE: ACCURATE COMPONENT ARCHITECTURE
+   ========================================================================= */
+/* 1. Upper Chrome Housing Plate */
+.c-top-housing {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  border-bottom: 1.5px solid var(--theme-text);
+  background-color: transparent;
+}
+
+/* Stepped bevel line on top housing */
+.c-top-housing::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 24px; right: 24px;
+  height: 1.5px;
+  background: var(--theme-text);
+  opacity: 0.35;
+}
+
+/* 2. Middle Vulcanite Texture Grip Band */
+.c-vulcanite-band {
+  position: absolute;
+  top: 34px; bottom: 12px; left: 0; right: 0;
+  background: transparent;
+}
+
+/* 3. Lower Chrome Baseplate */
+.c-baseplate {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 12px;
+  border-top: 1.5px solid var(--theme-text);
+  background-color: transparent;
+}
+
+/* -------------------------------------------------------------------------
+   FRONT WINDOWS: ON THE RIGHT SIDE
+   Order (right to left):
+   - Viewfinder (Far Right: right: 14px)
+   - Frame Illuminator (Middle: right: 42px)
+   - Rangefinder (Inner: right: 66px)
+   ------------------------------------------------------------------------- */
+/* 1. Main Viewfinder Window (Right-most) */
+.c-win-vf {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 22px;
+  height: 15px;
+  border: 1.5px solid var(--theme-text);
+  background: var(--theme-accent-light);
+  transform: translateZ(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-win-vf::after {
+  content: '';
+  width: 14px;
+  height: 9px;
+  border: 1px solid var(--theme-box-bg);
+}
+
+/* 2. Frosted Frame Illuminator Window (Middle) */
+.c-win-illum {
+  position: absolute;
+  top: 8px;
+  right: 42px;
+  width: 16px;
+  height: 15px;
+  border: 1.5px solid var(--theme-text);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--theme-text) 0px,
+    var(--theme-text) 1px,
+    var(--theme-panel-alt) 1px,
+    var(--theme-panel-alt) 3px
+  );
+  transform: translateZ(1px);
+}
+
+/* 3. Rangefinder Coupling Window (Inner / Left-most of the trio) */
+.c-win-rf {
+  position: absolute;
+  top: 11px;
+  right: 66px;
+  width: 11px;
+  height: 10px;
+  border: 1.5px solid var(--theme-text);
+  background: var(--theme-accent-light);
+  transform: translateZ(1px);
+}
+
+/* -------------------------------------------------------------------------
+   FRONT CONTROLS: CLEANLY ON THE BODY (NOT PROTRUDING BELOW)
+   ------------------------------------------------------------------------- */
+/* 1. Self-Timer Lever: Left of lens (authentic paddle pointing UPWARDS) */
+.c-selftimer {
+  position: absolute;
+  top: 14px;
+  left: 36px;
+  width: 10px;
+  height: 28px;
+  transform: translateZ(1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.c-selftimer-head {
+  width: 8px;
+  height: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-selftimer-head::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--theme-text);
+}
+.c-selftimer-neck {
+  width: 3.5px;
+  flex: 1;
+  background: transparent;
+  border-left: 1px solid var(--theme-text);
+  border-right: 1px solid var(--theme-text);
+  margin: -1px 0;
+}
+.c-selftimer-pivot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-selftimer-pivot::after {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--theme-text);
+}
+
+/* 2. Frame Preview Selector Lever: Right of lens (authentic compact paddle pointing UPWARDS) */
+.c-preview-lever {
+  position: absolute;
+  top: 18px;
+  right: 36px;
+  width: 9px;
+  height: 20px;
+  transform: translateZ(1px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.c-preview-head {
+  width: 7px;
+  height: 8px;
+  border-radius: 3.5px;
+  border: 1px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-preview-head::after {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--theme-text);
+}
+.c-preview-neck {
+  width: 3px;
+  flex: 1;
+  background: transparent;
+  border-left: 1px solid var(--theme-text);
+  border-right: 1px solid var(--theme-text);
+  margin: -1px 0;
+}
+.c-preview-pivot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-preview-pivot::after {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--theme-text);
+}
+
+/* Red Lens Alignment Mounting Dot */
+.c-red-dot {
+  position: absolute;
+  top: 38px;
+  left: 118px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #d32f2f;
+  transform: translateZ(1px);
+}
+[data-theme="matrix"] .c-red-dot {
+  background: #00ff41;
+}
+[data-theme="blackwhite"] .c-red-dot {
+  background: var(--theme-text);
+}
+
+/* -------------------------------------------------------------------------
+   LENS ASSEMBLY (50mm STANDARD STYLE, SITTING 100% FLUSH ON FRONT BODY)
+   ------------------------------------------------------------------------- */
+.c-lens {
+  position: absolute;
+  top: 54%;
   left: 50%;
+  transform: translate(-50%, -50%) translateZ(1px);
+  transform-style: preserve-3d;
   width: 70px;
   height: 70px;
-  transform: translate(-50%, -50%) 
-  translateZ(26px);
-  transform-style: preserve-3d;
 }
 
-/* 12-sided faceted cylinder body */
-.lens-cylinder {
+/* Bayonet Flange Ring sitting flush on the body */
+.c-lens-flange {
   position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  transform: translateZ(0px);
 }
 
-.lens-cylinder span {
+/* 16-facet cylindrical barrel */
+.c-lens-cyl {
   position: absolute;
-  width: 18px;               /* Width of each facet */
-  height: 40px;              /* Barrel length protruding out */
+  inset: 4px;
+  transform-style: preserve-3d;
+}
+.c-lens-cyl span {
+  position: absolute;
+  width: 14px;
+  height: 24px;
   top: 50%;
   left: 50%;
   border: 1px solid var(--theme-text);
-  background-color: var(--theme-box-shadow);
-  /* Rotate around center and project outward to form tube */
-  transform: translate(-50%, -50%) 
-             rotateZ(calc(var(--i) * 30deg)) 
-             translateY(34px) 
-             rotateX(90deg);
+  background: transparent;
+  transform:
+    translate(-50%, -50%)
+    rotateZ(calc(var(--i) * 22.5deg))
+    translateY(30px)
+    translateZ(12px)
+    rotateX(90deg);
   transform-origin: center center;
 }
 
-/* Front cap and glass optic */
-.lens-front {
+/* Front Lens Bezel Ring */
+.c-lens-front {
   position: absolute;
-  inset: 0px;
-  border-radius: 70%;
+  inset: 6px;
+  border-radius: 50%;
   border: 1.5px solid var(--theme-text);
-  background-color: var(--theme-accent-light);
-  /* Push outward to the end of the barrel */
-  transform: translateZ(15px); 
+  background: transparent;
+  transform: translateZ(24px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Inner optical ring */
-.lens-element {
-  width: 75%;
-  height: 75%;
+/* Inner Glass Optic */
+.c-lens-optic {
+  width: 72%;
+  height: 72%;
   border-radius: 50%;
-  border: 1px solid var(--theme-text);
-  background-color: var(--theme-panel-alt);
+  border: 1.5px solid var(--theme-text);
+  background: var(--theme-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-lens-aperture {
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  border: 1px solid var(--theme-box-bg);
+  background: var(--theme-text);
 }
 
-/* Removable cap covering the front optic */
-.lens-cap {
+/* Focus Lock Tab at base of barrel */
+.c-infinity-tab {
   position: absolute;
-  inset: 0px;
+  bottom: 3px;
+  left: 3px;
+  width: 9px;
+  height: 12px;
+  border: 1px solid var(--theme-text);
+  background: transparent;
+  border-radius: 2px;
+  transform: translateZ(4px) rotate(-35deg);
+}
+
+/* =========================================================================
+   TOP PLATE: CONTROLS (SIMPLIFIED & MINIMAL)
+   - Shutter Release: LEFT side (above self-timer)
+   - Cold Shoe: CENTER (square)
+   - Rewind Knob: RIGHT side (above preview lever & windows)
+   ========================================================================= */
+/* 1. Shutter Release Button & Collar (Left side) */
+.c-shutter-wrap {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateZ(2px);
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid var(--theme-text);
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-shutter-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   background: var(--theme-accent);
-  box-shadow: inset 0 0 0 6px var(--theme-accent-light), inset 0 0 0 8px var(--theme-text);
-  transform: translateZ(20px);
+  border: 1px solid var(--theme-text);
+}
+
+/* 2. Accessory / Cold Shoe (Center: Square) */
+.c-cold-shoe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateZ(2px);
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-cold-shoe::before {
+  content: '';
+  width: 10px;
+  height: 12px;
+  border-left: 1.5px solid var(--theme-text);
+  border-right: 1.5px solid var(--theme-text);
+  border-bottom: 1.5px solid var(--theme-text);
+}
+
+/* 3. Film Rewind Knob (Right side: Circle with 2 dots, no lever) */
+.c-rewind-knob {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%) translateZ(2px);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.c-rewind-dot {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: #d32f2f;
+  border: 0.5px solid var(--theme-text);
+}
+[data-theme="matrix"] .c-rewind-dot {
+  background: #00ff41;
+}
+[data-theme="blackwhite"] .c-rewind-dot {
+  background: var(--theme-text);
+}
+
+/* =========================================================================
+   BACK FACE: EYEPIECE (ALIGNED WITH VIEWFINDER) & FILM DOOR
+   ========================================================================= */
+/* Viewfinder Eyepiece: Photographer looks through left corner (lines up straight with front VF) */
+.c-eyepiece {
+  position: absolute;
+  top: 9px;
+  left: 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: var(--theme-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(1px);
+}
+.c-eyepiece::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--theme-accent-light);
+}
+
+/* Film Door rectangle outline (matching style.css dashed style) */
+.c-film-door {
+  position: absolute;
+  top: 34px;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  border: 1px dashed var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Film Sensitivity ASA / DIN Reminder Dial */
+.c-asa-dial {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(1px);
+}
+.c-asa-dial::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-text);
+  background: var(--theme-accent-light);
+}
+
+/* =========================================================================
+   BOTTOM FACE & SIDES (100% FLUSH, CIRCULAR TRIPOD SOCKET ON LEFT SIDE)
+   ========================================================================= */
+.c-tripod-socket {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateZ(1px);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--theme-text);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.c-tripod-socket::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--theme-text);
+  background: transparent;
+}
+
+.c-strap-lug {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%) translateZ(1px);
+  width: 7px;
+  height: 9px;
+  border: 1.5px solid var(--theme-text);
+  border-radius: 3px;
+  background: transparent;
 }
 
      /* ========================================
@@ -1807,120 +2288,311 @@ a, a:visited {
    Upgraded Camera & Lens Grid Layout
    ======================================== */
 
-.camera-index {
-  max-width: 850px; /* Widened to fit multiple columns */
-  margin: 40px auto 80px;
-  position: relative;
-  right: 10px;
-  padding: 0 24px;
+/* ========================================
+   Camera & Equipment Catalog Page
+   ======================================== */
+.camera-page {
+  display: block;
+  max-width: 860px;
+  margin: 50px auto 80px;
+  padding: 32px 30px;
+}
+
+.camera-page .page-heading {
+  max-width: 620px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.camera-archive-section {
+  margin-top: 24px;
+  border: 2px solid var(--theme-box-border);
+  background: var(--theme-panel-alt);
+  box-shadow: 4px 4px 0 var(--theme-box-shadow);
+}
+
+.camera-section-header {
+  background: var(--theme-accent);
+  color: #ffffff;
+  padding: 8px 14px;
   font-family: var(--theme-font);
+  font-size: 1.15em;
+  letter-spacing: 0.12em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--theme-box-border);
+  text-transform: uppercase;
+}
+
+[data-theme="midnight"] .camera-section-header {
   color: var(--theme-text);
 }
 
-/* Reset all list styling */
-.camera-index ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+/* Directory Search Bar in Header */
+.directory-search-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.camera-index > ul {
-  padding: 0;
+.directory-search-box {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  padding: 3px 8px;
+  gap: 6px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-/* Primary headers: "CAMERAS" & "LENS" */
-.camera-index > ul > li {
-  font-size: 1.1em;
-  font-weight: normal; /* Changed from 600 */
-  letter-spacing: 0.25em; /* Increased for an airy, minimal look */
-  text-transform: uppercase;
-  color: var(--theme-accent-text);
-  text-align: center;
-  border-bottom: 2px ridge var(--theme-box-border);
-  padding-bottom: 12px;
-  margin-top: 50px;
+.directory-search-box:focus-within {
+  border-color: #ffffff;
+  background: rgba(0, 0, 0, 0.45);
 }
 
-.camera-index > ul > li:first-child {
-  margin-top: 0;
+.directory-search-icon {
+  width: 13px;
+  height: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  flex-shrink: 0;
 }
 
-/* Grid container for brand categories (Leica, Nikon, etc.) */
-.camera-index > ul > li > ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  margin-top: 32px;
-  padding: 0;
-}
-
-.brand-title {
-  background-color: var(--theme-text); /* Solid uniform color (e.g., dark gray/black) */
-  color: var(--theme-page-bg); /* Inverted text color for contrast */
-  padding: 12px 16px;
+.directory-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-family: var(--theme-font);
   font-size: 0.9em;
-  font-weight: bold;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  text-align: center;
+  width: 135px;
+  padding: 0;
+  margin: 0;
+}
+
+.directory-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.directory-search-clear {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--theme-font);
+  font-size: 1.15em;
+  line-height: 1;
+  padding: 0 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.12s ease;
+}
+
+.directory-search-clear[hidden] {
+  display: none !important;
+}
+
+.directory-search-clear:hover {
+  color: #ffffff;
+}
+
+.directory-search-status {
+  font-family: var(--theme-font);
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 2px;
+  display: none;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.directory-search-status.is-found {
+  display: inline-block;
+  color: #34d399;
+  border: 1.5px solid #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.directory-search-status.is-empty {
+  display: inline-block;
+  color: #f87171;
+  border: 1.5px solid #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Search Highlighting and Card Filtering */
+mark.search-highlight {
+  background: #fde047;
+  color: #000000;
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+[data-theme="matrix"] mark.search-highlight {
+  background: #00ff41;
+  color: #000000;
+}
+
+[data-theme="midnight"] mark.search-highlight {
+  background: #ece6d8;
+  color: #000000;
+}
+
+[data-theme="sepia"] mark.search-highlight {
+  background: #d97706;
+  color: #ffffff;
+}
+
+[data-theme="blackwhite"] mark.search-highlight {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* Theme overrides for search input */
+[data-theme="matrix"] .directory-search-box {
+  background: rgba(0, 255, 65, 0.08);
+  border-color: #00ff41;
+}
+
+[data-theme="matrix"] .directory-search-input {
+  color: #00ff41;
+}
+
+[data-theme="matrix"] .directory-search-icon {
+  color: #00ff41;
+}
+
+[data-theme="matrix"] .directory-search-status.is-found {
+  color: #00ff41;
+  border-color: #00ff41;
+  background: rgba(0, 255, 65, 0.15);
+}
+
+[data-theme="midnight"] .directory-search-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--theme-box-border);
+}
+
+[data-theme="midnight"] .directory-search-input,
+[data-theme="midnight"] .directory-search-icon {
+  color: var(--theme-text);
+}
+
+.gear-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.gear-card {
+  background-color: var(--theme-box-bg);
+  border: 2px ridge var(--theme-box-border);
+  box-shadow: 4px 4px 0 var(--theme-box-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 160ms ease, border-color 160ms ease;
+}
+
+.gear-card.is-dimmed {
+  opacity: 0.32;
+  filter: grayscale(0.5);
+}
+
+.gear-card.has-match {
+  opacity: 1;
+  border-color: var(--theme-accent);
+  box-shadow: 0 0 0 2px var(--theme-accent), 5px 5px 0 var(--theme-box-shadow);
+  transform: translateY(-2px);
+}
+
+.gear-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 var(--theme-box-shadow);
+}
+
+.gear-card-header {
+  background-color: var(--theme-text);
+  color: var(--theme-page-bg);
+  padding: 7px 12px;
+  font-size: 0.95em;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 2px solid var(--theme-box-border);
 }
 
-/* Individual Brand Cards */
-.camera-index > ul > li > ul > li {
-  background-color: var(--theme-box-bg);
-  border: 3px ridge var(--theme-box-border);
-  box-shadow: 5px 5px 0 var(--theme-box-shadow);
-  padding: 0; /* Removed padding so the header stretches edge-to-edge */
-  transition: transform 150ms ease, box-shadow 150ms ease;
-  overflow: hidden; /* Keeps the corners neat */
+.gear-card-badge {
+  font-size: 0.75em;
+  padding: 1px 5px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  opacity: 0.9;
+  letter-spacing: 0.05em;
 }
 
-/* Card hover effect */
-.camera-index > ul > li > ul > li:hover {
-  transform: translateY(-2px);
-  box-shadow: 7px 7px 0 var(--theme-box-shadow);
-}
-/* 1. Reset the list item so it has no padding */
-.camera-index > ul > li > ul > li > ul > li {
-  padding: 0;
+.gear-card-list {
+  list-style: none;
   margin: 0;
-}
-/* The list of specific camera models inside the cards */
-.camera-index ul ul ul {
-  padding: 16px 20px 20px; /* Moved the padding down to the list area */
-  margin-top: 0; /* Reset margin since padding handles the space now */
-  text-align: left; 
+  padding: 8px 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 }
-/* 2. Turn the link into a full-width block element */
-.camera-link {
-  display: block;
-  width: 100%;
-  padding: 12px 24px; /* Expands the clickable hit-area to fill the box */
-  box-sizing: border-box;
+
+.gear-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
   color: var(--theme-text);
   text-decoration: none;
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  padding: 4px 8px;
-  transition: background-color 150ms ease, color 150ms ease;
+  font-size: 1.05em;
+  font-family: var(--theme-font);
+  letter-spacing: 0.04em;
+  transition: background-color 100ms ease, color 100ms ease;
 }
 
-/* 3. Style the full-width hover effect */
-.camera-link:hover {
-  background-color: var(--theme-text); /* Fills the row with a solid block color */
-  color: var(--theme-page-bg);         /* Inverts the text color for contrast */
+.gear-link:hover {
+  background-color: var(--theme-text);
+  color: var(--theme-page-bg);
 }
 
-.camera-index ul ul ul li {
-  font-size: 0.9em;
-  font-weight: normal;
-  text-transform: lowercase;
-  color: var(--theme-accent-light); /* Tints your hardcoded '▪' bullet */
+.gear-link-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gear-prompt {
+  color: var(--theme-accent-light);
+  font-weight: bold;
+}
+
+.gear-link:hover .gear-prompt {
+  color: var(--theme-page-bg);
+}
+
+.gear-arrow {
+  font-size: 0.85em;
+  opacity: 0.6;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.gear-link:hover .gear-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+  color: var(--theme-page-bg);
 }
 
 /* ========================================
@@ -1986,5 +2658,27 @@ a, a:visited {
   /* Collapse brand grid to a single column on narrow screens */
   .camera-index > ul > li > ul {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Directory search header wrapping on mobile */
+@media (max-width: 640px) {
+  .camera-section-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .directory-search-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .directory-search-box {
+    flex: 1;
+  }
+
+  .directory-search-input {
+    width: 100%;
   }
 }

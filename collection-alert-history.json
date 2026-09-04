@@ -8,7 +8,12 @@
       "bw_photos_image_005.jpg",
       "bw_photos_image_006.jpg",
       "bw_photos_image_007.jpg",
-      "bw_photos_image_008.jpg"
+      "bw_photos_image_008.jpg",
+      "bw_photos_image_009.jpg",
+      "bw_photos_image_010.jpg",
+      "bw_photos_image_011.jpg",
+      "bw_photos_image_012.jpg",
+      "bw_photos_image_013.jpg"
     ],
     "colour_photos": [
       "colour_photos_image_001.jpg",
@@ -105,6 +110,22 @@
       "dateAdded": "2026-09-03",
       "expiresOn": "2026-10-02",
       "link": "places.html"
+    },
+    {
+      "id": "bw_photos:1788551636946",
+      "name": "Black & White",
+      "photosAdded": 4,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
+    {
+      "id": "bw_photos:1788552664540",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
     }
   ]
 }

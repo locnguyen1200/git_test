@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Page metadata and shared stylesheet -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Photography | Loc's Portfolio</title>
@@ -9,6 +8,90 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .globe-portal-scene {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 130px;
+    }
+
+    .globe-portal-btn {
+      position: absolute;
+      bottom: 0;
+      right: 60px;
+      width: 160px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      z-index: 0;
+      opacity: 0.22;
+      transition: opacity 0.45s ease;
+    }
+
+    .globe-portal-btn canvas {
+      width: 140px;
+      height: 140px;
+      display: block;
+      filter: drop-shadow(0 0 6px var(--theme-accent));
+      transition: filter 0.45s ease, transform 0.45s ease;
+    }
+
+    .globe-portal-label {
+      font-family: var(--theme-font);
+      font-size: 1.15em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--theme-text);
+      font-weight: normal;
+      transition: font-weight 0.25s ease, letter-spacing 0.3s ease;
+      white-space: nowrap;
+    }
+
+    /* Default: visible ghost state */
+    .globe-portal-btn {
+      opacity: 0.55;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Hover triggers ONLY when mouse is over the globe button itself */
+    .globe-portal-btn:hover {
+      opacity: 1;
+    }
+
+    .globe-portal-btn:hover canvas {
+      filter:
+        drop-shadow(0 0 22px var(--theme-accent))
+        drop-shadow(0 0 8px var(--theme-accent-light));
+      transform: scale(1.07);
+    }
+
+    .globe-portal-btn:hover .globe-portal-label {
+      font-weight: bold;
+      letter-spacing: 0.22em;
+    }
+
+    /* Box must stay in front of the globe (z-index: 0) */
+    .globe-portal-scene .box {
+      position: relative;
+      z-index: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Box fades only when hovering the globe — :has() scopes it precisely */
+    .globe-portal-scene:has(.globe-portal-btn:hover) .box {
+      opacity: 0.45;
+    }
+
+  </style>
 </head>
 <body>
   <script src="page-transition.js"></script>
@@ -16,7 +99,7 @@
   <script src="matrix-rain.js"></script>
   <script src="midnight-camera.js"></script>
   <script src="photo-frame-hover.js" defer></script>
-  <!-- Shared sidebar navigation -->
+
   <nav class="sidebar" aria-label="Main navigation">
     <a class="sidebar-link" href="index.html" aria-label="Home" title="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -39,36 +122,42 @@
     </a>
   </nav>
 
-  <!-- Photography page content -->
-  <main class="box page-content">
-    <header class="page-heading">
-      <p class="eyebrow">collections throughout the years</p>
-      <h1 class="title_size">photography</h1>
-      <p> a compilation of my photographic work over the years.</p>
-    </header>
+  <div class="globe-portal-scene">
 
-    <!-- Each frame opens its own gallery page -->
-    <section class="photo-grid" aria-label="Photography collection">
-      <a class="photo-frame gallery-link" href="black-and-white.html" aria-label="Open the black and white gallery">
-        <img class="photo-placeholder photo-thumbnail" src="bw_photos/bw_photos_image_003.jpg" alt="Preview of the black and white gallery">
-        <div class="photo-caption">B&amp;W</div>
-      </a>
-      <a class="photo-frame gallery-link" href="colour.html" aria-label="Open the colour gallery">
-         <img class="photo-placeholder photo-thumbnail" src="colour_photos/colour_photos_image_006.jpg" alt="Preview of the colour gallery">
-        <div class="photo-caption">COLOUR</div>
-      </a>
-      <a class="photo-frame gallery-link" href="places.html" aria-label="Open the places gallery">
-        <img class="photo-placeholder photo-thumbnail" src="places_photos/places_photos_image_001.jpg" alt="Preview of the places gallery">
-        <div class="photo-caption">PLACES</div>
-      </a>
-      <a class="photo-frame gallery-link" href="portraits.html" aria-label="Open the portraits gallery">
-        <img class="photo-placeholder photo-thumbnail" src="portrait_photos/portrait_photos_image_001.jpg" alt="Preview of the portraits gallery">
-        <div class="photo-caption">PORTRAITS</div>
-      </a>
-    </section>
-  </main>
+    <main class="box page-content">
+      <header class="page-heading">
+        <p class="eyebrow">collections throughout the years</p>
+        <h1 class="title_size">photography</h1>
+        <p> a compilation of my photographic work over the years.</p>
+      </header>
 
-  <!-- Footer: FAQ and contact links -->
+      <section class="photo-grid" aria-label="Photography collection">
+        <a class="photo-frame gallery-link" href="black-and-white.html" aria-label="Open the black and white gallery">
+          <img class="photo-placeholder photo-thumbnail" src="bw_photos/bw_photos_image_003.jpg" alt="Preview of the black and white gallery">
+          <div class="photo-caption">B&amp;W</div>
+        </a>
+        <a class="photo-frame gallery-link" href="colour.html" aria-label="Open the colour gallery">
+          <img class="photo-placeholder photo-thumbnail" src="colour_photos/colour_photos_image_006.jpg" alt="Preview of the colour gallery">
+          <div class="photo-caption">COLOUR</div>
+        </a>
+        <a class="photo-frame gallery-link" href="places.html" aria-label="Open the places gallery">
+          <img class="photo-placeholder photo-thumbnail" src="places_photos/places_photos_image_001.jpg" alt="Preview of the places gallery">
+          <div class="photo-caption">PLACES</div>
+        </a>
+        <a class="photo-frame gallery-link" href="portraits.html" aria-label="Open the portraits gallery">
+          <img class="photo-placeholder photo-thumbnail" src="portrait_photos/portrait_photos_image_001.jpg" alt="Preview of the portraits gallery">
+          <div class="photo-caption">PORTRAITS</div>
+        </a>
+      </section>
+    </main>
+
+    <a href="globe-test.html" class="globe-portal-btn" aria-label="Open the 3D globe">
+      <canvas id="globe-portal-canvas" width="280" height="280"></canvas>
+      <span class="globe-portal-label">[ explore globe ]</span>
+    </a>
+
+  </div>
+
   <footer class="site-footer" aria-label="Additional links">
     <a class="footer-link" href="faq.html" aria-label="Frequently asked questions" title="FAQ">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -84,6 +173,97 @@
       </svg>
     </a>
   </footer>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('globe-portal-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const cx = W / 2, cy = H / 2;
+      const R = W * 0.38;
+
+      const globeBtn = document.querySelector('.globe-portal-btn');
+      let isHovered = false;
+
+      globeBtn.addEventListener('mouseenter', () => { isHovered = true; });
+      globeBtn.addEventListener('mouseleave', () => { isHovered = false; });
+
+      function cssVar(name, fallback) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+      }
+
+      let yaw = 0;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        const accent      = cssVar('--theme-accent',       '#245782');
+        const accentLight = cssVar('--theme-accent-light', '#7d9ab3');
+        const speed       = isHovered ? 0.030 : 0.005;
+        const lineAlpha   = isHovered ? 0.90  : 0.70;  /* more visible at rest */
+        const lineW       = isHovered ? 1.6   : 1.1;
+
+
+        const grad = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.25, R * 0.04, cx, cy, R);
+        grad.addColorStop(0, accentLight + (isHovered ? 'aa' : '88'));
+        grad.addColorStop(1, accent + (isHovered ? '30' : '22'));
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.clip();
+
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = lineW;
+
+        for (let i = 1; i < 8; i++) {
+          const phi = (i / 8) * Math.PI;
+          const y0  = cy + R * Math.cos(phi);
+          const rx  = R * Math.sin(phi);
+          ctx.globalAlpha = lineAlpha * Math.sin(phi);
+          ctx.beginPath();
+          ctx.ellipse(cx, y0, rx, rx * 0.26, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        for (let i = 0; i < 9; i++) {
+          const theta = yaw + (i / 9) * Math.PI * 2;
+          const cosT  = Math.cos(theta);
+          ctx.globalAlpha = lineAlpha * (0.4 + 0.6 * Math.abs(cosT));
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, Math.abs(cosT) * R, R, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        ctx.globalAlpha = isHovered ? 1.0 : 0.5;
+        ctx.lineWidth   = isHovered ? 2.0 : 1.0;
+        ctx.strokeStyle = accentLight;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, R, R * 0.26, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.restore();
+
+        ctx.globalAlpha = isHovered ? 0.85 : 0.28;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth   = isHovered ? 2.0  : 1.0;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.globalAlpha = 1;
+        yaw += speed;
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    })();
+  </script>
 
 </body>
 </html>
