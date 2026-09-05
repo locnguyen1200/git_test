@@ -1241,7 +1241,7 @@
         // Backface grid (subtle, dashed / low-alpha)
         if (showBackface) {
           ctx.lineWidth = 1;
-          ctx.strokeStyle = colors.isMatrix ? 'rgba(0, 255, 65, 0.15)' : (colors.isMidnight ? 'rgba(253, 224, 71, 0.1)' : 'rgba(0, 0, 0, 0.09)');
+          ctx.strokeStyle = colors.isMatrix ? 'rgba(0, 255, 65, 0.15)' : (colors.isMidnight ? 'rgba(236, 230, 216, 0.12)' : 'rgba(0, 0, 0, 0.09)');
           ctx.setLineDash([2, 4]);
 
           // Meridians (Longitudes)
@@ -1282,7 +1282,7 @@
         ctx.lineWidth = 1;
         ctx.strokeStyle = colors.isMatrix 
           ? 'rgba(0, 255, 65, 0.45)' 
-          : (colors.isMidnight ? 'rgba(253, 224, 71, 0.35)' : 'rgba(23, 44, 69, 0.3)');
+          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)');
 
         // Meridians
         for (let lon = -180; lon < 180; lon += 15) {
@@ -1307,8 +1307,8 @@
           const isEquator = lat === 0;
           ctx.lineWidth = isEquator ? 1.8 : 1;
           ctx.strokeStyle = isEquator 
-            ? (colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#fde047' : colors.accent)) 
-            : (colors.isMatrix ? 'rgba(0, 255, 65, 0.45)' : (colors.isMidnight ? 'rgba(253, 224, 71, 0.35)' : 'rgba(23, 44, 69, 0.3)'));
+            ? (colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent)) 
+            : (colors.isMatrix ? 'rgba(0, 255, 65, 0.45)' : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)'));
 
           for (let lon = -180; lon <= 180; lon += 4) {
             const pt = project(lat, lon, R);
@@ -1328,7 +1328,7 @@
         ctx.lineWidth = 1;
         ctx.strokeStyle = colors.isMatrix 
           ? 'rgba(0, 255, 65, 0.18)' 
-          : (colors.isMidnight ? 'rgba(253, 224, 71, 0.15)' : 'rgba(0, 0, 0, 0.12)');
+          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.15)' : 'rgba(0, 0, 0, 0.12)');
         ctx.setLineDash([2, 3]);
         landmasses.forEach((poly) => {
           ctx.beginPath();
@@ -1349,10 +1349,10 @@
 
       // 4. Frontface Continents
       ctx.lineWidth = 1.6;
-      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#fde047' : colors.text);
+      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.text);
       ctx.fillStyle = colors.isMatrix 
         ? 'rgba(0, 255, 65, 0.15)' 
-        : (colors.isMidnight ? 'rgba(253, 224, 71, 0.12)' : 'rgba(36, 87, 130, 0.14)');
+        : (colors.isMidnight ? 'rgba(236, 230, 216, 0.08)' : 'rgba(36, 87, 130, 0.14)');
 
       landmasses.forEach((poly) => {
         ctx.beginPath();
@@ -1540,10 +1540,10 @@
             chipFg = isSelected ? '#000000' : '#00ff41';
             chipBorder = '#00ff41';
           } else if (colors.isMidnight) {
-            // Match the beige rounded label aesthetic for the Midnight theme
-            chipBg = isSelected ? '#fef3c7' : '#e6dfbc';
-            chipFg = '#000000';
-            chipBorder = isSelected ? '#ffffff' : 'rgba(0,0,0,0.1)';
+            // Dark chip with cream text — matches the dark dossier aesthetic
+            chipBg = isSelected ? '#ece6d8' : 'rgba(15, 15, 15, 0.92)';
+            chipFg = isSelected ? '#0d0d0d' : '#ece6d8';
+            chipBorder = isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.35)';
           } else {
             chipBg = isSelected
               ? colors.accent
