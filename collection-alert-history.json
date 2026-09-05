@@ -13,7 +13,8 @@
       "bw_photos_image_010.jpg",
       "bw_photos_image_011.jpg",
       "bw_photos_image_012.jpg",
-      "bw_photos_image_013.jpg"
+      "bw_photos_image_013.jpg",
+      "bw_photos_image_014.jpg"
     ],
     "colour_photos": [
       "colour_photos_image_001.jpg",
@@ -124,6 +125,14 @@
       "name": "Black & White",
       "photosAdded": 1,
       "dateAdded": "2026-09-04",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
+    {
+      "id": "bw_photos:1788617242661",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-05",
       "expiresOn": "2026-10-02",
       "link": "black-and-white.html"
     }

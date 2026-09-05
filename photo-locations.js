@@ -1,7 +1,7 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-05T01:43:08.454Z",
-  "totalLocations": 7,
-  "totalTaggedPhotos": 44,
+  "generatedAt": "2026-09-05T14:07:22.748Z",
+  "totalLocations": 8,
+  "totalTaggedPhotos": 45,
   "locations": [
     {
       "name": "Ho Chi Minh City",
@@ -297,6 +297,21 @@ window.globeLocationData = {
           "alt": "Colour Photo",
           "gallery": "Colour",
           "galleryLink": "colour.html"
+        }
+      ]
+    },
+    {
+      "name": "Bangkok",
+      "lat": 13.7563,
+      "lon": 100.5018,
+      "country": "Thailand",
+      "count": 1,
+      "photos": [
+        {
+          "src": "bw_photos/bw_photos_image_014.jpg",
+          "alt": "Black and white photograph 14",
+          "gallery": "Black & White",
+          "galleryLink": "black-and-white.html"
         }
       ]
     },

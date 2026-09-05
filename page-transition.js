@@ -6,6 +6,13 @@
   document.documentElement.classList.add('is-page-fading-in');
 
   requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.remove('is-page-fading-in');
+    });
+  });
+
+  window.addEventListener('pageshow', () => {
+    document.documentElement.classList.remove('is-page-fading-out');
     document.documentElement.classList.remove('is-page-fading-in');
   });
 

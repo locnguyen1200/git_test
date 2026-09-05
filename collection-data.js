@@ -1,13 +1,21 @@
 window.collectionData = {
   "latestCollection": {
-    "id": "bw_photos:1788552664540",
+    "id": "bw_photos:1788617242661",
     "name": "Black & White",
     "photosAdded": 1,
-    "dateAdded": "2026-09-04",
+    "dateAdded": "2026-09-05",
     "expiresOn": "2026-10-02",
     "link": "black-and-white.html"
   },
   "collections": [
+    {
+      "id": "bw_photos:1788617242661",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-05",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
     {
       "id": "bw_photos:1788552664540",
       "name": "Black & White",
@@ -82,6 +90,14 @@ window.collectionData = {
     }
   ],
   "alertHistory": [
+    {
+      "id": "bw_photos:1788617242661",
+      "name": "Black & White",
+      "photosAdded": 1,
+      "dateAdded": "2026-09-05",
+      "expiresOn": "2026-10-02",
+      "link": "black-and-white.html"
+    },
     {
       "id": "bw_photos:1788552664540",
       "name": "Black & White",
