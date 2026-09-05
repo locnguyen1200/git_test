@@ -1,7 +1,7 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-05T14:12:49.717Z",
+  "generatedAt": "2026-09-05T14:23:55.912Z",
   "totalLocations": 8,
-  "totalTaggedPhotos": 46,
+  "totalTaggedPhotos": 48,
   "locations": [
     {
       "name": "Ho Chi Minh City",
@@ -12,13 +12,13 @@ window.globeLocationData = {
       "photos": [
         {
           "src": "places_photos/places_photos_image_002.jpg",
-          "alt": "Places Photo",
+          "alt": "Places photograph 2",
           "gallery": "Places",
           "galleryLink": "places.html"
         },
         {
           "src": "places_photos/places_photos_image_003.jpg",
-          "alt": "Places Photo",
+          "alt": "Places photograph 3",
           "gallery": "Places",
           "galleryLink": "places.html"
         },
@@ -241,6 +241,39 @@ window.globeLocationData = {
       ]
     },
     {
+      "name": "Macau",
+      "lat": 22.1987,
+      "lon": 113.5439,
+      "country": "Macau",
+      "count": 4,
+      "photos": [
+        {
+          "src": "places_photos/places_photos_image_005.jpg",
+          "alt": "Places photograph 5",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        },
+        {
+          "src": "places_photos/places_photos_image_006.jpg",
+          "alt": "Places photograph 6",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        },
+        {
+          "src": "places_photos/places_photos_image_007.jpg",
+          "alt": "Places photograph 7",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        },
+        {
+          "src": "places_photos/places_photos_image_008.jpg",
+          "alt": "Places photograph 8",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        }
+      ]
+    },
+    {
       "name": "Toronto",
       "lat": 43.6532,
       "lon": -79.3832,
@@ -301,27 +334,6 @@ window.globeLocationData = {
       ]
     },
     {
-      "name": "Bangkok",
-      "lat": 13.7563,
-      "lon": 100.5018,
-      "country": "Thailand",
-      "count": 2,
-      "photos": [
-        {
-          "src": "bw_photos/bw_photos_image_013.jpg",
-          "alt": "Black and white photograph 13",
-          "gallery": "Black & White",
-          "galleryLink": "black-and-white.html"
-        },
-        {
-          "src": "bw_photos/bw_photos_image_014.jpg",
-          "alt": "Black and white photograph 14",
-          "gallery": "Black & White",
-          "galleryLink": "black-and-white.html"
-        }
-      ]
-    },
-    {
       "name": "Hong Kong",
       "lat": 22.3193,
       "lon": 114.1694,
@@ -330,7 +342,7 @@ window.globeLocationData = {
       "photos": [
         {
           "src": "places_photos/places_photos_image_001.jpg",
-          "alt": "Places Photo",
+          "alt": "Places photograph 1",
           "gallery": "Places",
           "galleryLink": "places.html"
         }
@@ -345,7 +357,7 @@ window.globeLocationData = {
       "photos": [
         {
           "src": "places_photos/places_photos_image_004.jpg",
-          "alt": "Places Photo",
+          "alt": "Places photograph 4",
           "gallery": "Places",
           "galleryLink": "places.html"
         }

@@ -46,6 +46,8 @@ const GEO_DICTIONARY = {
   'phuket': { name: 'Phuket', lat: 7.8804, lon: 98.3923, country: 'Thailand' },
   'singapore': { name: 'Singapore', lat: 1.3521, lon: 103.8198, country: 'Singapore' },
   'hong kong': { name: 'Hong Kong', lat: 22.3193, lon: 114.1694, country: 'Hong Kong' },
+  'macau': { name: 'Macau', lat: 22.1987, lon: 113.5439, country: 'Macau' },
+  'macao': { name: 'Macau', lat: 22.1987, lon: 113.5439, country: 'Macau' },
   'taipei': { name: 'Taipei', lat: 25.0330, lon: 121.5654, country: 'Taiwan' },
   'bali': { name: 'Bali', lat: -8.3405, lon: 115.0920, country: 'Indonesia' },
   'jakarta': { name: 'Jakarta', lat: -6.2088, lon: 106.8456, country: 'Indonesia' },

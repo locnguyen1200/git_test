@@ -5,6 +5,10 @@
     "places_photos/places_photos_image_002.jpg": "Ho Chi Minh",
     "places_photos/places_photos_image_003.jpg": "Ho Chi Minh",
     "places_photos/places_photos_image_004.jpg": "Seoul",
+    "places_photos/places_photos_image_005.jpg": "Macau",
+    "places_photos/places_photos_image_006.jpg": "Macau",
+    "places_photos/places_photos_image_007.jpg": "Macau",
+    "places_photos/places_photos_image_008.jpg": "Macau",
     "bw_photos/bw_photos_image_001.jpg": "Ho Chi Minh",
     "bw_photos/bw_photos_image_002.jpg": "Ho Chi Minh",
     "bw_photos/bw_photos_image_003.jpg": "Ho Chi Minh",
@@ -44,8 +48,6 @@
     "portrait_photos/portrait_photos_image_010.jpg": "Los Angeles",
     "portrait_photos/portrait_photos_image_011.jpg": "Los Angeles",
     "portrait_photos/portrait_photos_image_012.jpg": "Los Angeles",
-    "portrait_photos/portrait_photos_image_013.jpg": "Los Angeles",
-    "bw_photos/bw_photos_image_013.jpg": "Bangkok",
-    "bw_photos/bw_photos_image_014.jpg": "Bangkok"
+    "portrait_photos/portrait_photos_image_013.jpg": "Los Angeles"
   }
 }
