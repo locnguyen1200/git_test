@@ -1,5 +1,5 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-05T14:31:31.350Z",
+  "generatedAt": "2026-09-05T14:35:02.544Z",
   "totalLocations": 9,
   "totalTaggedPhotos": 49,
   "locations": [
@@ -342,7 +342,7 @@ window.globeLocationData = {
       "photos": [
         {
           "src": "bw_photos/bw_photos_image_013.jpg",
-          "alt": "Black and white photograph 13",
+          "alt": "Black & White Photo",
           "gallery": "Black & White",
           "galleryLink": "black-and-white.html"
         }
