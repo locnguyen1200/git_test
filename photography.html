@@ -85,9 +85,9 @@
       color: #000000;
     }
     html[data-theme="twa"] .globe-dossier-banner:hover {
-      background: #ba0c2f;
+      background: #e0212a;
       color: #ffffff;
-      border-color: #ba0c2f;
+      border-color: #e0212a;
     }
 </style>
 </head>
@@ -210,8 +210,8 @@
         const isMidnight = document.documentElement.getAttribute('data-theme') === 'midnight';
         const isTWA = document.documentElement.getAttribute('data-theme') === 'twa';
         
-        let primary = isMatrix ? '#00ff41' : (isMidnight ? '#ece6d8' : (isTWA ? '#ba0c2f' : cssVar('--theme-accent', '#245782')));
-        let secondary = isMatrix ? '#00ff41' : (isMidnight ? '#ffffff' : (isTWA ? '#d9384e' : cssVar('--theme-accent-light', '#7d9ab3')));
+        let primary = isMatrix ? '#00ff41' : (isMidnight ? '#ece6d8' : (isTWA ? '#e0212a' : cssVar('--theme-accent', '#245782')));
+        let secondary = isMatrix ? '#00ff41' : (isMidnight ? '#ffffff' : (isTWA ? '#eb2130' : cssVar('--theme-accent-light', '#7d9ab3')));
         
         // Invert colors on hover since the banner background inverts!
         if (isHovered) {

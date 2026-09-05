@@ -98,15 +98,15 @@
   --theme-box-bg: #f8f5f0;
   --theme-box-border: #ffffff;
   --theme-box-shadow: #8c8275;
-  --theme-accent: #ba0c2f;
-  --theme-accent-light: #d9384e;
-  --theme-accent-text: #ba0c2f;
+  --theme-accent: #e0212a;
+  --theme-accent-light: #eb2130;
+  --theme-accent-text: #e0212a;
   --theme-muted-text: #6e675d;
   --theme-panel-bg: #e2dbd0;
   --theme-panel-alt: #dad2c4;
   --theme-overlay: #1c0307;
-  --theme-deep-shadow: #590616;
-  --theme-scroll-thumb: #ba0c2f;
+  --theme-deep-shadow: #7a0c12;
+  --theme-scroll-thumb: #e0212a;
   --theme-font: "Jost", "Futura", "Trebuchet MS", "Century Gothic", sans-serif;
 }
 
@@ -1216,8 +1216,8 @@ body{
   background-color: #ece7de;
   background-image: repeating-linear-gradient(
     0deg,
-    rgba(186, 12, 47, 0.04) 0,
-    rgba(186, 12, 47, 0.04) 1px,
+    rgba(224, 33, 42, 0.04) 0,
+    rgba(224, 33, 42, 0.04) 1px,
     transparent 1px,
     transparent 4px
   );
@@ -2485,7 +2485,7 @@ mark.search-highlight {
 }
 
 [data-theme="twa"] mark.search-highlight {
-  background: #ba0c2f;
+  background: #e0212a;
   color: #ffffff;
 }
 
@@ -2520,19 +2520,19 @@ mark.search-highlight {
 }
 
 [data-theme="twa"] .directory-search-box {
-  background: rgba(186, 12, 47, 0.05);
-  border-color: #ba0c2f;
+  background: rgba(224, 33, 42, 0.05);
+  border-color: #e0212a;
 }
 
 [data-theme="twa"] .directory-search-input,
 [data-theme="twa"] .directory-search-icon {
-  color: #ba0c2f;
+  color: #e0212a;
 }
 
 [data-theme="twa"] .directory-search-status.is-found {
-  color: #ba0c2f;
-  border-color: #ba0c2f;
-  background: rgba(186, 12, 47, 0.12);
+  color: #e0212a;
+  border-color: #e0212a;
+  background: rgba(224, 33, 42, 0.12);
 }
 
 .gear-card-grid {

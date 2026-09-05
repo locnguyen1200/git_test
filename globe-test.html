@@ -878,72 +878,72 @@
     /* Theme overrides for TWA Hotel */
     [data-theme="twa"] .globe-hud-box {
       color: #211f1d;
-      border-color: #ba0c2f;
+      border-color: #e0212a;
       background: rgba(248, 245, 240, 0.92);
-      box-shadow: 2px 2px 0 rgba(186, 12, 47, 0.2);
+      box-shadow: 2px 2px 0 rgba(224, 33, 42, 0.2);
     }
     [data-theme="twa"] .target-pill {
       background: #f8f5f0;
       color: #211f1d;
-      border-color: rgba(186, 12, 47, 0.4);
+      border-color: rgba(224, 33, 42, 0.4);
     }
     [data-theme="twa"] .target-pill:hover {
-      background: #ba0c2f;
+      background: #eb2130;
       color: #ffffff;
-      border-color: #ba0c2f;
+      border-color: #eb2130;
     }
     [data-theme="twa"] .target-pill.is-active {
-      background: #ba0c2f;
+      background: #e0212a;
       color: #ffffff;
-      border-color: #ba0c2f;
+      border-color: #e0212a;
       font-weight: bold;
     }
     [data-theme="twa"] .dossier-badge {
-      background: #ba0c2f;
+      background: #e0212a;
       color: #ffffff;
       font-weight: bold;
     }
     [data-theme="twa"] .dossier-view-link {
-      color: #ba0c2f;
+      color: #e0212a;
     }
     [data-theme="twa"] .dossier-close-btn:hover {
-      background: #ba0c2f;
+      background: #eb2130;
       color: #ffffff;
     }
     [data-theme="twa"] .dossier-page-btn {
       background: #f8f5f0;
-      color: #ba0c2f;
-      border-color: rgba(186, 12, 47, 0.35);
+      color: #e0212a;
+      border-color: rgba(224, 33, 42, 0.35);
     }
     [data-theme="twa"] .dossier-page-btn:hover,
     [data-theme="twa"] .dossier-page-btn.is-current {
-      background: #ba0c2f;
+      background: #eb2130;
       color: #ffffff;
-      border-color: #ba0c2f;
+      border-color: #eb2130;
     }
     [data-theme="twa"] .pin-popup {
-      border-color: #ba0c2f;
-      box-shadow: 4px 4px 0 #7a081d;
+      border-color: #e0212a;
+      box-shadow: 4px 4px 0 #7a0c12;
     }
     [data-theme="twa"] .pin-popup-header {
-      border-bottom-color: #ba0c2f;
+      border-bottom-color: #e0212a;
     }
     [data-theme="twa"] .pin-popup-city {
-      color: #ba0c2f;
+      color: #e0212a;
       font-weight: bold;
     }
     [data-theme="twa"] .pin-popup-close:hover {
-      background: #ba0c2f;
+      background: #eb2130;
       color: #ffffff;
-      border-color: #ba0c2f;
+      border-color: #eb2130;
     }
     [data-theme="twa"] #tether-path {
-      stroke: #ba0c2f;
+      stroke: #e0212a;
     }
     [data-theme="twa"] #tether-dot-node,
     [data-theme="twa"] #tether-dot-popup {
       fill: #f8f5f0;
-      stroke: #ba0c2f;
+      stroke: #e0212a;
     }
   </style>
 
@@ -1295,8 +1295,8 @@
         glowGrad.addColorStop(0.8, 'rgba(0, 255, 65, 0.03)');
         glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       } else if (colors.isTWA) {
-        glowGrad.addColorStop(0, 'rgba(186, 12, 47, 0.08)');
-        glowGrad.addColorStop(0.8, 'rgba(186, 12, 47, 0.02)');
+        glowGrad.addColorStop(0, 'rgba(224, 33, 42, 0.08)');
+        glowGrad.addColorStop(0.8, 'rgba(224, 33, 42, 0.02)');
         glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       } else {
         glowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
@@ -1330,7 +1330,7 @@
             : (colors.isMidnight 
                 ? 'rgba(236, 230, 216, 0.12)' 
                 : (colors.isTWA 
-                    ? 'rgba(186, 12, 47, 0.12)' 
+                    ? 'rgba(224, 33, 42, 0.12)' 
                     : 'rgba(0, 0, 0, 0.09)'));
           ctx.setLineDash([2, 4]);
 
@@ -1375,7 +1375,7 @@
           : (colors.isMidnight 
               ? 'rgba(236, 230, 216, 0.28)' 
               : (colors.isTWA 
-                  ? 'rgba(186, 12, 47, 0.28)' 
+                  ? 'rgba(224, 33, 42, 0.28)' 
                   : 'rgba(23, 44, 69, 0.3)'));
 
         // Meridians
@@ -1406,14 +1406,14 @@
                 : (colors.isMidnight 
                     ? '#ece6d8' 
                     : (colors.isTWA 
-                        ? '#ba0c2f' 
+                        ? '#e0212a' 
                         : colors.accent))) 
             : (colors.isMatrix 
                 ? 'rgba(0, 255, 65, 0.45)' 
                 : (colors.isMidnight 
                     ? 'rgba(236, 230, 216, 0.28)' 
                     : (colors.isTWA 
-                        ? 'rgba(186, 12, 47, 0.28)' 
+                        ? 'rgba(224, 33, 42, 0.28)' 
                         : 'rgba(23, 44, 69, 0.3)')));
 
           for (let lon = -180; lon <= 180; lon += 4) {
@@ -1437,7 +1437,7 @@
           : (colors.isMidnight 
               ? 'rgba(236, 230, 216, 0.15)' 
               : (colors.isTWA 
-                  ? 'rgba(186, 12, 47, 0.15)' 
+                  ? 'rgba(224, 33, 42, 0.15)' 
                   : 'rgba(0, 0, 0, 0.12)'));
         ctx.setLineDash([2, 3]);
         landmasses.forEach((poly) => {
@@ -1464,14 +1464,14 @@
         : (colors.isMidnight 
             ? '#ece6d8' 
             : (colors.isTWA 
-                ? '#ba0c2f' 
+                ? '#e0212a' 
                 : colors.text));
       ctx.fillStyle = colors.isMatrix 
         ? 'rgba(0, 255, 65, 0.15)' 
         : (colors.isMidnight 
             ? 'rgba(236, 230, 216, 0.08)' 
             : (colors.isTWA 
-                ? 'rgba(186, 12, 47, 0.10)' 
+                ? 'rgba(224, 33, 42, 0.10)' 
                 : 'rgba(36, 87, 130, 0.14)'));
 
       landmasses.forEach((poly) => {
@@ -1496,7 +1496,7 @@
         : (colors.isMidnight 
             ? '#ece6d8' 
             : (colors.isTWA 
-                ? '#ba0c2f' 
+                ? '#e0212a' 
                 : colors.accent));
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
@@ -1509,7 +1509,7 @@
         : (colors.isMidnight 
             ? '#ece6d8' 
             : (colors.isTWA 
-                ? '#ba0c2f' 
+                ? '#e0212a' 
                 : colors.text));
       for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
         const x1 = cx + Math.cos(angle) * (R - 3);
@@ -1602,7 +1602,7 @@
             : (colors.isMidnight
                 ? (isSelected ? '#ffffff' : '#ece6d8')
                 : (colors.isTWA
-                    ? (isSelected ? '#ffffff' : '#ba0c2f')
+                    ? (isSelected ? '#ffffff' : '#e0212a')
                     : (isSelected ? '#f59e0b' : '#dc2626')));
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, isSelected ? 5 : 3.5, 0, Math.PI * 2);
@@ -1615,7 +1615,7 @@
             : (colors.isMidnight
                 ? (isSelected ? 'rgba(255, 255, 255, 0.9)' : 'rgba(236, 230, 216, 0.6)')
                 : (colors.isTWA
-                    ? (isSelected ? 'rgba(186, 12, 47, 0.95)' : 'rgba(186, 12, 47, 0.55)')
+                    ? (isSelected ? 'rgba(224, 33, 42, 0.95)' : 'rgba(224, 33, 42, 0.55)')
                     : (isSelected ? 'rgba(245, 158, 11, 0.9)' : 'rgba(220, 38, 38, 0.6)')));
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pulse, 0, Math.PI * 2);
@@ -1630,7 +1630,7 @@
               : (colors.isMidnight 
                   ? '#ece6d8' 
                   : (colors.isTWA 
-                      ? '#ba0c2f' 
+                      ? '#e0212a' 
                       : colors.accent));
             ctx.beginPath();
             // Top-left
@@ -1659,7 +1659,7 @@
             : (colors.isMidnight 
                 ? (isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.7)') 
                 : (colors.isTWA
-                    ? (isSelected ? '#ba0c2f' : 'rgba(186, 12, 47, 0.75)')
+                    ? (isSelected ? '#e0212a' : 'rgba(224, 33, 42, 0.75)')
                     : (isSelected ? colors.accent : colors.text)));
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
@@ -1690,10 +1690,10 @@
             chipBorder = isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.35)';
           } else if (colors.isTWA) {
             chipBg = isSelected 
-              ? '#ba0c2f' 
-              : (isHovered ? '#ba0c2f' : 'rgba(248, 245, 240, 0.96)');
+              ? '#e0212a' 
+              : (isHovered ? '#eb2130' : 'rgba(248, 245, 240, 0.96)');
             chipFg = isSelected || isHovered ? '#ffffff' : '#211f1d';
-            chipBorder = isSelected || isHovered ? '#ba0c2f' : 'rgba(186, 12, 47, 0.45)';
+            chipBorder = isSelected || isHovered ? '#e0212a' : 'rgba(224, 33, 42, 0.45)';
           } else {
             chipBg = isSelected
               ? colors.accent
