@@ -1,14 +1,14 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-04T21:08:16.687Z",
+  "generatedAt": "2026-09-04T23:11:58.023Z",
   "totalLocations": 7,
-  "totalTaggedPhotos": 34,
+  "totalTaggedPhotos": 31,
   "locations": [
     {
       "name": "Ho Chi Minh City",
       "lat": 10.8231,
       "lon": 106.6297,
       "country": "Vietnam",
-      "count": 21,
+      "count": 20,
       "photos": [
         {
           "src": "bw_photos/bw_photos_image_001.jpg",
@@ -54,12 +54,6 @@ window.globeLocationData = {
         },
         {
           "src": "bw_photos/bw_photos_image_008.jpg",
-          "alt": "Black & White Photo",
-          "gallery": "Black & White",
-          "galleryLink": "black-and-white.html"
-        },
-        {
-          "src": "bw_photos/bw_photos_image_010.jpg",
           "alt": "Black & White Photo",
           "gallery": "Black & White",
           "galleryLink": "black-and-white.html"
@@ -152,19 +146,19 @@ window.globeLocationData = {
           "galleryLink": "black-and-white.html"
         },
         {
-          "src": "bw_photos/bw_photos_image_0010.jpg",
+          "src": "bw_photos/bw_photos_image_010.jpg",
           "alt": "Black & White Photo",
           "gallery": "Black & White",
           "galleryLink": "black-and-white.html"
         },
         {
-          "src": "bw_photos/bw_photos_image_0011.jpg",
+          "src": "bw_photos/bw_photos_image_011.jpg",
           "alt": "Black & White Photo",
           "gallery": "Black & White",
           "galleryLink": "black-and-white.html"
         },
         {
-          "src": "bw_photos/bw_photos_image_0012.jpg",
+          "src": "bw_photos/bw_photos_image_012.jpg",
           "alt": "Black & White Photo",
           "gallery": "Black & White",
           "galleryLink": "black-and-white.html"
@@ -195,33 +189,6 @@ window.globeLocationData = {
           "alt": "Colour Photo",
           "gallery": "Colour",
           "galleryLink": "colour.html"
-        }
-      ]
-    },
-    {
-      "name": "Tokyo",
-      "lat": 35.6762,
-      "lon": 139.6503,
-      "country": "Japan",
-      "count": 3,
-      "photos": [
-        {
-          "src": "places_photos/places_photos_image_001.jpg",
-          "alt": "Places Photo",
-          "gallery": "Places",
-          "galleryLink": "places.html"
-        },
-        {
-          "src": "bw_photos/bw_photos_image_011.jpg",
-          "alt": "Black & White Photo",
-          "gallery": "Black & White",
-          "galleryLink": "black-and-white.html"
-        },
-        {
-          "src": "bw_photos/bw_photos_image_012.jpg",
-          "alt": "Black & White Photo",
-          "gallery": "Black & White",
-          "galleryLink": "black-and-white.html"
         }
       ]
     },
@@ -264,6 +231,21 @@ window.globeLocationData = {
       "photos": [
         {
           "src": "places_photos/places_photos_image_003.jpg",
+          "alt": "Places Photo",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        }
+      ]
+    },
+    {
+      "name": "Tokyo",
+      "lat": 35.6762,
+      "lon": 139.6503,
+      "country": "Japan",
+      "count": 1,
+      "photos": [
+        {
+          "src": "places_photos/places_photos_image_001.jpg",
           "alt": "Places Photo",
           "gallery": "Places",
           "galleryLink": "places.html"
