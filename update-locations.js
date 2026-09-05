@@ -267,6 +267,18 @@ function updateLocations() {
   const jsOutput = `window.globeLocationData = ${JSON.stringify(clientData, null, 2)};\n`;
   fs.writeFileSync(OUTPUT_JS_PATH, jsOutput);
 
+  // Synchronize embedded location data inside globe-test.html to bypass any stale browser or Live Preview caches
+  const GLOBE_HTML_PATH = path.join(REPO_DIR, 'globe-test.html');
+  if (fs.existsSync(GLOBE_HTML_PATH)) {
+    let html = fs.readFileSync(GLOBE_HTML_PATH, 'utf8');
+    const regex = /<script id="globe-locations-script">[\s\S]*?<\/script>/;
+    const replacement = `<script id="globe-locations-script">\n    window.globeLocationData = ${JSON.stringify(clientData, null, 2)};\n  </script>`;
+    if (regex.test(html)) {
+      html = html.replace(regex, replacement);
+      fs.writeFileSync(GLOBE_HTML_PATH, html);
+    }
+  }
+
   console.log(`Updated photo-locations: ${locationList.length} locations, ${totalPhotos} tagged photos.`);
   locationList.forEach(l => {
     console.log(`  - ${l.name} (${l.lat}, ${l.lon}): ${l.count} photo(s)`);

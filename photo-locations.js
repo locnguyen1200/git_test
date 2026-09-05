@@ -1,5 +1,5 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-05T14:35:02.544Z",
+  "generatedAt": "2026-09-05T14:43:33.895Z",
   "totalLocations": 9,
   "totalTaggedPhotos": 49,
   "locations": [

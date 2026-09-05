@@ -1,5 +1,16 @@
 {
-  "customCoordinates": {},
+  "customCoordinates": {
+    "Macau": {
+      "lat": 22.1987,
+      "lon": 113.5439,
+      "country": "Macau"
+    },
+    "Bangkok": {
+      "lat": 13.7563,
+      "lon": 100.5018,
+      "country": "Thailand"
+    }
+  },
   "photos": {
     "places_photos/places_photos_image_001.jpg": "Hong Kong",
     "places_photos/places_photos_image_002.jpg": "Ho Chi Minh",
