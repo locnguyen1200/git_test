@@ -32,8 +32,8 @@
       cursor: pointer;
     }
     .globe-dossier-banner:hover {
-      border-color: var(--theme-accent);
-      background: var(--theme-panel-alt);
+      background: var(--theme-box-border);
+      color: var(--theme-box-bg);
     }
     .globe-dossier-canvas-wrap {
       width: 80px;
@@ -79,12 +79,10 @@
       transform: translateX(4px);
     }
     html[data-theme="matrix"] .globe-dossier-banner:hover {
-      border-color: #00ff41;
-      box-shadow: inset 0 0 12px rgba(0,255,65,0.1), 0 0 12px rgba(0,255,65,0.1);
+      color: #000000;
     }
     html[data-theme="midnight"] .globe-dossier-banner:hover {
-      border-color: #ece6d8;
-      box-shadow: inset 0 0 12px rgba(236,230,216,0.1), 0 0 12px rgba(236,230,216,0.1);
+      color: #000000;
     }
 </style>
 </head>
@@ -151,7 +149,8 @@
         </div>
         <div class="globe-dossier-text">
           <div class="globe-dossier-title">GLOBAL NETWORK MAP</div>
-          <div class="globe-dossier-desc">Explore the interactive 3D location archive</div>
+          <div class="globe-dossier-desc">wanna see where i took these photos </div>
+
         </div>
         <svg class="globe-dossier-arrow" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/>
@@ -193,16 +192,6 @@
       globeBtn.addEventListener('mouseenter', () => { isHovered = true; });
       globeBtn.addEventListener('mouseleave', () => { isHovered = false; });
 
-      
-      function getRgba(hex, alpha) {
-        let c = hex.replace('#', '');
-        if (c.length === 3) c = c.split('').map(x => x+x).join('');
-        const r = parseInt(c.substring(0, 2), 16) || 0;
-        const g = parseInt(c.substring(2, 4), 16) || 0;
-        const b = parseInt(c.substring(4, 6), 16) || 0;
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-      }
-
       function cssVar(name, fallback) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
       }
@@ -218,24 +207,22 @@
         let primary = isMatrix ? '#00ff41' : (isMidnight ? '#ece6d8' : cssVar('--theme-accent', '#245782'));
         let secondary = isMatrix ? '#00ff41' : (isMidnight ? '#ffffff' : cssVar('--theme-accent-light', '#7d9ab3'));
         
-        
+        // Invert colors on hover since the banner background inverts!
+        if (isHovered) {
+          primary = isMatrix ? '#000000' : (isMidnight ? '#000000' : primary);
+          secondary = isMatrix ? '#003300' : (isMidnight ? '#333333' : secondary);
+        }
         
         const accent = primary;
         const accentLight = secondary;
-        const isGlowingTheme = isMatrix || isMidnight;
-        const speed = isHovered ? 0.030 : 0.005;
-        
-        // Make the globe highly visible (bold) AT ALL TIMES for non-glowing themes,
-        // so it doesn't shift color when hovered, but remains easy to see.
-        const lineAlpha = isGlowingTheme ? (isHovered ? 1.0 : 0.85) : 1.0;
-        const lineW     = isGlowingTheme ? (isHovered ? 2.5 : 1.5) : 2.0;
+        const speed       = isHovered ? 0.030 : 0.005;
+        const lineAlpha   = isHovered ? 0.90  : 0.70;  /* more visible at rest */
+        const lineW       = isHovered ? 1.6   : 1.1;
 
-        const gradInnerAlpha = isGlowingTheme ? (isHovered ? 0.85 : 0.60) : 0.85;
-        const gradOuterAlpha = isGlowingTheme ? (isHovered ? 0.35 : 0.15) : 0.35;
 
         const grad = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.25, R * 0.04, cx, cy, R);
-        grad.addColorStop(0, getRgba(accentLight, gradInnerAlpha));
-        grad.addColorStop(1, getRgba(accent, gradOuterAlpha));
+        grad.addColorStop(0, accentLight + (isHovered ? 'aa' : '88'));
+        grad.addColorStop(1, accent + (isHovered ? '30' : '22'));
         ctx.beginPath();
         ctx.arc(cx, cy, R, 0, Math.PI * 2);
         ctx.fillStyle = grad;
@@ -268,8 +255,8 @@
           ctx.stroke();
         }
 
-        ctx.globalAlpha = isGlowingTheme ? (isHovered ? 1.0 : 0.5) : 1.0;
-        ctx.lineWidth   = isGlowingTheme ? (isHovered ? 3.0 : 1.5) : 2.0;
+        ctx.globalAlpha = isHovered ? 1.0 : 0.5;
+        ctx.lineWidth   = isHovered ? 2.0 : 1.0;
         ctx.strokeStyle = accentLight;
         ctx.beginPath();
         ctx.ellipse(cx, cy, R, R * 0.26, 0, 0, Math.PI * 2);
@@ -277,9 +264,9 @@
 
         ctx.restore();
 
-        ctx.globalAlpha = isGlowingTheme ? (isHovered ? 0.85 : 0.28) : 0.85;
+        ctx.globalAlpha = isHovered ? 0.85 : 0.28;
         ctx.strokeStyle = accent;
-        ctx.lineWidth   = isGlowingTheme ? (isHovered ? 2.0 : 1.0) : 2.0;
+        ctx.lineWidth   = isHovered ? 2.0  : 1.0;
         ctx.beginPath();
         ctx.arc(cx, cy, R, 0, Math.PI * 2);
         ctx.stroke();
