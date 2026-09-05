@@ -40,6 +40,8 @@ const GEO_DICTIONARY = {
   'quy nhon': { name: 'Quy Nhon', lat: 13.7820, lon: 109.2197, country: 'Vietnam' },
   'vung tau': { name: 'Vung Tau', lat: 10.3460, lon: 107.0843, country: 'Vietnam' },
   'bangkok': { name: 'Bangkok', lat: 13.7563, lon: 100.5018, country: 'Thailand' },
+  'bang kok': { name: 'Bangkok', lat: 13.7563, lon: 100.5018, country: 'Thailand' },
+  'bkk': { name: 'Bangkok', lat: 13.7563, lon: 100.5018, country: 'Thailand' },
   'chiang mai': { name: 'Chiang Mai', lat: 18.7883, lon: 98.9853, country: 'Thailand' },
   'phuket': { name: 'Phuket', lat: 7.8804, lon: 98.3923, country: 'Thailand' },
   'singapore': { name: 'Singapore', lat: 1.3521, lon: 103.8198, country: 'Singapore' },
@@ -129,11 +131,18 @@ function readConfig() {
 
 function resolveCoordinates(locationName, customCoords = {}) {
   const norm = locationName.trim().toLowerCase();
+  const squashed = norm.replace(/[\s\-_]+/g, '');
   if (customCoords[norm]) {
     return { name: locationName, ...customCoords[norm] };
   }
+  if (customCoords[squashed]) {
+    return { name: locationName, ...customCoords[squashed] };
+  }
   if (GEO_DICTIONARY[norm]) {
     return GEO_DICTIONARY[norm];
+  }
+  if (GEO_DICTIONARY[squashed]) {
+    return GEO_DICTIONARY[squashed];
   }
   return null;
 }
