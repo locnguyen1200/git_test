@@ -6,7 +6,7 @@
   <title>Photography | Loc's Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     .globe-portal-scene {
@@ -83,6 +83,11 @@
     }
     html[data-theme="midnight"] .globe-dossier-banner:hover {
       color: #000000;
+    }
+    html[data-theme="twa"] .globe-dossier-banner:hover {
+      background: #ba0c2f;
+      color: #ffffff;
+      border-color: #ba0c2f;
     }
 </style>
 </head>
@@ -203,14 +208,15 @@
 
         const isMatrix = document.documentElement.getAttribute('data-theme') === 'matrix';
         const isMidnight = document.documentElement.getAttribute('data-theme') === 'midnight';
+        const isTWA = document.documentElement.getAttribute('data-theme') === 'twa';
         
-        let primary = isMatrix ? '#00ff41' : (isMidnight ? '#ece6d8' : cssVar('--theme-accent', '#245782'));
-        let secondary = isMatrix ? '#00ff41' : (isMidnight ? '#ffffff' : cssVar('--theme-accent-light', '#7d9ab3'));
+        let primary = isMatrix ? '#00ff41' : (isMidnight ? '#ece6d8' : (isTWA ? '#ba0c2f' : cssVar('--theme-accent', '#245782')));
+        let secondary = isMatrix ? '#00ff41' : (isMidnight ? '#ffffff' : (isTWA ? '#d9384e' : cssVar('--theme-accent-light', '#7d9ab3')));
         
         // Invert colors on hover since the banner background inverts!
         if (isHovered) {
-          primary = isMatrix ? '#000000' : (isMidnight ? '#000000' : primary);
-          secondary = isMatrix ? '#003300' : (isMidnight ? '#333333' : secondary);
+          primary = isMatrix ? '#000000' : (isMidnight ? '#000000' : (isTWA ? '#ffffff' : primary));
+          secondary = isMatrix ? '#003300' : (isMidnight ? '#333333' : (isTWA ? '#ffb3ba' : secondary));
         }
         
         const accent = primary;

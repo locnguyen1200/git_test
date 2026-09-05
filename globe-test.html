@@ -6,7 +6,7 @@
   <title>3D Retro Globe Telemetry // Test Page</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=EB+Garamond:wght@400;500;600&family=Playfair+Display:wght@400;600;700&family=Share+Tech+Mono&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
   <link rel="stylesheet" href="style.css">
   <script src="photo-locations.js"></script>
@@ -20,7 +20,8 @@
 
     [data-theme="midnight"],
     [data-theme="sepia"],
-    [data-theme="blackwhite"] {
+    [data-theme="blackwhite"],
+    [data-theme="twa"] {
       --ui-size-base: 14.5px;
       --ui-size-sm: 13px;
       --ui-size-lg: 17px;
@@ -874,7 +875,77 @@
     @keyframes tether-march {
       to { stroke-dashoffset: 24; }
     }
-</style>
+    /* Theme overrides for TWA Hotel */
+    [data-theme="twa"] .globe-hud-box {
+      color: #211f1d;
+      border-color: #ba0c2f;
+      background: rgba(248, 245, 240, 0.92);
+      box-shadow: 2px 2px 0 rgba(186, 12, 47, 0.2);
+    }
+    [data-theme="twa"] .target-pill {
+      background: #f8f5f0;
+      color: #211f1d;
+      border-color: rgba(186, 12, 47, 0.4);
+    }
+    [data-theme="twa"] .target-pill:hover {
+      background: #ba0c2f;
+      color: #ffffff;
+      border-color: #ba0c2f;
+    }
+    [data-theme="twa"] .target-pill.is-active {
+      background: #ba0c2f;
+      color: #ffffff;
+      border-color: #ba0c2f;
+      font-weight: bold;
+    }
+    [data-theme="twa"] .dossier-badge {
+      background: #ba0c2f;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    [data-theme="twa"] .dossier-view-link {
+      color: #ba0c2f;
+    }
+    [data-theme="twa"] .dossier-close-btn:hover {
+      background: #ba0c2f;
+      color: #ffffff;
+    }
+    [data-theme="twa"] .dossier-page-btn {
+      background: #f8f5f0;
+      color: #ba0c2f;
+      border-color: rgba(186, 12, 47, 0.35);
+    }
+    [data-theme="twa"] .dossier-page-btn:hover,
+    [data-theme="twa"] .dossier-page-btn.is-current {
+      background: #ba0c2f;
+      color: #ffffff;
+      border-color: #ba0c2f;
+    }
+    [data-theme="twa"] .pin-popup {
+      border-color: #ba0c2f;
+      box-shadow: 4px 4px 0 #7a081d;
+    }
+    [data-theme="twa"] .pin-popup-header {
+      border-bottom-color: #ba0c2f;
+    }
+    [data-theme="twa"] .pin-popup-city {
+      color: #ba0c2f;
+      font-weight: bold;
+    }
+    [data-theme="twa"] .pin-popup-close:hover {
+      background: #ba0c2f;
+      color: #ffffff;
+      border-color: #ba0c2f;
+    }
+    [data-theme="twa"] #tether-path {
+      stroke: #ba0c2f;
+    }
+    [data-theme="twa"] #tether-dot-node,
+    [data-theme="twa"] #tether-dot-popup {
+      fill: #f8f5f0;
+      stroke: #ba0c2f;
+    }
+  </style>
 
 </head>
 <body>
@@ -900,6 +971,7 @@
             <li role="option" data-theme-value="midnight" data-theme-label="Midnight">Midnight</li>
             <li role="option" data-theme-value="sepia" data-theme-label="Sepia Terminal">Sepia Terminal</li>
             <li role="option" data-theme-value="matrix" data-theme-label="Matrix">Matrix</li>
+            <li role="option" data-theme-value="twa" data-theme-label="TWA Hotel">TWA Hotel</li>
           </ul>
         </div>
       </div>
@@ -1191,6 +1263,7 @@
       const boxBg = styles.getPropertyValue('--theme-box-bg').trim() || '#e7e9ec';
       const isMatrix = document.documentElement.getAttribute('data-theme') === 'matrix';
       const isMidnight = document.documentElement.getAttribute('data-theme') === 'midnight';
+      const isTWA = document.documentElement.getAttribute('data-theme') === 'twa';
       
       return {
       text: textColor,
@@ -1198,7 +1271,8 @@
         accentLight: isMidnight ? '#ffffff' : accentLight,
         boxBg: boxBg,
         isMatrix: isMatrix,
-        isMidnight: isMidnight
+        isMidnight: isMidnight,
+        isTWA: isTWA
       };
     }
 
@@ -1220,6 +1294,10 @@
         glowGrad.addColorStop(0, 'rgba(0, 255, 65, 0.08)');
         glowGrad.addColorStop(0.8, 'rgba(0, 255, 65, 0.03)');
         glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      } else if (colors.isTWA) {
+        glowGrad.addColorStop(0, 'rgba(186, 12, 47, 0.08)');
+        glowGrad.addColorStop(0.8, 'rgba(186, 12, 47, 0.02)');
+        glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       } else {
         glowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
         glowGrad.addColorStop(0.8, 'rgba(0, 0, 0, 0.02)');
@@ -1233,7 +1311,13 @@
       // Sphere Disc
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = colors.isMatrix ? 'rgba(2, 10, 2, 0.85)' : (colors.isMidnight ? 'rgba(5, 5, 5, 0.9)' : 'rgba(230, 235, 240, 0.25)');
+      ctx.fillStyle = colors.isMatrix 
+        ? 'rgba(2, 10, 2, 0.85)' 
+        : (colors.isMidnight 
+            ? 'rgba(5, 5, 5, 0.9)' 
+            : (colors.isTWA 
+                ? 'rgba(247, 244, 238, 0.88)' 
+                : 'rgba(230, 235, 240, 0.25)'));
       ctx.fill();
 
       // 2. Latitudinal & Longitudinal Grid (Meridians & Parallels)
@@ -1241,7 +1325,13 @@
         // Backface grid (subtle, dashed / low-alpha)
         if (showBackface) {
           ctx.lineWidth = 1;
-          ctx.strokeStyle = colors.isMatrix ? 'rgba(0, 255, 65, 0.15)' : (colors.isMidnight ? 'rgba(236, 230, 216, 0.12)' : 'rgba(0, 0, 0, 0.09)');
+          ctx.strokeStyle = colors.isMatrix 
+            ? 'rgba(0, 255, 65, 0.15)' 
+            : (colors.isMidnight 
+                ? 'rgba(236, 230, 216, 0.12)' 
+                : (colors.isTWA 
+                    ? 'rgba(186, 12, 47, 0.12)' 
+                    : 'rgba(0, 0, 0, 0.09)'));
           ctx.setLineDash([2, 4]);
 
           // Meridians (Longitudes)
@@ -1282,7 +1372,11 @@
         ctx.lineWidth = 1;
         ctx.strokeStyle = colors.isMatrix 
           ? 'rgba(0, 255, 65, 0.45)' 
-          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)');
+          : (colors.isMidnight 
+              ? 'rgba(236, 230, 216, 0.28)' 
+              : (colors.isTWA 
+                  ? 'rgba(186, 12, 47, 0.28)' 
+                  : 'rgba(23, 44, 69, 0.3)'));
 
         // Meridians
         for (let lon = -180; lon < 180; lon += 15) {
@@ -1307,8 +1401,20 @@
           const isEquator = lat === 0;
           ctx.lineWidth = isEquator ? 1.8 : 1;
           ctx.strokeStyle = isEquator 
-            ? (colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent)) 
-            : (colors.isMatrix ? 'rgba(0, 255, 65, 0.45)' : (colors.isMidnight ? 'rgba(236, 230, 216, 0.28)' : 'rgba(23, 44, 69, 0.3)'));
+            ? (colors.isMatrix 
+                ? '#00ff41' 
+                : (colors.isMidnight 
+                    ? '#ece6d8' 
+                    : (colors.isTWA 
+                        ? '#ba0c2f' 
+                        : colors.accent))) 
+            : (colors.isMatrix 
+                ? 'rgba(0, 255, 65, 0.45)' 
+                : (colors.isMidnight 
+                    ? 'rgba(236, 230, 216, 0.28)' 
+                    : (colors.isTWA 
+                        ? 'rgba(186, 12, 47, 0.28)' 
+                        : 'rgba(23, 44, 69, 0.3)')));
 
           for (let lon = -180; lon <= 180; lon += 4) {
             const pt = project(lat, lon, R);
@@ -1328,7 +1434,11 @@
         ctx.lineWidth = 1;
         ctx.strokeStyle = colors.isMatrix 
           ? 'rgba(0, 255, 65, 0.18)' 
-          : (colors.isMidnight ? 'rgba(236, 230, 216, 0.15)' : 'rgba(0, 0, 0, 0.12)');
+          : (colors.isMidnight 
+              ? 'rgba(236, 230, 216, 0.15)' 
+              : (colors.isTWA 
+                  ? 'rgba(186, 12, 47, 0.15)' 
+                  : 'rgba(0, 0, 0, 0.12)'));
         ctx.setLineDash([2, 3]);
         landmasses.forEach((poly) => {
           ctx.beginPath();
@@ -1349,10 +1459,20 @@
 
       // 4. Frontface Continents
       ctx.lineWidth = 1.6;
-      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.text);
+      ctx.strokeStyle = colors.isMatrix 
+        ? '#00ff41' 
+        : (colors.isMidnight 
+            ? '#ece6d8' 
+            : (colors.isTWA 
+                ? '#ba0c2f' 
+                : colors.text));
       ctx.fillStyle = colors.isMatrix 
         ? 'rgba(0, 255, 65, 0.15)' 
-        : (colors.isMidnight ? 'rgba(236, 230, 216, 0.08)' : 'rgba(36, 87, 130, 0.14)');
+        : (colors.isMidnight 
+            ? 'rgba(236, 230, 216, 0.08)' 
+            : (colors.isTWA 
+                ? 'rgba(186, 12, 47, 0.10)' 
+                : 'rgba(36, 87, 130, 0.14)'));
 
       landmasses.forEach((poly) => {
         ctx.beginPath();
@@ -1371,14 +1491,26 @@
 
       // 5. Outer Horizon Rim Border
       ctx.lineWidth = 2.5;
-      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent);
+      ctx.strokeStyle = colors.isMatrix 
+        ? '#00ff41' 
+        : (colors.isMidnight 
+            ? '#ece6d8' 
+            : (colors.isTWA 
+                ? '#ba0c2f' 
+                : colors.accent));
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.stroke();
 
       // Cardinal Coordinate Ticks around the Horizon Rim
       ctx.lineWidth = 1.5;
-      ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.text);
+      ctx.strokeStyle = colors.isMatrix 
+        ? '#00ff41' 
+        : (colors.isMidnight 
+            ? '#ece6d8' 
+            : (colors.isTWA 
+                ? '#ba0c2f' 
+                : colors.text));
       for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
         const x1 = cx + Math.cos(angle) * (R - 3);
         const y1 = cy + Math.sin(angle) * (R - 3);
@@ -1469,7 +1601,9 @@
             ? (isSelected ? '#ffffff' : '#00ff41') 
             : (colors.isMidnight
                 ? (isSelected ? '#ffffff' : '#ece6d8')
-                : (isSelected ? '#f59e0b' : '#dc2626'));
+                : (colors.isTWA
+                    ? (isSelected ? '#ffffff' : '#ba0c2f')
+                    : (isSelected ? '#f59e0b' : '#dc2626')));
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, isSelected ? 5 : 3.5, 0, Math.PI * 2);
           ctx.fill();
@@ -1480,7 +1614,9 @@
             ? (isSelected ? 'rgba(255, 255, 255, 0.9)' : 'rgba(0, 255, 65, 0.6)') 
             : (colors.isMidnight
                 ? (isSelected ? 'rgba(255, 255, 255, 0.9)' : 'rgba(236, 230, 216, 0.6)')
-                : (isSelected ? 'rgba(245, 158, 11, 0.9)' : 'rgba(220, 38, 38, 0.6)'));
+                : (colors.isTWA
+                    ? (isSelected ? 'rgba(186, 12, 47, 0.95)' : 'rgba(186, 12, 47, 0.55)')
+                    : (isSelected ? 'rgba(245, 158, 11, 0.9)' : 'rgba(220, 38, 38, 0.6)')));
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pulse, 0, Math.PI * 2);
           ctx.stroke();
@@ -1489,7 +1625,13 @@
           if (isSelected) {
             const reticle = 14;
             ctx.lineWidth = 1.5;
-            ctx.strokeStyle = colors.isMatrix ? '#00ff41' : (colors.isMidnight ? '#ece6d8' : colors.accent);
+            ctx.strokeStyle = colors.isMatrix 
+              ? '#00ff41' 
+              : (colors.isMidnight 
+                  ? '#ece6d8' 
+                  : (colors.isTWA 
+                      ? '#ba0c2f' 
+                      : colors.accent));
             ctx.beginPath();
             // Top-left
             ctx.moveTo(pt.x - reticle, pt.y - reticle + 5);
@@ -1516,7 +1658,9 @@
             ? '#00ff41' 
             : (colors.isMidnight 
                 ? (isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.7)') 
-                : (isSelected ? colors.accent : colors.text));
+                : (colors.isTWA
+                    ? (isSelected ? '#ba0c2f' : 'rgba(186, 12, 47, 0.75)')
+                    : (isSelected ? colors.accent : colors.text)));
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
           if (placement.align === 'right') {
@@ -1544,6 +1688,12 @@
             chipBg = isSelected ? '#ece6d8' : 'rgba(15, 15, 15, 0.92)';
             chipFg = isSelected ? '#0d0d0d' : '#ece6d8';
             chipBorder = isSelected ? '#ece6d8' : 'rgba(236, 230, 216, 0.35)';
+          } else if (colors.isTWA) {
+            chipBg = isSelected 
+              ? '#ba0c2f' 
+              : (isHovered ? '#ba0c2f' : 'rgba(248, 245, 240, 0.96)');
+            chipFg = isSelected || isHovered ? '#ffffff' : '#211f1d';
+            chipBorder = isSelected || isHovered ? '#ba0c2f' : 'rgba(186, 12, 47, 0.45)';
           } else {
             chipBg = isSelected
               ? colors.accent

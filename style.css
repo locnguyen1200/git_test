@@ -92,6 +92,24 @@
   --theme-font: "Times New Roman", Times, serif;
 }
 
+[data-theme="twa"] {
+  --theme-page-bg: #ece7de;
+  --theme-text: #211f1d;
+  --theme-box-bg: #f8f5f0;
+  --theme-box-border: #ffffff;
+  --theme-box-shadow: #8c8275;
+  --theme-accent: #ba0c2f;
+  --theme-accent-light: #d9384e;
+  --theme-accent-text: #ba0c2f;
+  --theme-muted-text: #6e675d;
+  --theme-panel-bg: #e2dbd0;
+  --theme-panel-alt: #dad2c4;
+  --theme-overlay: #1c0307;
+  --theme-deep-shadow: #590616;
+  --theme-scroll-thumb: #ba0c2f;
+  --theme-font: "Jost", "Futura", "Trebuchet MS", "Century Gothic", sans-serif;
+}
+
 
 /* ========================================
   Page and portfolio layout
@@ -1188,6 +1206,18 @@ body{
     0deg,
     rgba(255, 255, 255, 0.08) 0,
     rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* TWA theme: architectural penny-tile / warm ivory stripe pattern */
+[data-theme="twa"] .photo-collection-page {
+  background-color: #ece7de;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(186, 12, 47, 0.04) 0,
+    rgba(186, 12, 47, 0.04) 1px,
     transparent 1px,
     transparent 4px
   );
@@ -2454,6 +2484,11 @@ mark.search-highlight {
   color: #ffffff;
 }
 
+[data-theme="twa"] mark.search-highlight {
+  background: #ba0c2f;
+  color: #ffffff;
+}
+
 /* Theme overrides for search input */
 [data-theme="matrix"] .directory-search-box {
   background: rgba(0, 255, 65, 0.08);
@@ -2482,6 +2517,22 @@ mark.search-highlight {
 [data-theme="midnight"] .directory-search-input,
 [data-theme="midnight"] .directory-search-icon {
   color: var(--theme-text);
+}
+
+[data-theme="twa"] .directory-search-box {
+  background: rgba(186, 12, 47, 0.05);
+  border-color: #ba0c2f;
+}
+
+[data-theme="twa"] .directory-search-input,
+[data-theme="twa"] .directory-search-icon {
+  color: #ba0c2f;
+}
+
+[data-theme="twa"] .directory-search-status.is-found {
+  color: #ba0c2f;
+  border-color: #ba0c2f;
+  background: rgba(186, 12, 47, 0.12);
 }
 
 .gear-card-grid {
