@@ -1021,6 +1021,9 @@
         </div>
       </div>
 
+      <!-- Target Locations Menu -->
+      <div class="globe-targets-row" id="globe-targets-row"></div>
+
       <!-- Controls Legend -->
       <div class="globe-legend">
         <span class="legend-item"><kbd>DRAG</kbd> Rotate</span>
@@ -1532,6 +1535,13 @@
       if (showPins) {
         const placedBoxes = [];
         const pad = 6;
+        if (popupEl && !popupEl.hidden && popupEl.style.left) {
+          const popX = parseFloat(popupEl.style.left) || 0;
+          const popY = parseFloat(popupEl.style.top) || 0;
+          const popW = popupEl.offsetWidth || 300;
+          const popH = popupEl.offsetHeight || 220;
+          placedBoxes.push({ x: popX, y: popY, w: popW, h: popH });
+        }
         function checkOverlap(b1, b2) {
           return !(b1.x + b1.w + pad < b2.x || b2.x + b2.w + pad < b1.x ||
                    b1.y + b1.h + pad < b2.y || b2.y + b2.h + pad < b1.y);
@@ -1574,10 +1584,10 @@
         const sortedForPlacement = [...visibleList].sort((a, b) => (a.isSelected ? -1 : (b.isSelected ? 1 : 0)));
         sortedForPlacement.forEach((item) => {
           const candidates = [
-            { lx: item.pt.x + 16, ly: item.pt.y - 14, align: 'right' },
             { lx: item.pt.x - 16 - item.chipW, ly: item.pt.y - 14, align: 'left' },
-            { lx: item.pt.x + 16, ly: item.pt.y + 18, align: 'right' },
-            { lx: item.pt.x - 16 - item.chipW, ly: item.pt.y + 18, align: 'left' }
+            { lx: item.pt.x + 16, ly: item.pt.y - 14, align: 'right' },
+            { lx: item.pt.x - 16 - item.chipW, ly: item.pt.y + 18, align: 'left' },
+            { lx: item.pt.x + 16, ly: item.pt.y + 18, align: 'right' }
           ];
 
           let chosen = candidates[0];
@@ -1858,6 +1868,7 @@
       selectedCity = null;
       popupCurrentPage = 1;
       hudTarget.textContent = 'SECTOR: GLOBAL';
+      updateActiveTargetPill(null);
     }
 
     function updatePopupPosition(city) {
@@ -1939,6 +1950,7 @@
       selectedCity = city;
       popupCurrentPage = 1;
       showPopup(city);
+      updateActiveTargetPill(city.name);
 
       // We no longer turn off autoSpin here! User preference is respected.
       const count = city.count || (city.photos ? city.photos.length : 0);
@@ -1995,7 +2007,7 @@
     const targetsRow = document.querySelector('.globe-targets-row');
     function initTargetsRow() {
       if (!targetsRow) return;
-      targetsRow.innerHTML = '';
+      targetsRow.innerHTML = '<span class="globe-targets-label">TARGETS:</span>';
       cities.forEach((city) => {
         const count = city.count || (city.photos ? city.photos.length : 0);
         const btn = document.createElement('button');
@@ -2010,6 +2022,18 @@
           flyToLocation(city);
         });
         targetsRow.appendChild(btn);
+      });
+    }
+
+    function updateActiveTargetPill(cityName) {
+      if (!targetsRow) return;
+      const pills = targetsRow.querySelectorAll('.target-pill');
+      pills.forEach((pill) => {
+        if (cityName && pill.dataset.name === cityName) {
+          pill.classList.add('is-active');
+        } else {
+          pill.classList.remove('is-active');
+        }
       });
     }
     initTargetsRow();
