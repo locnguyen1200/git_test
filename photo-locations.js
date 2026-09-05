@@ -1,17 +1,23 @@
 window.globeLocationData = {
-  "generatedAt": "2026-09-05T01:38:40.879Z",
+  "generatedAt": "2026-09-05T01:43:08.454Z",
   "totalLocations": 7,
-  "totalTaggedPhotos": 48,
+  "totalTaggedPhotos": 44,
   "locations": [
     {
       "name": "Ho Chi Minh City",
       "lat": 10.8231,
       "lon": 106.6297,
       "country": "Vietnam",
-      "count": 21,
+      "count": 22,
       "photos": [
         {
           "src": "places_photos/places_photos_image_002.jpg",
+          "alt": "Places Photo",
+          "gallery": "Places",
+          "galleryLink": "places.html"
+        },
+        {
+          "src": "places_photos/places_photos_image_003.jpg",
           "alt": "Places Photo",
           "gallery": "Places",
           "galleryLink": "places.html"
@@ -299,16 +305,10 @@ window.globeLocationData = {
       "lat": 22.3193,
       "lon": 114.1694,
       "country": "Hong Kong",
-      "count": 2,
+      "count": 1,
       "photos": [
         {
           "src": "places_photos/places_photos_image_001.jpg",
-          "alt": "Places Photo",
-          "gallery": "Places",
-          "galleryLink": "places.html"
-        },
-        {
-          "src": "places_photos/places_photos_image_003.jpg",
           "alt": "Places Photo",
           "gallery": "Places",
           "galleryLink": "places.html"
