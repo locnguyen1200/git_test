@@ -1817,7 +1817,7 @@
     function getCityAt(mouseX, mouseY) {
       if (!showPins) return null;
       let bestCity = null;
-      let bestDist = 20;
+      let bestDist = 28;
       for (const city of cities) {
         if (!city._visible) continue;
         const dist = Math.hypot(mouseX - city._screenX, mouseY - city._screenY);
@@ -1858,10 +1858,13 @@
     }
     initTargetsRow();
 
+    let clickStartX = 0, clickStartY = 0;
     stage.addEventListener('pointerdown', (e) => {
       activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       stage.setPointerCapture(e.pointerId);
       dragDist = 0;
+      clickStartX = e.clientX;
+      clickStartY = e.clientY;
 
       if (activePointers.size === 2) {
         isDragging = false;
@@ -1879,7 +1882,8 @@
         yawVelocity = 0;
         pitchVelocity = 0;
       }
-      e.preventDefault();
+      // Do NOT call e.preventDefault() here — it suppresses the click event.
+      // touch-action:none on .globe-stage already prevents scroll on mobile.
     });
 
     stage.addEventListener('pointermove', (e) => {
@@ -1934,7 +1938,9 @@
       }
       if (activePointers.size === 0) {
         isDragging = false;
-        if (dragDist < 6 && e.target && e.target.tagName === 'CANVAS') {
+        // Use total displacement from click start (not accumulated dragDist which inflates from micro-jitter).
+        const totalDisp = Math.hypot(e.clientX - clickStartX, e.clientY - clickStartY);
+        if (totalDisp < 10) {
           const rect = stage.getBoundingClientRect();
           const mx = e.clientX - rect.left;
           const my = e.clientY - rect.top;
